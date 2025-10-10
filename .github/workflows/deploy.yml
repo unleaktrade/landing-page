@@ -37,7 +37,9 @@ jobs:
       - name: Configure Pages
         uses: actions/configure-pages@v5
 
-      # SPA fallback: ensures hard-refresh on deep links works
+      - name: Add CNAME
+        run: echo "umbra.trade" > build/CNAME
+
       - name: Add SPA fallback
         run: cp build/index.html build/404.html
 
