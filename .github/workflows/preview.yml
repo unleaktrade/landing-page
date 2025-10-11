@@ -17,11 +17,16 @@ concurrency:
 
 jobs:
   deploy_preview:
-    # Skip forked PRs (no repo secrets there)
+    # Skip forked PRs (secrets are not available there)
     if: >
       github.event_name == 'pull_request' &&
       github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
+
+    # This makes it visible under Settings → Environments → Preview
+    environment:
+      name: Preview
+      url: ${{ steps.deploy_prebuilt.outputs.url }}
 
     env:
       VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
@@ -34,17 +39,17 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-          # cache: 'npm'   # optional: speed up if you install locally
+          # cache: 'npm'   # uncomment if you use npm and want caching
 
       # Pull env + link the Vercel project for this runner
       - name: Pull Vercel env (preview)
         run: npx vercel pull --yes --environment=preview --token=$VERCEL_TOKEN
 
-      # Local build on the runner; artifacts reused by --prebuilt
+      # Local build on the runner (deterministic & cached)
       - name: Build (preview)
         run: npx vercel build --token=$VERCEL_TOKEN
 
-      # Upload the prebuilt artifacts to Vercel (fast + deterministic)
+      # Upload prebuilt artifacts to Vercel (fast deploy)
       - name: Deploy (preview)
         id: deploy_prebuilt
         run: |
@@ -66,7 +71,7 @@ jobs:
               body
             });
 
-      # Job summary (shows in Actions UI)
+      # Job summary (shows in GitHub Actions UI)
       - name: Job summary
         run: |
           echo "### ✅ Preview deployed" >> $GITHUB_STEP_SUMMARY
