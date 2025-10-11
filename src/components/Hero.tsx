@@ -45,7 +45,7 @@ export function Hero() {
             transition={{ delay: 0.3, duration: 0.8 }}
           >
             <a
-              href="https://discord.gg/umbratrade"
+              href="https://discord.com/invite/24mZUAqj4z"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-purple-600 to-cyan-400 text-white rounded-lg hover:opacity-90 transition-opacity"

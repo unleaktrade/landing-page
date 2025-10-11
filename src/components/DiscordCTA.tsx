@@ -26,7 +26,7 @@ export function DiscordCTA() {
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <a
-                href="https://discord.gg/umbratrade"
+                href="https://discord.com/invite/24mZUAqj4z"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-purple-600 to-cyan-400 text-white rounded-lg hover:opacity-90 transition-opacity text-lg"
@@ -41,17 +41,17 @@ export function DiscordCTA() {
               </a>
             </div>
 
-            <div className="pt-8 flex items-center justify-center gap-12 text-sm text-white/40">
+            <div className="pt-8 flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-12 text-sm text-white/40">
               <div className="text-center">
                 <div className="text-2xl text-white mb-1">$2T+</div>
                 <div>Annual OTC volume</div>
               </div>
-              <div className="h-12 w-px bg-white/10" />
+              <div className="hidden sm:block h-12 w-px bg-white/10" />
               <div className="text-center">
                 <div className="text-2xl text-white mb-1">100%</div>
                 <div>Privacy guaranteed</div>
               </div>
-              <div className="h-12 w-px bg-white/10" />
+              <div className="hidden sm:block h-12 w-px bg-white/10" />
               <div className="text-center">
                 <div className="text-2xl text-white mb-1">0</div>
                 <div>Counterparty risk</div>
