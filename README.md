@@ -1,6 +1,6 @@
 # 🛡️ UmbraTrade Landing Page
 
-Welcome to the official **UmbraTrade** landing page — a high-performance and visually engaging web experience designed to introduce the Umbra ecosystem.
+Welcome to the official **UmbraTrade** landing page — a high-performance and visually engaging web experience designed to introduce the UmbraTrade ecosystem.
 
 ---
 
@@ -14,7 +14,7 @@ It represents the public-facing entry point to the UmbraTrade platform and empha
 ## ✨ Features
 
 - ⚡ **Vite-powered** — instant hot reloads and optimized builds  
-- 🎨 **Modern design** following Umbra’s dark aesthetic  
+- 🎨 **Modern design** following UmbraTrade’s dark aesthetic  
 - 📱 **Fully responsive** across devices  
 - 🧱 **Clean modular structure** for easy maintenance  
 - 🔧 **Automated CI/CD** with GitHub Actions — auto-deploys on commits to `main`  
