@@ -76,7 +76,7 @@ function SheetContent({
           Navigation Menu
         </SheetPrimitive.Title>
         {children}
-        <SheetPrimitive.Close className="ring-offset-background focus:ring-ring absolute top-6 right-6 opacity-60 hover:opacity-100 transition-opacity focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none">
+        <SheetPrimitive.Close className="absolute top-6 right-6 opacity-60 hover:opacity-100 transition-opacity focus:outline-none disabled:pointer-events-none">
           <X className="size-5 text-white" />
           <span className="sr-only">Close</span>
         </SheetPrimitive.Close>
