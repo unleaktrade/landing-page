@@ -37,7 +37,7 @@ export default function App() {
     const handleHashChange = () => {
       const hash = window.location.hash;
       // Valid routes
-      const validHashes = ['', '#learn', '#faq', '#team'];
+      const validHashes = ['', '#learn', '#team', '#app'];
       
       // If hash is not recognized and not empty, redirect to home
       if (hash && !validHashes.includes(hash)) {
@@ -56,7 +56,7 @@ export default function App() {
   }, []);
 
   // Show work in progress page for specific sections
-  if (currentHash === '#learn' || currentHash === '#faq' || currentHash === '#team') {
+  if (currentHash === '#learn' || currentHash === '#app' || currentHash === '#team') {
     return (
       <>
         <Navigation />
