@@ -11,16 +11,13 @@ export function Footer() {
           </div>
           
           <div className="flex items-center gap-8">
-            <a href="#team" className="text-sm text-white/40 hover:text-white/60 transition-colors">
-              Team
-            </a>
-            <a href="#faq" className="text-sm text-white/40 hover:text-white/60 transition-colors">
-              FAQ
+            <a href="https://github.com/umbratrade" target="_blank" rel="noopener noreferrer" className="text-sm text-white/40 hover:text-white/60 transition-colors">
+              GitHub
             </a>
             <a href="https://twitter.com/umbratrade" target="_blank" rel="noopener noreferrer" className="text-sm text-white/40 hover:text-white/60 transition-colors">
               Twitter
             </a>
-            <a href="https://discord.gg/umbratrade" target="_blank" rel="noopener noreferrer" className="text-sm text-white/40 hover:text-white/60 transition-colors">
+            <a href="https://discord.com/invite/24mZUAqj4z" target="_blank" rel="noopener noreferrer" className="text-sm text-white/40 hover:text-white/60 transition-colors">
               Discord
             </a>
           </div>
