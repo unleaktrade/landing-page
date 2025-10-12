@@ -3,6 +3,8 @@ import { Navigation } from "./components/Navigation";
 import { Hero } from "./components/Hero";
 import { ValueProps } from "./components/ValueProps";
 import { HowItWorks } from "./components/HowItWorks";
+import { SettlementProcess } from "./components/SettlementProcess";
+import { Economics } from "./components/Economics";
 import { TeamSection } from "./components/TeamSection";
 import { TeamPage } from "./components/TeamPage";
 import { DiscordCTA } from "./components/DiscordCTA";
@@ -88,6 +90,8 @@ export default function App() {
       <Hero />
       <ValueProps />
       <HowItWorks />
+      <SettlementProcess />
+      <Economics />
       <TeamSection />
       <DiscordCTA />
       <Footer />
