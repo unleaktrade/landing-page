@@ -578,6 +578,10 @@
     margin-top: calc(var(--spacing) * 6);
   }
 
+  .mt-12 {
+    margin-top: calc(var(--spacing) * 12);
+  }
+
   .mt-20 {
     margin-top: calc(var(--spacing) * 20);
   }
@@ -777,6 +781,10 @@
 
   .w-\[calc\(100\%-6px\)\] {
     width: calc(100% - 6px);
+  }
+
+  .w-auto {
+    width: auto;
   }
 
   .w-full {
@@ -1467,6 +1475,10 @@
     padding-top: calc(var(--spacing) * 8);
   }
 
+  .pt-12 {
+    padding-top: calc(var(--spacing) * 12);
+  }
+
   .pt-32 {
     padding-top: calc(var(--spacing) * 32);
   }
@@ -1648,6 +1660,10 @@
     .text-white\/90 {
       color: color-mix(in oklab, var(--color-white) 90%, transparent);
     }
+  }
+
+  .uppercase {
+    text-transform: uppercase;
   }
 
   .italic {

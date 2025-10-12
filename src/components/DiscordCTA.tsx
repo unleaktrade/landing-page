@@ -1,4 +1,5 @@
 import { motion } from "motion/react";
+import solanaLogo from "figma:asset/af0a6579392a99988c0ab693570446ed86a64fec.png";
 
 export function DiscordCTA() {
   return (
@@ -55,6 +56,25 @@ export function DiscordCTA() {
               <div className="text-center">
                 <div className="text-2xl text-white mb-1">0</div>
                 <div>Counterparty risk</div>
+              </div>
+            </div>
+
+            {/* Built on Solana */}
+            <div className="pt-12 mt-12 border-t border-white/10">
+              <div className="flex flex-col items-center gap-4">
+                <span className="text-white/40 text-sm tracking-wide uppercase">Built on</span>
+                <a 
+                  href="https://solana.com" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="transition-all hover:opacity-80"
+                >
+                  <img 
+                    src={solanaLogo} 
+                    alt="Solana" 
+                    className="h-8 w-auto"
+                  />
+                </a>
               </div>
             </div>
           </div>
