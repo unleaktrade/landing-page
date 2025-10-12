@@ -123,7 +123,15 @@ export function TeamPage() {
       setTimeout(() => {
         const element = document.getElementById(hash.slice(1));
         if (element) {
-          element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          const navHeight = 64; // Height of fixed navigation bar (h-16 = 64px)
+          const extraPadding = 80; // Extra breathing room for better visibility
+          const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
+          const offsetPosition = elementPosition - navHeight - extraPadding;
+          
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+          });
         }
       }, 100);
     }

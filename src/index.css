@@ -618,10 +618,6 @@
     margin-bottom: calc(var(--spacing) * 20);
   }
 
-  .block {
-    display: block;
-  }
-
   .flex {
     display: flex;
   }
