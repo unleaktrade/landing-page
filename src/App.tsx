@@ -3,6 +3,8 @@ import { Navigation } from "./components/Navigation";
 import { Hero } from "./components/Hero";
 import { ValueProps } from "./components/ValueProps";
 import { HowItWorks } from "./components/HowItWorks";
+import { TeamSection } from "./components/TeamSection";
+import { TeamPage } from "./components/TeamPage";
 import { DiscordCTA } from "./components/DiscordCTA";
 import { Footer } from "./components/Footer";
 import { WorkInProgress } from "./components/WorkInProgress";
@@ -40,12 +42,16 @@ export default function App() {
       const validHashes = ['', '#learn', '#team', '#app'];
       
       // If hash is not recognized and not empty, redirect to home
-      if (hash && !validHashes.includes(hash)) {
+      // Allow team member specific hashes like #team-julien-sie
+      if (hash && !validHashes.includes(hash) && !hash.startsWith('#team-')) {
         window.location.hash = '';
         return;
       }
       
       setCurrentHash(hash);
+      
+      // Scroll to top when changing routes
+      window.scrollTo(0, 0);
     };
 
     // Initial check
@@ -56,12 +62,23 @@ export default function App() {
   }, []);
 
   // Show work in progress page for specific sections
-  if (currentHash === '#learn' || currentHash === '#app' || currentHash === '#team') {
+  if (currentHash === '#learn' || currentHash === '#app') {
     return (
-      <>
+      <div className="min-h-screen bg-black text-white">
         <Navigation />
         <WorkInProgress />
-      </>
+      </div>
+    );
+  }
+
+  // Show team page (including specific team member links like #team-julien-sie)
+  if (currentHash === '#team' || currentHash.startsWith('#team-')) {
+    return (
+      <div className="min-h-screen bg-black text-white">
+        <Navigation />
+        <TeamPage />
+        <Footer />
+      </div>
     );
   }
 
@@ -71,6 +88,7 @@ export default function App() {
       <Hero />
       <ValueProps />
       <HowItWorks />
+      <TeamSection />
       <DiscordCTA />
       <Footer />
     </div>

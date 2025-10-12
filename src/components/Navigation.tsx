@@ -127,13 +127,13 @@ export function Navigation() {
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <div className="flex items-center gap-3">
+          <a href="#" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
             <img src={logoImage} alt="UmbraTrade" className="h-8 w-8" />
             <span className="tracking-tight">
               <span className="text-white/60">Umbra</span>
               <span className="text-white">Trade</span>
             </span>
-          </div>
+          </a>
           
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-6">
