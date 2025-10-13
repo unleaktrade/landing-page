@@ -7,6 +7,7 @@ import { SettlementProcess } from "./components/SettlementProcess";
 import { Economics } from "./components/Economics";
 import { TeamSection } from "./components/TeamSection";
 import { TeamPage } from "./components/TeamPage";
+import { Roadmap } from "./components/Roadmap";
 import { DiscordCTA } from "./components/DiscordCTA";
 import { Footer } from "./components/Footer";
 import { WorkInProgress } from "./components/WorkInProgress";
@@ -63,8 +64,19 @@ export default function App() {
     return () => window.removeEventListener('hashchange', handleHashChange);
   }, []);
 
-  // Show work in progress page for specific sections
-  if (currentHash === '#learn' || currentHash === '#app') {
+  // Show roadmap page
+  if (currentHash === '#learn') {
+    return (
+      <div className="min-h-screen bg-black text-white">
+        <Navigation />
+        <Roadmap />
+        <Footer />
+      </div>
+    );
+  }
+
+  // Show work in progress page for app section
+  if (currentHash === '#app') {
     return (
       <div className="min-h-screen bg-black text-white">
         <Navigation />
