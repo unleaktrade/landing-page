@@ -30,15 +30,21 @@ export function DiscordCTA() {
                 href="https://discord.com/invite/24mZUAqj4z"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-purple-600 to-cyan-400 text-white rounded-lg hover:opacity-90 transition-opacity text-lg"
+                className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-purple-600 to-cyan-400 text-white rounded-lg hover:opacity-90 transition-opacity text-lg h-[58px]"
               >
                 Join the Discord
               </a>
               <a
-                href="#roadmap"
-                className="inline-flex items-center gap-2 px-8 py-4 border border-white/10 text-white rounded-lg hover:bg-white/5 transition-colors text-lg"
+                href="#faq"
+                className="relative inline-flex flex-col items-center justify-center px-8 rounded-lg bg-gradient-to-r from-purple-500/20 to-cyan-400/20 border border-white/10 hover:border-white/20 transition-all group overflow-hidden h-[58px]"
               >
-                View Roadmap
+                <span className="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-cyan-400/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+                <span className="relative text-lg bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent leading-tight">
+                  Waitlist
+                </span>
+                <span className="relative text-[9px] text-white/30 tracking-wide leading-tight">
+                  COMING SOON
+                </span>
               </a>
             </div>
 
