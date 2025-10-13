@@ -42,7 +42,7 @@ export default function App() {
     const handleHashChange = () => {
       const hash = window.location.hash;
       // Valid routes
-      const validHashes = ['', '#learn', '#team', '#app'];
+      const validHashes = ['', '#roadmap', '#team', '#app', '#faq'];
       
       // If hash is not recognized and not empty, redirect to home
       // Allow team member specific hashes like #team-julien-sie
@@ -65,7 +65,7 @@ export default function App() {
   }, []);
 
   // Show roadmap page
-  if (currentHash === '#learn') {
+  if (currentHash === '#roadmap') {
     return (
       <div className="min-h-screen bg-black text-white">
         <Navigation />
@@ -75,8 +75,8 @@ export default function App() {
     );
   }
 
-  // Show work in progress page for app section
-  if (currentHash === '#app') {
+  // Show work in progress page for app and faq sections
+  if (currentHash === '#app' || currentHash === '#faq') {
     return (
       <div className="min-h-screen bg-black text-white">
         <Navigation />

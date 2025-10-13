@@ -35,10 +35,10 @@ export function DiscordCTA() {
                 Join the Discord
               </a>
               <a
-                href="#learn"
+                href="#roadmap"
                 className="inline-flex items-center gap-2 px-8 py-4 border border-white/10 text-white rounded-lg hover:bg-white/5 transition-colors text-lg"
               >
-                Learn more
+                View Roadmap
               </a>
             </div>
 

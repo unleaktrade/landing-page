@@ -140,8 +140,11 @@ export function Navigation() {
             <a href="#team" className="text-sm text-white/60 hover:text-white transition-colors">
               Team
             </a>
-            <a href="#learn" className="text-sm text-white/60 hover:text-white transition-colors">
+            <a href="#roadmap" className="text-sm text-white/60 hover:text-white transition-colors">
               Roadmap
+            </a>
+            <a href="#faq" className="text-sm text-white/60 hover:text-white transition-colors">
+              FAQ
             </a>
             <a 
               href="#app" 
@@ -177,11 +180,19 @@ export function Navigation() {
                   </a>
                   
                   <a 
-                    href="#learn" 
+                    href="#roadmap" 
                     onClick={closeMenu}
                     className="w-full text-center py-4 text-white/60 hover:text-white transition-colors"
                   >
                     Roadmap
+                  </a>
+
+                  <a 
+                    href="#faq" 
+                    onClick={closeMenu}
+                    className="w-full text-center py-4 text-white/60 hover:text-white transition-colors"
+                  >
+                    FAQ
                   </a>
 
                   {/* CTA Button */}
