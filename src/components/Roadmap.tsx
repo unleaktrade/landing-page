@@ -71,7 +71,7 @@ const roadmapPhases: RoadmapPhase[] = [
     letter: "C",
     name: "Cohiba",
     subtitle: "Tokenization & Liquidity Fabric",
-    core: "Introduction of the UmbraToken — the internal coordination, bonding, and fee unit of UmbraTrade.",
+    core: "Introduction of the UmbraTrade's Token — the internal coordination, bonding, and fee unit of UmbraTrade.",
     focus: {
       title: "The escrow is the verifier — every trade self-verifies via commit–reveal logic, releasing or reclaiming bonds automatically.",
       items: [
@@ -95,7 +95,7 @@ const roadmapPhases: RoadmapPhase[] = [
     focus: {
       items: [
         "Permissionless relayer mesh coordinating encrypted order discovery and routing.",
-        "Dynamic fee streaming and incentives powered by UmbraToken economics.",
+        "Dynamic fee streaming and incentives powered by UmbraTrade's Token economics.",
         "Advanced RFQ orchestration, pricing intelligence, and analytics framework.",
         "Settlement extensions for derivatives, credit instruments, and RWA-backed trades."
       ]
