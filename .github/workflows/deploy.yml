@@ -36,7 +36,7 @@ jobs:
         uses: actions/configure-pages@v5
 
       - name: Add CNAME
-        run: echo "umbra.trade" > build/CNAME
+        run: echo "unleak.trade" > build/CNAME
 
       - name: Add SPA fallback
         run: cp build/index.html build/404.html
