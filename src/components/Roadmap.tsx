@@ -45,7 +45,7 @@ const roadmapPhases: RoadmapPhase[] = [
       ],
       items: []
     },
-    outcome: "UmbraTrade's universal OTC core — private, multi-asset, and verifiably secure.",
+    outcome: "UnleakTrade's universal OTC core — private, multi-asset, and verifiably secure.",
     status: "in-progress"
   },
   {
@@ -71,7 +71,7 @@ const roadmapPhases: RoadmapPhase[] = [
     letter: "C",
     name: "Cohiba",
     subtitle: "Tokenization & Liquidity Fabric",
-    core: "Introduction of the UmbraTrade's Token — the internal coordination, bonding, and fee unit of UmbraTrade.",
+    core: "Introduction of the UnleakTrade's Token — the internal coordination, bonding, and fee unit of UnleakTrade.",
     focus: {
       title: "The escrow is the verifier — every trade self-verifies via commit–reveal logic, releasing or reclaiming bonds automatically.",
       items: [
@@ -83,7 +83,7 @@ const roadmapPhases: RoadmapPhase[] = [
         "Establish protocol treasury and initial staking mechanics for sustainability."
       ]
     },
-    outcome: "UmbraTrade becomes a self-sustaining, economically secure network — all trust, cost, and incentive flows unified under one verifiable token logic.",
+    outcome: "UnleakTrade becomes a self-sustaining, economically secure network — all trust, cost, and incentive flows unified under one verifiable token logic.",
     status: "upcoming"
   },
   {
@@ -95,12 +95,12 @@ const roadmapPhases: RoadmapPhase[] = [
     focus: {
       items: [
         "Permissionless relayer mesh coordinating encrypted order discovery and routing.",
-        "Dynamic fee streaming and incentives powered by UmbraTrade's Token economics.",
+        "Dynamic fee streaming and incentives powered by UnleakTrade's Token economics.",
         "Advanced RFQ orchestration, pricing intelligence, and analytics framework.",
         "Settlement extensions for derivatives, credit instruments, and RWA-backed trades."
       ]
     },
-    outcome: "UmbraTrade evolves into Solana's market infrastructure layer — liquidity, routing, and data fused through cryptographic trust.",
+    outcome: "UnleakTrade evolves into Solana's market infrastructure layer — liquidity, routing, and data fused through cryptographic trust.",
     status: "upcoming"
   },
   {
@@ -114,10 +114,10 @@ const roadmapPhases: RoadmapPhase[] = [
         "Comprehensive SDK + API suite for DAOs, asset managers, and custody providers.",
         "Programmable RFQ templates and automation modules for treasuries and on-chain funds.",
         "Plug-ins for asset issuers, RWA platforms, and DeFi integrations.",
-        "Sandbox environment for third-party builders extending UmbraTrade's rails."
+        "Sandbox environment for third-party builders extending UnleakTrade's rails."
       ]
     },
-    outcome: "UmbraTrade becomes a programmable infrastructure layer — powering automated, composable OTC markets on Solana.",
+    outcome: "UnleakTrade becomes a programmable infrastructure layer — powering automated, composable OTC markets on Solana.",
     status: "upcoming"
   },
   {
@@ -322,7 +322,7 @@ export function Roadmap() {
             className="mt-20 text-center"
           >
             <p className="text-white/40 italic max-w-2xl mx-auto">
-              From zero-knowledge to tokenized coordination — UmbraTrade is Solana's invisible backbone for private, programmable OTC markets.
+              From zero-knowledge to tokenized coordination — UnleakTrade is Solana's invisible backbone for private, programmable OTC markets.
             </p>
           </motion.div>
         </div>

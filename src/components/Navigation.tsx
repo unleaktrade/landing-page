@@ -128,9 +128,9 @@ export function Navigation() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <a href="#" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
-            <img src={logoImage} alt="UmbraTrade" className="h-8 w-8" />
+            <img src={logoImage} alt="UnleakTrade" className="h-8 w-8" />
             <span className="tracking-tight">
-              <span className="text-white/60">Umbra</span>
+              <span className="text-white/60">Unleak</span>
               <span className="text-white">Trade</span>
             </span>
           </a>
