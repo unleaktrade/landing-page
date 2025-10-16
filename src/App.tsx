@@ -18,7 +18,7 @@ export default function App() {
 
   useEffect(() => {
     // Set document title
-    document.title = "UmbraTrade - Confidential OTC Trading on Solana";
+    document.title = "UnleakTrade - Confidential OTC Trading on Solana";
     
     // Set favicon
     const link = document.querySelector("link[rel*='icon']") || document.createElement('link');

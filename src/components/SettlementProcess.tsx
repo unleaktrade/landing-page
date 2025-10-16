@@ -21,7 +21,7 @@ export function SettlementProcess() {
             Powered by Zero-Knowledge Proofs
           </h2>
           <p className="text-white/60 max-w-3xl mx-auto leading-relaxed">
-            UmbraTrade is a <span className="text-purple-400">zk-powered OTC/RFQ platform</span> built on <span className="text-cyan-400">Solana</span>. 
+            UnleakTrade is a <span className="text-purple-400">zk-powered OTC/RFQ platform</span> built on <span className="text-cyan-400">Solana</span>. 
             Our commit–reveal mechanism with Zero-Knowledge proofs ensures confidentiality for takers while providing verified, fair RFQs to makers.
           </p>
         </motion.div>

@@ -121,7 +121,7 @@ export function TeamSection() {
           transition={{ duration: 0.6 }}
           className="text-center mb-20"
         >
-          <p className="text-white/40 mb-4">The people behind UmbraTrade</p>
+          <p className="text-white/40 mb-4">The people behind UnleakTrade</p>
           <h2 className="text-white mb-6">Built by professionals, for professionals.</h2>
           <p className="text-white/60 max-w-2xl mx-auto">
             A distributed team of crypto veterans, engineers, and operators bringing institutional-grade privacy to decentralized trading.

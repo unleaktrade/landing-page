@@ -17,7 +17,7 @@ export function Hero() {
         >
           {/* Logo and tagline */}
           <div className="space-y-6">
-            <img src={logoImage} alt="UmbraTrade" className="h-32 w-32 mx-auto" />
+            <img src={logoImage} alt="UnleakTrade" className="h-32 w-32 mx-auto" />
             <h1 className="text-4xl lg:text-5xl tracking-tight max-w-3xl mx-auto leading-tight">
               Confidential trading.<br />
               Institutional-grade fairness.<br />
@@ -33,7 +33,7 @@ export function Hero() {
             
             <p className="text-white/50 max-w-2xl mx-auto text-lg leading-relaxed">
               Despite exceeding $2T in volume, the crypto OTC market still relies on informal, off-chain, trust-based deals. 
-              UmbraTrade transforms this landscape with Zero-Knowledge technology and Solana's high-performance network, 
+              UnleakTrade transforms this landscape with Zero-Knowledge technology and Solana's high-performance network, 
               bringing confidentiality, fairness, and automation to OTC trading.
             </p>
           </div>

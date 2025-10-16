@@ -110,7 +110,7 @@ export function ExecutionSection() {
                     <span className="text-red-400">-2.4%</span>
                   </div>
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-white/50">UmbraTrade execution</span>
+                    <span className="text-white/50">UnleakTrade execution</span>
                     <span className="text-green-400">-0.3%</span>
                   </div>
                 </div>
