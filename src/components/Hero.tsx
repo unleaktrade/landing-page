@@ -1,7 +1,11 @@
 import { motion } from "motion/react";
 import logoImage from "figma:asset/fdbafc2f1e7edb4d213deafbca8c80c666dccbae.png";
 
-export function Hero() {
+interface HeroProps {
+  onOpenWaitlist?: () => void;
+}
+
+export function Hero({ onOpenWaitlist }: HeroProps) {
   return (
     <section className="relative pt-32 pb-20 px-6 lg:px-8 overflow-hidden">
       {/* Subtle gradient orbs - positioned lower to avoid logo overlap */}
@@ -44,14 +48,12 @@ export function Hero() {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3, duration: 0.8 }}
           >
-            <a
-              href="https://discord.com/invite/24mZUAqj4z"
-              target="_blank"
-              rel="noopener noreferrer"
+            <button
+              onClick={onOpenWaitlist}
               className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-purple-600 to-cyan-400 text-white rounded-lg hover:opacity-90 transition-opacity"
             >
-              Join the Discord
-            </a>
+              Join the Waitlist
+            </button>
           </motion.div>
         </motion.div>
       </div>

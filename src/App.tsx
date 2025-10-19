@@ -11,10 +11,13 @@ import { Roadmap } from "./components/Roadmap";
 import { DiscordCTA } from "./components/DiscordCTA";
 import { Footer } from "./components/Footer";
 import { WorkInProgress } from "./components/WorkInProgress";
+import { WaitlistDialog } from "./components/WaitlistDialog";
+import { Toaster } from "sonner@2.0.3";
 import faviconImage from "figma:asset/77164cc6a58e276f88505209efc62dfe8b57b786.png";
 
 export default function App() {
   const [currentHash, setCurrentHash] = useState(window.location.hash);
+  const [isWaitlistOpen, setIsWaitlistOpen] = useState(false);
 
   useEffect(() => {
     // Set document title
@@ -71,6 +74,7 @@ export default function App() {
         <Navigation />
         <Roadmap />
         <Footer />
+        <Toaster theme="dark" />
       </div>
     );
   }
@@ -81,6 +85,7 @@ export default function App() {
       <div className="min-h-screen bg-black text-white">
         <Navigation />
         <WorkInProgress />
+        <Toaster theme="dark" />
       </div>
     );
   }
@@ -92,6 +97,7 @@ export default function App() {
         <Navigation />
         <TeamPage />
         <Footer />
+        <Toaster theme="dark" />
       </div>
     );
   }
@@ -99,7 +105,7 @@ export default function App() {
   return (
     <div className="min-h-screen bg-black text-white">
       <Navigation />
-      <Hero />
+      <Hero onOpenWaitlist={() => setIsWaitlistOpen(true)} />
       <ValueProps />
       <HowItWorks />
       <SettlementProcess />
@@ -107,6 +113,8 @@ export default function App() {
       <TeamSection />
       <DiscordCTA />
       <Footer />
+      <WaitlistDialog open={isWaitlistOpen} onOpenChange={setIsWaitlistOpen} />
+      <Toaster theme="dark" />
     </div>
   );
 }
