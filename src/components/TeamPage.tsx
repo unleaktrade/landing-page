@@ -1,4 +1,5 @@
 import { motion } from "motion/react";
+import { useParams } from "react-router-dom";
 import { Linkedin, Twitter, Github, ArrowUpRight } from "lucide-react";
 import { useEffect } from "react";
 import julienImage from "figma:asset/524423e86081819620c9996fd40046b079ec4ba8.png";
@@ -116,12 +117,13 @@ const teamMembers: TeamMember[] = [
 ];
 
 export function TeamPage() {
-  // Scroll to team member if hash is present
+  const { memberId } = useParams<{ memberId?: string }>();
+
+  // Scroll to team member if memberId param is present
   useEffect(() => {
-    const hash = window.location.hash;
-    if (hash && hash.startsWith('#team-')) {
+    if (memberId) {
       setTimeout(() => {
-        const element = document.getElementById(hash.slice(1));
+        const element = document.getElementById(`team-${memberId}`);
         if (element) {
           const navHeight = 64; // Height of fixed navigation bar (h-16 = 64px)
           const extraPadding = 80; // Extra breathing room for better visibility
@@ -135,7 +137,7 @@ export function TeamPage() {
         }
       }, 100);
     }
-  }, []);
+  }, [memberId]);
 
   return (
     <div className="min-h-screen bg-black text-white">
