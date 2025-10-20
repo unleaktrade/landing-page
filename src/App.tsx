@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { Navigation } from "./components/Navigation";
 import { Hero } from "./components/Hero";
 import { ValueProps } from "./components/ValueProps";
@@ -15,8 +16,72 @@ import { WaitlistDialog } from "./components/WaitlistDialog";
 import { Toaster } from "sonner@2.0.3";
 import faviconImage from "figma:asset/77164cc6a58e276f88505209efc62dfe8b57b786.png";
 
+// Component to scroll to top on route change
+function ScrollToTop() {
+  const location = useLocation();
+  const [prevPath, setPrevPath] = useState(location.pathname);
+
+  useEffect(() => {
+    // Only scroll if the path actually changed (not just params)
+    const currentBasePath = location.pathname.split('/')[1] || 'home';
+    const prevBasePath = prevPath.split('/')[1] || 'home';
+    
+    if (currentBasePath !== prevBasePath) {
+      window.scrollTo(0, 0);
+    }
+    
+    setPrevPath(location.pathname);
+  }, [location.pathname]);
+
+  return null;
+}
+
+function HomePage({ onOpenWaitlist }: { onOpenWaitlist: () => void }) {
+  return (
+    <div className="min-h-screen bg-black text-white">
+      <Navigation />
+      <Hero onOpenWaitlist={onOpenWaitlist} />
+      <ValueProps />
+      <HowItWorks />
+      <SettlementProcess />
+      <Economics />
+      <TeamSection />
+      <DiscordCTA />
+      <Footer />
+    </div>
+  );
+}
+
+function RoadmapPage() {
+  return (
+    <div className="min-h-screen bg-black text-white">
+      <Navigation />
+      <Roadmap />
+      <Footer />
+    </div>
+  );
+}
+
+function TeamPageWrapper() {
+  return (
+    <div className="min-h-screen bg-black text-white">
+      <Navigation />
+      <TeamPage />
+      <Footer />
+    </div>
+  );
+}
+
+function WorkInProgressPage() {
+  return (
+    <div className="min-h-screen bg-black text-white">
+      <Navigation />
+      <WorkInProgress />
+    </div>
+  );
+}
+
 export default function App() {
-  const [currentHash, setCurrentHash] = useState(window.location.hash);
   const [isWaitlistOpen, setIsWaitlistOpen] = useState(false);
 
   useEffect(() => {
@@ -40,81 +105,22 @@ export default function App() {
       document.head.appendChild(metaDescription);
     }
     metaDescription.setAttribute('content', 'Make crypto OTC private, fair, and trustless using Zero-Knowledge Proofs on Solana. Institutional-grade fairness for everyone.');
-
-    // Handle hash changes
-    const handleHashChange = () => {
-      const hash = window.location.hash;
-      // Valid routes
-      const validHashes = ['', '#roadmap', '#team', '#app', '#faq'];
-      
-      // If hash is not recognized and not empty, redirect to home
-      // Allow team member specific hashes like #team-julien-sie
-      if (hash && !validHashes.includes(hash) && !hash.startsWith('#team-')) {
-        window.location.hash = '';
-        return;
-      }
-      
-      setCurrentHash(hash);
-      
-      // Scroll to top when changing routes
-      window.scrollTo(0, 0);
-    };
-
-    // Initial check
-    handleHashChange();
-
-    window.addEventListener('hashchange', handleHashChange);
-    return () => window.removeEventListener('hashchange', handleHashChange);
   }, []);
 
-  // Show roadmap page
-  if (currentHash === '#roadmap') {
-    return (
-      <div className="min-h-screen bg-black text-white">
-        <Navigation />
-        <Roadmap />
-        <Footer />
-        <Toaster theme="dark" />
-      </div>
-    );
-  }
-
-  // Show work in progress page for app and faq sections
-  if (currentHash === '#app' || currentHash === '#faq') {
-    return (
-      <div className="min-h-screen bg-black text-white">
-        <Navigation />
-        <WorkInProgress />
-        <Toaster theme="dark" />
-      </div>
-    );
-  }
-
-  // Show team page (including specific team member links like #team-julien-sie)
-  if (currentHash === '#team' || currentHash.startsWith('#team-')) {
-    return (
-      <div className="min-h-screen bg-black text-white">
-        <Navigation />
-        <TeamPage />
-        <Footer />
-        <Toaster theme="dark" />
-      </div>
-    );
-  }
-
   return (
-    <div className="min-h-screen bg-black text-white">
-      <Navigation />
-      <Hero onOpenWaitlist={() => setIsWaitlistOpen(true)} />
-      <ValueProps />
-      <HowItWorks />
-      <SettlementProcess />
-      <Economics />
-      <TeamSection />
-      <DiscordCTA />
-      <Footer />
+    <BrowserRouter>
+      <ScrollToTop />
+      <Routes>
+        <Route path="/" element={<HomePage onOpenWaitlist={() => setIsWaitlistOpen(true)} />} />
+        <Route path="/roadmap" element={<RoadmapPage />} />
+        <Route path="/team" element={<TeamPageWrapper />} />
+        <Route path="/team/:memberId" element={<TeamPageWrapper />} />
+        <Route path="/faq" element={<WorkInProgressPage />} />
+        <Route path="/app" element={<WorkInProgressPage />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
       <WaitlistDialog open={isWaitlistOpen} onOpenChange={setIsWaitlistOpen} />
       <Toaster theme="dark" />
-    </div>
+    </BrowserRouter>
   );
 }

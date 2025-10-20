@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import logoImage from "figma:asset/fdbafc2f1e7edb4d213deafbca8c80c666dccbae.png";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
@@ -127,27 +128,27 @@ export function Navigation() {
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <a href="#" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
+          <Link to="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
             <img src={logoImage} alt="UnleakTrade" className="h-8 w-8" />
             <span className="tracking-tight">
               <span className="text-white/60">Unleak</span>
               <span className="text-white">Trade</span>
             </span>
-          </a>
+          </Link>
           
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-6">  
-            <a href="#team" className="text-sm text-white/60 hover:text-white transition-colors">
+            <Link to="/team" className="text-sm text-white/60 hover:text-white transition-colors">
               Team
-            </a>
-            <a href="#roadmap" className="text-sm text-white/60 hover:text-white transition-colors">
+            </Link>
+            <Link to="/roadmap" className="text-sm text-white/60 hover:text-white transition-colors">
               Roadmap
-            </a>
-            <a href="#faq" className="text-sm text-white/60 hover:text-white transition-colors">
+            </Link>
+            <Link to="/faq" className="text-sm text-white/60 hover:text-white transition-colors">
               FAQ
-            </a>
-            <a 
-              href="#app" 
+            </Link>
+            <Link 
+              to="/app" 
               className="relative inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-gradient-to-r from-purple-500/20 to-cyan-400/20 border border-white/10 hover:border-white/20 transition-all group overflow-hidden"
             >
               <span className="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-cyan-400/10 opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -157,7 +158,7 @@ export function Navigation() {
               <span className="relative text-[9px] text-white/30 tracking-wide">
                 COMING SOON
               </span>
-            </a>
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -171,34 +172,34 @@ export function Navigation() {
               {/* Mobile Menu Items - Centered */}
               <nav className="relative flex flex-col h-full">
                 <div className="flex flex-col items-center px-8 pt-8 pb-6">
-                  <a 
-                    href="#team" 
+                  <Link 
+                    to="/team" 
                     onClick={closeMenu}
                     className="w-full text-center py-4 text-white/60 hover:text-white transition-colors"
                   >
                     Team
-                  </a>
+                  </Link>
                   
-                  <a 
-                    href="#roadmap" 
+                  <Link 
+                    to="/roadmap" 
                     onClick={closeMenu}
                     className="w-full text-center py-4 text-white/60 hover:text-white transition-colors"
                   >
                     Roadmap
-                  </a>
+                  </Link>
 
-                  <a 
-                    href="#faq" 
+                  <Link 
+                    to="/faq" 
                     onClick={closeMenu}
                     className="w-full text-center py-4 text-white/60 hover:text-white transition-colors"
                   >
                     FAQ
-                  </a>
+                  </Link>
 
                   {/* CTA Button */}
                   <div className="w-full mt-6">
-                    <a 
-                      href="#app" 
+                    <Link 
+                      to="/app" 
                       onClick={closeMenu}
                       className="relative w-full flex flex-col items-center gap-1.5 px-4 py-3 rounded-lg bg-gradient-to-r from-purple-500/20 to-cyan-400/20 border border-white/10 hover:border-white/20 transition-all group overflow-hidden"
                     >
@@ -209,7 +210,7 @@ export function Navigation() {
                       <span className="relative text-[9px] text-white/30 tracking-wide">
                         COMING SOON
                       </span>
-                    </a>
+                    </Link>
                   </div>
                 </div>
 

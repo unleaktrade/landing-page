@@ -1,7 +1,10 @@
 import { motion } from "motion/react";
+import { useNavigate } from "react-router-dom";
 import { Clock } from "lucide-react";
 
 export function WorkInProgress() {
+  const navigate = useNavigate();
+
   return (
     <div className="min-h-screen bg-black flex items-center justify-center px-6">
       <div className="max-w-2xl w-full text-center">
@@ -107,10 +110,7 @@ export function WorkInProgress() {
           transition={{ duration: 0.6, delay: 0.5 }}
         >
           <button
-            onClick={() => {
-              window.location.hash = '';
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
+            onClick={() => navigate('/')}
             className="inline-flex items-center gap-2 text-sm text-white/60 hover:text-white/80 transition-colors group cursor-pointer"
           >
             <span>Return to home</span>

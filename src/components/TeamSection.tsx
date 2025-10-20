@@ -1,4 +1,5 @@
 import { motion } from "motion/react";
+import { useNavigate } from "react-router-dom";
 import { Linkedin, Twitter, Github } from "lucide-react";
 import julienImage from "figma:asset/524423e86081819620c9996fd40046b079ec4ba8.png";
 import guilhemImage from "figma:asset/754dfe5f69f5a54353b7b1fdaa778a4363ded25d.png";
@@ -107,6 +108,8 @@ const teamMembers: TeamMember[] = [
 ];
 
 export function TeamSection() {
+  const navigate = useNavigate();
+
   return (
     <section className="relative py-32 px-6 overflow-hidden">
       {/* Background gradient */}
@@ -141,7 +144,7 @@ export function TeamSection() {
             >
               {/* Card - clickable to team page */}
               <div 
-                onClick={() => window.location.href = `#team-${member.name.toLowerCase().replace(/\s+/g, '-')}`}
+                onClick={() => navigate(`/team/${member.name.toLowerCase().replace(/\s+/g, '-')}`)}
                 className="relative h-full bg-white/[0.02] border border-white/10 rounded-2xl p-6 hover:border-white/20 transition-all duration-300 cursor-pointer"
               >
                 {/* Gradient glow on hover */}
