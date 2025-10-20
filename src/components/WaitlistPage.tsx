@@ -160,30 +160,24 @@ export function WaitlistPage() {
             Check Your Email
           </h1>
 
-          <p className="text-white/60 text-center mb-8">
-            We've sent a verification link to your email address. Please
-            check your inbox and click the link to complete your waitlist
-            registration.
-          </p>
-
-          <div className="flex gap-3">
-            <Button
-              onClick={() => {
-                setIsSuccess(false);
-                resetForm();
-              }}
-              variant="outline"
-              className="flex-1 border-white/10 text-white hover:bg-white/5"
-            >
-              Register Another
-            </Button>
-            <Button
-              onClick={() => navigate("/")}
-              className="flex-1 bg-gradient-to-r from-purple-600 to-cyan-400 text-white hover:opacity-90"
-            >
-              Go Home
-            </Button>
+          <div className="space-y-4 mb-8">
+            <p className="text-white/60 text-center">
+              We've sent a verification link to your email address. Please
+              check your inbox and click the link to complete your waitlist
+              registration.
+            </p>
+            <p className="text-white/40 text-center text-sm">
+              Don't forget to check your spam or junk folder if you don't see
+              the email within a few minutes.
+            </p>
           </div>
+
+          <Button
+            onClick={() => navigate("/")}
+            className="w-full bg-gradient-to-r from-purple-600 to-cyan-400 text-white hover:opacity-90"
+          >
+            Go Home
+          </Button>
         </motion.div>
       </div>
     );
@@ -202,11 +196,11 @@ export function WaitlistPage() {
         className="max-w-xl w-full"
       >
         {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-4xl mb-4 bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent">
+        <div className="mb-8">
+          <h1 className="text-4xl mb-4 text-center bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent">
             Join the Waitlist
           </h1>
-          <div className="space-y-3">
+          <div className="space-y-3 text-left">
             <p className="text-white/60 leading-relaxed">
               Gain exclusive early access to UmbraTrade's preview platform
               and compete for rewards in our referral program.
