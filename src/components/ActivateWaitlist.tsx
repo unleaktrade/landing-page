@@ -27,6 +27,7 @@ export function ActivateWaitlist() {
     useState<ActivationStatus>("idle");
   const [progress, setProgress] = useState(0);
   const [errorMessage, setErrorMessage] = useState("");
+  const [errorHash, setErrorHash] = useState<string | null>(null);
 
   useEffect(() => {
     // Retrieve hash from localStorage if it exists
@@ -98,18 +99,21 @@ export function ActivateWaitlist() {
         );
       } else if (response.status === 401) {
         setStatus("error");
+        setErrorHash(hash.trim());
         setErrorMessage(
           "Access denied. Your activation link may have expired or the verification code doesn't match our records. Please request a new activation link.",
         );
         toast.error("Activation failed");
       } else if (response.status === 409) {
         setStatus("error");
+        setErrorHash(hash.trim());
         setErrorMessage(
           "This account has already been activated. You're all set! Check your email for next steps.",
         );
         toast.error("Already activated");
       } else if (response.status === 400) {
         setStatus("error");
+        setErrorHash(hash.trim());
         setErrorMessage(
           "The referral sponsor could not be found. Please check your invitation link or contact support.",
         );
@@ -143,10 +147,17 @@ export function ActivateWaitlist() {
   ) => {
     setHash(e.target.value);
     setErrorMessage("");
+    // Reset error state when user modifies the hash
+    if (status === "error") {
+      setStatus("idle");
+    }
   };
 
   // Check if the hash is valid in real-time
   const isHashValid = hash.trim() && isValidSHA3Hash(hash.trim());
+  
+  // Button should be enabled only if hash is valid AND (no error OR hash has been modified since error)
+  const isButtonEnabled = isHashValid && (errorHash === null || hash.trim() !== errorHash);
 
   if (status === "success") {
     return (
@@ -344,7 +355,7 @@ export function ActivateWaitlist() {
             </p>
           </div>
 
-          {isHashValid && (
+          {isButtonEnabled && (
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
