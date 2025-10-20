@@ -13,3 +13,11 @@ export function isValidEmail(email: string): boolean {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailRegex.test(email);
 }
+
+export function isValidSHA3Hash(hash: string): boolean {
+  // SHA3-256 produces a 64-character hexadecimal string
+  // SHA3-512 produces a 128-character hexadecimal string
+  // We'll accept both common formats
+  const sha3Regex = /^[a-fA-F0-9]{64}$|^[a-fA-F0-9]{128}$/;
+  return sha3Regex.test(hash);
+}
