@@ -31,7 +31,7 @@ export function ActivateWaitlist() {
 
   useEffect(() => {
     // Retrieve hash from localStorage if it exists
-    const storedHash = localStorage.getItem("waitlist_hash");
+    const storedHash = localStorage.getItem("waitlist_registration_hash");
     if (storedHash) {
       setHash(storedHash);
     }

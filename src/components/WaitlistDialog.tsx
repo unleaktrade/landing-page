@@ -95,9 +95,6 @@ export function WaitlistDialog({
             "waitlist_registration_hash",
             responseData.hash,
           );
-          console.log(
-            `waitlist_registration_hash: ${responseData.hash}`,
-          );
         }
 
         setProgress(100);
