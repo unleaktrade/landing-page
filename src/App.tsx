@@ -13,6 +13,7 @@ import { DiscordCTA } from "./components/DiscordCTA";
 import { Footer } from "./components/Footer";
 import { WorkInProgress } from "./components/WorkInProgress";
 import { WaitlistDialog } from "./components/WaitlistDialog";
+import { WaitlistPage } from "./components/WaitlistPage";
 import { ActivateWaitlist } from "./components/ActivateWaitlist";
 import { Toaster } from "sonner@2.0.3";
 import faviconImage from "figma:asset/77164cc6a58e276f88505209efc62dfe8b57b786.png";
@@ -124,6 +125,8 @@ export default function App() {
         <Route path="/roadmap" element={<RoadmapPage />} />
         <Route path="/team" element={<TeamPageWrapper />} />
         <Route path="/team/:memberId" element={<TeamPageWrapper />} />
+        <Route path="/waitlist" element={<WaitlistPage />} />
+        <Route path="/waitlist/:sponsor" element={<WaitlistPage />} />
         <Route path="/activate/:token" element={<ActivateWaitlistPage />} />
         <Route path="/faq" element={<WorkInProgressPage />} />
         <Route path="/app" element={<WorkInProgressPage />} />
