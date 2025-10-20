@@ -1,20 +1,30 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "motion/react";
-import { CheckCircle2, AlertCircle, Sparkles, Users } from "lucide-react";
+import {
+  CheckCircle2,
+  AlertCircle,
+  Sparkles,
+  Users,
+} from "lucide-react";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { Progress } from "./ui/progress";
 import { toast } from "sonner@2.0.3";
 import { isValidSHA3Hash } from "./utils/validation";
 
-type ActivationStatus = "idle" | "submitting" | "success" | "error";
+type ActivationStatus =
+  | "idle"
+  | "submitting"
+  | "success"
+  | "error";
 
 export function ActivateWaitlist() {
   const { token } = useParams<{ token: string }>();
   const navigate = useNavigate();
   const [hash, setHash] = useState("");
-  const [status, setStatus] = useState<ActivationStatus>("idle");
+  const [status, setStatus] =
+    useState<ActivationStatus>("idle");
   const [progress, setProgress] = useState(0);
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -60,7 +70,7 @@ export function ActivateWaitlist() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     const validationError = validateHash(hash);
     if (validationError) {
       toast.error(validationError);
@@ -78,51 +88,65 @@ export function ActivateWaitlist() {
           headers: {
             "Content-Type": "application/json",
           },
-        }
+        },
       );
 
       if (response.status === 201) {
         setStatus("success");
-        toast.success("Activation successful! Check your email for confirmation.");
+        toast.success(
+          "Activation successful! Check your email for confirmation.",
+        );
       } else if (response.status === 401) {
         setStatus("error");
         setErrorMessage(
-          "Access denied. Your activation link may have expired or the verification code doesn't match our records. Please request a new activation link."
+          "Access denied. Your activation link may have expired or the verification code doesn't match our records. Please request a new activation link.",
         );
         toast.error("Activation failed");
       } else if (response.status === 409) {
         setStatus("error");
         setErrorMessage(
-          "This account has already been activated. You're all set! Check your email for next steps."
+          "This account has already been activated. You're all set! Check your email for next steps.",
         );
         toast.error("Already activated");
       } else if (response.status === 400) {
         setStatus("error");
         setErrorMessage(
-          "The referral sponsor could not be found. Please check your invitation link or contact support."
+          "The referral sponsor could not be found. Please check your invitation link or contact support.",
         );
         toast.error("Invalid sponsor");
       } else if (response.status === 500) {
         const errorData = await response.json();
         setStatus("error");
-        setErrorMessage(errorData.error || "An unexpected error occurred. Please try again later.");
+        setErrorMessage(
+          errorData.error ||
+            "An unexpected error occurred. Please try again later.",
+        );
         toast.error("Server error");
       } else {
         setStatus("error");
-        setErrorMessage("An unexpected error occurred. Please try again later.");
+        setErrorMessage(
+          "An unexpected error occurred. Please try again later.",
+        );
         toast.error("Activation failed");
       }
     } catch (error) {
       setStatus("error");
-      setErrorMessage("Network error. Please check your connection and try again.");
+      setErrorMessage(
+        "Network error. Please check your connection and try again.",
+      );
       toast.error("Network error");
     }
   };
 
-  const handleHashChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleHashChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     setHash(e.target.value);
     setErrorMessage("");
   };
+
+  // Check if the hash is valid in real-time
+  const isHashValid = hash.trim() && isValidSHA3Hash(hash.trim());
 
   if (status === "success") {
     return (
@@ -136,7 +160,11 @@ export function ActivateWaitlist() {
           <motion.div
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
-            transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+            transition={{
+              delay: 0.2,
+              type: "spring",
+              stiffness: 200,
+            }}
             className="mb-8 flex justify-center"
           >
             <div className="relative">
@@ -171,7 +199,8 @@ export function ActivateWaitlist() {
               </span>
             </h1>
             <p className="text-white/60 mb-6">
-              You'll receive a confirmation email shortly. You're now officially on the UnleakTrade waitlist.
+              You'll receive a confirmation email shortly.
+              You're now officially on the UnleakTrade waitlist.
             </p>
           </motion.div>
 
@@ -183,7 +212,7 @@ export function ActivateWaitlist() {
             className="relative p-8 rounded-2xl border border-white/10 bg-gradient-to-br from-white/5 to-transparent backdrop-blur-sm overflow-hidden"
           >
             <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-cyan-400/10" />
-            
+
             <div className="relative">
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-500 to-cyan-400 flex items-center justify-center">
@@ -191,9 +220,11 @@ export function ActivateWaitlist() {
                 </div>
                 <h3 className="text-xl">Share the Alpha</h3>
               </div>
-              
+
               <p className="text-white/60 mb-6">
-                Want to move up the waitlist? Share your wallet address to sponsor other users and earn priority access.
+                Want to move up the waitlist? Share your wallet
+                address to sponsor other users and earn priority
+                access.
               </p>
 
               <Button
@@ -247,7 +278,8 @@ export function ActivateWaitlist() {
             transition={{ delay: 0.3 }}
             className="text-white/60"
           >
-            Enter the verification code from your email to confirm your waitlist registration
+            Enter the verification code from your email to
+            confirm your waitlist registration
           </motion.p>
         </div>
 
@@ -275,7 +307,9 @@ export function ActivateWaitlist() {
               className="mb-6 p-4 rounded-lg bg-red-500/10 border border-red-500/20 flex items-start gap-3"
             >
               <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
-              <p className="text-sm text-red-200">{errorMessage}</p>
+              <p className="text-sm text-red-200">
+                {errorMessage}
+              </p>
             </motion.div>
           )}
         </AnimatePresence>
@@ -289,7 +323,10 @@ export function ActivateWaitlist() {
           className="space-y-6"
         >
           <div className="relative">
-            <label htmlFor="hash" className="block text-sm text-white/80 mb-2">
+            <label
+              htmlFor="hash"
+              className="block text-sm text-white/80 mb-2"
+            >
               Verification Code (SHA3 Hash)
             </label>
             <Input
@@ -307,7 +344,7 @@ export function ActivateWaitlist() {
             </p>
           </div>
 
-          {hash.trim() && (
+          {isHashValid && (
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -321,7 +358,11 @@ export function ActivateWaitlist() {
                   <>
                     <motion.div
                       animate={{ rotate: 360 }}
-                      transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                      transition={{
+                        duration: 1,
+                        repeat: Infinity,
+                        ease: "linear",
+                      }}
                       className="w-4 h-4 mr-2 border-2 border-white/30 border-t-white rounded-full"
                     />
                     Activating...
