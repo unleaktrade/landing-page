@@ -93,6 +93,12 @@ export function ActivateWaitlist() {
       );
 
       if (response.status === 201) {
+        // Parse response and store wallet address
+        const data = await response.json();
+        if (data.address) {
+          localStorage.setItem("waitlist_wallet_address", data.address);
+        }
+        
         setStatus("success");
         toast.success(
           "Activation successful! Check your email for confirmation.",

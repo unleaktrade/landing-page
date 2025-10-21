@@ -1,8 +1,9 @@
 import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-import { Menu, X } from "lucide-react";
+import { Menu, X, QrCode } from "lucide-react";
 import logoImage from "figma:asset/fdbafc2f1e7edb4d213deafbca8c80c666dccbae.png";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
+import { QRCodeDialog } from "./QRCodeDialog";
 
 function MovingSquares() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -120,6 +121,14 @@ function MovingSquares() {
 
 export function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isQROpen, setIsQROpen] = useState(false);
+  const [hasWalletAddress, setHasWalletAddress] = useState(false);
+
+  useEffect(() => {
+    // Check if user has a wallet address (is registered)
+    const address = localStorage.getItem("waitlist_wallet_address");
+    setHasWalletAddress(!!address);
+  }, []);
 
   const closeMenu = () => setIsOpen(false);
 
@@ -147,6 +156,19 @@ export function Navigation() {
             <Link to="/faq" className="text-sm text-white/60 hover:text-white transition-colors">
               FAQ
             </Link>
+            
+            {/* QR Code Button - Only show if user has wallet address */}
+            {hasWalletAddress && (
+              <button
+                onClick={() => setIsQROpen(true)}
+                className="relative p-2 rounded-lg border border-white/10 hover:border-purple-400/50 transition-all group overflow-hidden"
+                title="Share Referral QR Code"
+              >
+                <span className="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-cyan-400/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+                <QrCode className="relative w-5 h-5 text-white/60 group-hover:text-purple-400 transition-colors" />
+              </button>
+            )}
+            
             <Link 
               to="/app" 
               className="relative inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-gradient-to-r from-purple-500/20 to-cyan-400/20 border border-white/10 hover:border-white/20 transition-all group overflow-hidden"
@@ -196,6 +218,22 @@ export function Navigation() {
                     FAQ
                   </Link>
 
+                  {/* QR Code Button - Mobile */}
+                  {hasWalletAddress && (
+                    <button
+                      onClick={() => {
+                        closeMenu();
+                        setIsQROpen(true);
+                      }}
+                      className="w-full mt-4 flex items-center justify-center gap-2 py-3 px-4 rounded-lg border border-white/10 hover:border-purple-400/50 transition-all group"
+                    >
+                      <QrCode className="w-5 h-5 text-white/60 group-hover:text-purple-400 transition-colors" />
+                      <span className="text-white/60 group-hover:text-white transition-colors">
+                        My Referral QR
+                      </span>
+                    </button>
+                  )}
+
                   {/* CTA Button */}
                   <div className="w-full mt-6">
                     <Link 
@@ -223,6 +261,9 @@ export function Navigation() {
           </Sheet>
         </div>
       </div>
+      
+      {/* QR Code Dialog */}
+      <QRCodeDialog open={isQROpen} onOpenChange={setIsQROpen} />
     </nav>
   );
 }
