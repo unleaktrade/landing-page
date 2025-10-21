@@ -256,8 +256,7 @@ export function ActivateWaitlist() {
                 </Button>
                 <Button
                   onClick={() => navigate("/")}
-                  variant="outline"
-                  className="w-full border-white/10 text-white hover:bg-white/5"
+                  className="w-full bg-gradient-to-r from-purple-500 to-cyan-400 hover:from-purple-600 hover:to-cyan-500 text-white border-0"
                 >
                   <Sparkles className="w-4 h-4 mr-2" />
                   Return to Home

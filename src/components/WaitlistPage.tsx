@@ -219,7 +219,7 @@ export function WaitlistPage() {
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="mt-6 p-4 bg-gradient-to-r from-purple-500/10 to-cyan-400/10 border border-purple-500/20 rounded-lg"
+              className="mt-6 p-4 bg-gradient-to-r from-purple-500/10 to-cyan-400/10 border border-purple-500/20 rounded-lg text-center"
             >
               <div className="flex items-center justify-center gap-2 text-sm text-cyan-400 mb-1">
                 <Lock className="w-4 h-4" />
