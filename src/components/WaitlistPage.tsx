@@ -202,7 +202,7 @@ export function WaitlistPage() {
           </h1>
           <div className="space-y-3 text-left">
             <p className="text-white/60 leading-relaxed">
-              Gain exclusive early access to UmbraTrade's preview platform
+              Gain exclusive early access to UnleakTrade's preview platform
               and compete for rewards in our referral program.
             </p>
             <p className="text-white/60 leading-relaxed">

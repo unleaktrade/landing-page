@@ -33,7 +33,7 @@ export function QRCodeDialog({ open, onOpenChange }: QRCodeDialogProps) {
     try {
       await navigator.clipboard.writeText(referralLink);
       setCopied(true);
-      toast.success("Referral link copied!", {
+      toast.success("Sponsor link copied!", {
         description: "Share it with others to earn priority access",
       });
       setTimeout(() => setCopied(false), 2000);
@@ -46,8 +46,8 @@ export function QRCodeDialog({ open, onOpenChange }: QRCodeDialogProps) {
     if (navigator.share) {
       try {
         await navigator.share({
-          title: "Join UmbraTrade Waitlist",
-          text: "Get exclusive early access to UmbraTrade - Confidential OTC Trading on Solana",
+          title: "Join UnleakTrade Waitlist",
+          text: "Get exclusive early access to UnleakTrade - Confidential OTC Trading on Solana",
           url: referralLink,
         });
       } catch (error) {
@@ -92,7 +92,7 @@ export function QRCodeDialog({ open, onOpenChange }: QRCodeDialogProps) {
       ctx.fillStyle = "#ffffff";
       ctx.font = "bold 48px sans-serif";
       ctx.textAlign = "center";
-      ctx.fillText("Scan to Join UmbraTrade", canvas.width / 2, 100);
+      ctx.fillText("Scan to Join UnleakTrade", canvas.width / 2, 100);
 
       // Download
       canvas.toBlob((blob) => {
@@ -100,7 +100,7 @@ export function QRCodeDialog({ open, onOpenChange }: QRCodeDialogProps) {
         const url = URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.href = url;
-        a.download = "umbratrade-referral-qr.png";
+        a.download = "unleaktrade-referral-qr.png";
         a.click();
         URL.revokeObjectURL(url);
         toast.success("QR code downloaded!");
@@ -110,12 +110,9 @@ export function QRCodeDialog({ open, onOpenChange }: QRCodeDialogProps) {
     img.src = "data:image/svg+xml;base64," + btoa(svgData);
   };
 
-  // Shortened address for display
-  const shortAddress = `${walletAddress.slice(0, 6)}...${walletAddress.slice(-6)}`;
-
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="bg-black border-white/10 text-white max-w-lg p-0 overflow-hidden">
+      <DialogContent className="bg-black border-white/10 text-white max-w-md w-[calc(100vw-2rem)] max-h-[90vh] overflow-y-auto p-0">
         {/* Animated background gradient */}
         <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 via-transparent to-cyan-400/5 pointer-events-none" />
         <motion.div
@@ -130,12 +127,12 @@ export function QRCodeDialog({ open, onOpenChange }: QRCodeDialogProps) {
           className="absolute inset-0 pointer-events-none"
         />
 
-        <div className="relative p-6 sm:p-8">
-          <DialogHeader className="mb-6">
-            <DialogTitle className="text-2xl text-center bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent">
+        <div className="relative p-5 sm:p-6">
+          <DialogHeader className="mb-5">
+            <DialogTitle className="text-xl sm:text-2xl text-center bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent">
               Share Your Referral
             </DialogTitle>
-            <p className="text-white/60 text-center text-sm mt-2">
+            <p className="text-white/60 text-center text-xs sm:text-sm mt-2">
               Sponsor others to climb the waitlist and earn priority access
             </p>
           </DialogHeader>
@@ -144,61 +141,55 @@ export function QRCodeDialog({ open, onOpenChange }: QRCodeDialogProps) {
           <motion.div
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            className="relative mb-6"
+            className="relative mb-5 flex justify-center"
           >
-            <div className="relative mx-auto w-fit p-6 bg-white rounded-2xl">
-              {/* Gradient border effect */}
-              <div className="absolute -inset-1 bg-gradient-to-br from-purple-500 via-purple-400 to-cyan-400 rounded-2xl blur opacity-75" />
+            <div className="relative w-fit">
+              {/* Gradient glow effect */}
+              <div className="absolute -inset-2 bg-gradient-to-br from-purple-500 via-purple-400 to-cyan-400 rounded-2xl blur-lg opacity-60" />
               
-              {/* QR Code */}
+              {/* White container with QR */}
               <div className="relative bg-white p-4 rounded-xl">
                 <QRCodeSVG
                   id="qr-code-svg"
                   value={referralLink}
-                  size={280}
+                  size={200}
                   level="H"
                   includeMargin={false}
                   imageSettings={{
                     src: logoImage,
-                    height: 60,
-                    width: 60,
+                    height: 42,
+                    width: 42,
                     excavate: true,
                   }}
                 />
               </div>
-            </div>
 
-            {/* Corner accents */}
-            <div className="absolute -top-1 -left-1 w-8 h-8 border-t-2 border-l-2 border-purple-400 rounded-tl-lg" />
-            <div className="absolute -top-1 -right-1 w-8 h-8 border-t-2 border-r-2 border-cyan-400 rounded-tr-lg" />
-            <div className="absolute -bottom-1 -left-1 w-8 h-8 border-b-2 border-l-2 border-purple-400 rounded-bl-lg" />
-            <div className="absolute -bottom-1 -right-1 w-8 h-8 border-b-2 border-r-2 border-cyan-400 rounded-br-lg" />
+              {/* Corner accents */}
+              <div className="absolute -top-1 -left-1 w-6 h-6 border-t-2 border-l-2 border-purple-400 rounded-tl-lg" />
+              <div className="absolute -top-1 -right-1 w-6 h-6 border-t-2 border-r-2 border-cyan-400 rounded-tr-lg" />
+              <div className="absolute -bottom-1 -left-1 w-6 h-6 border-b-2 border-l-2 border-purple-400 rounded-bl-lg" />
+              <div className="absolute -bottom-1 -right-1 w-6 h-6 border-b-2 border-r-2 border-cyan-400 rounded-br-lg" />
+            </div>
           </motion.div>
 
           {/* Wallet Address Display */}
-          <div className="mb-6 p-4 bg-white/5 border border-white/10 rounded-lg">
-            <div className="text-xs text-white/40 mb-1">Your Sponsor Address</div>
-            <div className="flex items-center justify-between gap-2">
-              <code className="text-sm text-white/80 font-mono">{shortAddress}</code>
-              <span className="text-xs text-white/30">({walletAddress.length} chars)</span>
-            </div>
+          <div className="mb-4 p-3 bg-white/5 border border-white/10 rounded-lg">
+            <div className="text-xs text-white/40 mb-2">Your Sponsor Address</div>
+            <code className="text-xs text-white/80 font-mono break-all block leading-relaxed">
+              {walletAddress}
+            </code>
           </div>
 
-          {/* Referral Link */}
-          <div className="mb-6 p-4 bg-white/5 border border-white/10 rounded-lg">
-            <div className="text-xs text-white/40 mb-2">Referral Link</div>
+          {/* Sponsor Link with Copy */}
+          <div className="mb-5 p-3 bg-white/5 border border-white/10 rounded-lg">
+            <div className="text-xs text-white/40 mb-2">Sponsor Link</div>
             <div className="flex items-center gap-2">
-              <input
-                type="text"
-                value={referralLink}
-                readOnly
-                className="flex-1 bg-transparent border-none text-sm text-white/60 outline-none truncate"
-              />
-              <Button
+              <div className="flex-1 text-xs text-white/60 truncate font-mono">
+                {referralLink}
+              </div>
+              <button
                 onClick={handleCopy}
-                size="sm"
-                variant="ghost"
-                className="h-8 px-3 hover:bg-white/10"
+                className="flex-shrink-0 p-2 hover:bg-white/10 rounded transition-colors"
               >
                 <AnimatePresence mode="wait">
                   {copied ? (
@@ -221,34 +212,33 @@ export function QRCodeDialog({ open, onOpenChange }: QRCodeDialogProps) {
                     </motion.div>
                   )}
                 </AnimatePresence>
-              </Button>
+              </button>
             </div>
           </div>
 
-          {/* Action Buttons */}
-          <div className="grid grid-cols-2 gap-3">
+          {/* Action Buttons - Stack on all screen sizes for consistency */}
+          <div className="space-y-3 mb-5">
             <Button
               onClick={handleShare}
-              className="bg-gradient-to-r from-purple-600 to-cyan-400 hover:opacity-90 text-white"
+              className="w-full bg-gradient-to-r from-purple-600 to-cyan-400 hover:from-purple-700 hover:to-cyan-500 text-white border-0 h-11"
             >
               <Share2 className="w-4 h-4 mr-2" />
               Share Link
             </Button>
             <Button
               onClick={handleDownload}
-              variant="outline"
-              className="border-white/10 text-white hover:bg-white/5"
+              className="w-full bg-transparent border border-white/20 text-white hover:bg-white/10 h-11"
             >
               <Download className="w-4 h-4 mr-2" />
-              Save QR
+              Save QR Code
             </Button>
           </div>
 
           {/* Info */}
-          <div className="mt-6 p-4 bg-gradient-to-r from-purple-500/10 to-cyan-400/10 border border-purple-500/20 rounded-lg">
-            <p className="text-xs text-white/60 text-center">
+          <div className="p-3 bg-gradient-to-r from-purple-500/10 to-cyan-400/10 border border-purple-500/20 rounded-lg">
+            <p className="text-xs text-white/60 text-center leading-relaxed">
               Share this QR code or link with others. When they join using your referral,
-              you'll both move up the waitlist and earn priority access to UmbraTrade.
+              you'll both move up the waitlist and earn priority access to UnleakTrade.
             </p>
           </div>
         </div>

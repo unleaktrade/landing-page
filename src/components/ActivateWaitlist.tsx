@@ -5,13 +5,14 @@ import {
   CheckCircle2,
   AlertCircle,
   Sparkles,
-  Users,
+  QrCode,
 } from "lucide-react";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { Progress } from "./ui/progress";
 import { toast } from "sonner@2.0.3";
 import { isValidSHA3Hash } from "./utils/validation";
+import { QRCodeDialog } from "./QRCodeDialog";
 
 type ActivationStatus =
   | "idle"
@@ -28,6 +29,7 @@ export function ActivateWaitlist() {
   const [progress, setProgress] = useState(0);
   const [errorMessage, setErrorMessage] = useState("");
   const [errorHash, setErrorHash] = useState<string | null>(null);
+  const [isQROpen, setIsQROpen] = useState(false);
 
   useEffect(() => {
     // Retrieve hash from localStorage if it exists
@@ -233,7 +235,7 @@ export function ActivateWaitlist() {
             <div className="relative">
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-500 to-cyan-400 flex items-center justify-center">
-                  <Users className="w-5 h-5 text-white" />
+                  <QrCode className="w-5 h-5 text-white" />
                 </div>
                 <h3 className="text-xl">Share the Alpha</h3>
               </div>
@@ -244,15 +246,28 @@ export function ActivateWaitlist() {
                 access.
               </p>
 
-              <Button
-                onClick={() => navigate("/")}
-                className="w-full bg-gradient-to-r from-purple-500 to-cyan-400 hover:from-purple-600 hover:to-cyan-500 text-white border-0"
-              >
-                <Sparkles className="w-4 h-4 mr-2" />
-                Return to Home
-              </Button>
+              <div className="flex flex-col gap-3">
+                <Button
+                  onClick={() => setIsQROpen(true)}
+                  className="w-full bg-gradient-to-r from-purple-500 to-cyan-400 hover:from-purple-600 hover:to-cyan-500 text-white border-0"
+                >
+                  <QrCode className="w-4 h-4 mr-2" />
+                  My Referral QR
+                </Button>
+                <Button
+                  onClick={() => navigate("/")}
+                  variant="outline"
+                  className="w-full border-white/10 text-white hover:bg-white/5"
+                >
+                  <Sparkles className="w-4 h-4 mr-2" />
+                  Return to Home
+                </Button>
+              </div>
             </div>
           </motion.div>
+          
+          {/* QR Code Dialog */}
+          <QRCodeDialog open={isQROpen} onOpenChange={setIsQROpen} />
         </motion.div>
       </div>
     );
