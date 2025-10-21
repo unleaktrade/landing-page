@@ -112,7 +112,7 @@ export function QRCodeDialog({ open, onOpenChange }: QRCodeDialogProps) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="bg-black border-white/10 text-white max-w-md w-[calc(100vw-2rem)] max-h-[90vh] overflow-y-auto p-0">
+      <DialogContent className="bg-black border-white/10 text-white max-w-sm sm:max-w-md w-[calc(100vw-2rem)] max-h-[90vh] overflow-y-auto p-0">
         {/* Animated background gradient */}
         <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 via-transparent to-cyan-400/5 pointer-events-none" />
         <motion.div
@@ -182,14 +182,11 @@ export function QRCodeDialog({ open, onOpenChange }: QRCodeDialogProps) {
 
           {/* Sponsor Link with Copy */}
           <div className="mb-5 p-3 bg-white/5 border border-white/10 rounded-lg">
-            <div className="text-xs text-white/40 mb-2">Sponsor Link</div>
-            <div className="flex items-center gap-2">
-              <div className="flex-1 text-xs text-white/60 truncate font-mono">
-                {referralLink}
-              </div>
+            <div className="flex items-center justify-between mb-2">
+              <div className="text-xs text-white/40">Sponsor Link</div>
               <button
                 onClick={handleCopy}
-                className="flex-shrink-0 p-2 hover:bg-white/10 rounded transition-colors"
+                className="flex-shrink-0 p-1.5 hover:bg-white/10 rounded transition-colors"
               >
                 <AnimatePresence mode="wait">
                   {copied ? (
@@ -213,6 +210,9 @@ export function QRCodeDialog({ open, onOpenChange }: QRCodeDialogProps) {
                   )}
                 </AnimatePresence>
               </button>
+            </div>
+            <div className="text-xs text-white/60 font-mono break-all leading-relaxed">
+              {referralLink}
             </div>
           </div>
 
