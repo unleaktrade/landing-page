@@ -141,7 +141,7 @@ export function WaitlistDialog({
           </DialogTitle>
           <div className="space-y-2 sm:space-y-3 pt-2">
             <DialogDescription className="text-white/60 text-xs sm:text-sm leading-relaxed">
-              Gain exclusive early access to UmbraTrade's
+              Gain exclusive early access to UnleakTrade's
               preview platform and compete for rewards in our
               referral program.
             </DialogDescription>
