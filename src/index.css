@@ -1813,15 +1813,15 @@
     --tw-gradient-stops: var(--tw-gradient-via-stops);
   }
 
-  .via-white\/20 {
-    --tw-gradient-via: #fff3;
+  .via-white\/30 {
+    --tw-gradient-via: #ffffff4d;
     --tw-gradient-via-stops: var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-via) var(--tw-gradient-via-position), var(--tw-gradient-to) var(--tw-gradient-to-position);
     --tw-gradient-stops: var(--tw-gradient-via-stops);
   }
 
   @supports (color: color-mix(in lab, red, red)) {
-    .via-white\/20 {
-      --tw-gradient-via: color-mix(in oklab, var(--color-white) 20%, transparent);
+    .via-white\/30 {
+      --tw-gradient-via: color-mix(in oklab, var(--color-white) 30%, transparent);
     }
   }
 
