@@ -46,23 +46,23 @@ export function WorkInProgress() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="mb-4"
+          className="mb-4 flex justify-center"
         >
-          <h1 className="text-4xl md:text-5xl mb-2 relative inline-block">
+          <h1 className="text-4xl md:text-5xl mb-2 relative inline-block overflow-hidden">
             <span className="bg-gradient-to-r from-purple-500 to-cyan-400 bg-clip-text text-transparent">
               Work in Progress
             </span>
             <motion.div
               animate={{
-                x: ["-100%", "200%"],
+                x: ["-100%", "100%"],
               }}
               transition={{
-                duration: 3,
+                duration: 2.5,
                 repeat: Infinity,
                 ease: "easeInOut",
                 repeatDelay: 1,
               }}
-              className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
+              className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent pointer-events-none"
               style={{
                 maskImage: "linear-gradient(to right, transparent, black, transparent)",
                 WebkitMaskImage: "linear-gradient(to right, transparent, black, transparent)",
