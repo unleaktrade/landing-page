@@ -209,6 +209,8 @@ export function WaitlistPage() {
               Waitlist members enjoy privileged access to exclusive market
               intelligence, our private competition dashboard, and
               performance-based rewards for sponsoring select participants.
+            </p>
+            <p className="text-white/80 leading-relaxed">
               This invitation-only program is reserved for discerning
               traders seeking a strategic edge in confidential OTC markets
               on Solana.

@@ -177,9 +177,9 @@ export function Navigation() {
               <span className="relative text-sm bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent">
                 Request Access
               </span>
-              <span className="relative text-[9px] text-white/30 tracking-wide">
+              {/* <span className="relative text-[9px] text-white/30 tracking-wide">
                 COMING SOON
-              </span>
+              </span> */}
             </Link>
           </div>
 
@@ -245,9 +245,9 @@ export function Navigation() {
                       <span className="relative bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent">
                         Request Access
                       </span>
-                      <span className="relative text-[9px] text-white/30 tracking-wide">
+                      {/* <span className="relative text-[9px] text-white/30 tracking-wide">
                         COMING SOON
-                      </span>
+                      </span> */}
                     </Link>
                   </div>
                 </div>

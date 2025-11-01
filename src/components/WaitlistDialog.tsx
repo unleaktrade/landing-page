@@ -149,8 +149,10 @@ export function WaitlistDialog({
               Waitlist members enjoy privileged access to
               exclusive market intelligence, our private
               competition dashboard, and performance-based
-              rewards for sponsoring select participants. This
-              invitation-only program is reserved for discerning
+              rewards for sponsoring select participants.{" "}
+            </DialogDescription>
+            <DialogDescription className="text-white/80 text-xs sm:text-sm leading-relaxed ">
+              This invitation-only program is reserved for discerning
               traders seeking a strategic edge in confidential
               OTC markets on Solana.{" "}
             </DialogDescription>

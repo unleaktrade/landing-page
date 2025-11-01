@@ -129,7 +129,7 @@ export default function App() {
         <Route path="/waitlist/:sponsor" element={<WaitlistPage />} />
         <Route path="/activate/:token" element={<ActivateWaitlistPage />} />
         <Route path="/faq" element={<WorkInProgressPage />} />
-        <Route path="/app" element={<WorkInProgressPage />} />
+        <Route path="/app" element={<WaitlistPage />}  />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
       <WaitlistDialog open={isWaitlistOpen} onOpenChange={setIsWaitlistOpen} />
