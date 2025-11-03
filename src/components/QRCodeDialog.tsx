@@ -3,7 +3,7 @@ import { QRCodeSVG } from "qrcode.react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./ui/dialog";
 import { Button } from "./ui/button";
 import { toast } from "sonner@2.0.3";
-import { Copy, Check, Share2, Download } from "lucide-react";
+import { Copy, Check, Share2, Download, ExternalLink } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import logoImage from "figma:asset/77164cc6a58e276f88505209efc62dfe8b57b786.png";
 
@@ -235,11 +235,20 @@ export function QRCodeDialog({ open, onOpenChange }: QRCodeDialogProps) {
           </div>
 
           {/* Info */}
-          <div className="p-3 bg-gradient-to-r from-purple-500/10 to-cyan-400/10 border border-purple-500/20 rounded-lg">
+          <div className="p-3 bg-gradient-to-r from-purple-500/10 to-cyan-400/10 border border-purple-500/20 rounded-lg space-y-2">
             <p className="text-xs text-white/60 text-center leading-relaxed">
               Share this QR code or link with others. When they join using your referral,
               you'll both move up the waitlist and earn priority access to UnleakTrade.
             </p>
+            <a
+              href="https://x.com/unleaktrade/status/1981010618070307290"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center gap-1 text-xs text-white/50 hover:bg-gradient-to-r hover:from-purple-400 hover:to-cyan-400 hover:bg-clip-text hover:text-transparent transition-all group"
+            >
+              Learn more about sponsors
+              <ExternalLink className="w-3 h-3 group-hover:text-cyan-400 transition-colors" />
+            </a>
           </div>
         </div>
       </DialogContent>

@@ -11,6 +11,7 @@ import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Button } from "./ui/button";
 import { toast } from "sonner@2.0.3";
+import { ExternalLink } from "lucide-react";
 import {
   isOnCurveAddress,
   isValidEmail,
@@ -156,6 +157,15 @@ export function WaitlistDialog({
               traders seeking a strategic edge in confidential
               OTC markets on Solana.{" "}
             </DialogDescription>
+            <a
+              href="https://x.com/unleaktrade/status/1981010618070307290"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 text-xs sm:text-sm text-white/50 hover:bg-gradient-to-r hover:from-purple-400 hover:to-cyan-400 hover:bg-clip-text hover:text-transparent transition-all group mt-2"
+            >
+              Learn more about the waitlist
+              <ExternalLink className="w-3 h-3 group-hover:text-cyan-400 transition-colors" />
+            </a>
           </div>
         </DialogHeader>
 

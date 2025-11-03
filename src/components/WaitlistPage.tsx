@@ -6,7 +6,7 @@ import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Button } from "./ui/button";
 import { toast } from "sonner@2.0.3";
-import { CheckCircle2, Lock } from "lucide-react";
+import { CheckCircle2, Lock, ExternalLink } from "lucide-react";
 import {
   isOnCurveAddress,
   isValidEmail,
@@ -215,6 +215,15 @@ export function WaitlistPage() {
               traders seeking a strategic edge in confidential OTC markets
               on Solana.
             </p>
+            <a
+              href="https://x.com/unleaktrade/status/1981010618070307290"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-sm text-white/50 hover:bg-gradient-to-r hover:from-purple-400 hover:to-cyan-400 hover:bg-clip-text hover:text-transparent transition-all group"
+            >
+              Learn more about the waitlist
+              <ExternalLink className="w-3.5 h-3.5 group-hover:text-cyan-400 transition-colors" />
+            </a>
           </div>
 
           {lockedSponsor && (

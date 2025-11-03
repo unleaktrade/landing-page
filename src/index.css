@@ -775,6 +775,10 @@
     height: calc(var(--spacing) * 3);
   }
 
+  .h-3\.5 {
+    height: calc(var(--spacing) * 3.5);
+  }
+
   .h-4 {
     height: calc(var(--spacing) * 4);
   }
@@ -861,6 +865,10 @@
 
   .w-3 {
     width: calc(var(--spacing) * 3);
+  }
+
+  .w-3\.5 {
+    width: calc(var(--spacing) * 3.5);
   }
 
   .w-3\/4 {
@@ -2531,6 +2539,12 @@
   }
 
   @media (hover: hover) {
+    .group-hover\:text-cyan-400:is(:where(.group):hover *) {
+      color: var(--color-cyan-400);
+    }
+  }
+
+  @media (hover: hover) {
     .group-hover\:text-purple-400:is(:where(.group):hover *) {
       color: var(--color-purple-400);
     }
@@ -2738,6 +2752,20 @@
   }
 
   @media (hover: hover) {
+    .hover\:bg-gradient-to-r:hover {
+      --tw-gradient-position: to right in oklab;
+      background-image: linear-gradient(var(--tw-gradient-stops));
+    }
+  }
+
+  @media (hover: hover) {
+    .hover\:from-purple-400:hover {
+      --tw-gradient-from: var(--color-purple-400);
+      --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
+    }
+  }
+
+  @media (hover: hover) {
     .hover\:from-purple-600:hover {
       --tw-gradient-from: var(--color-purple-600);
       --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
@@ -2752,9 +2780,22 @@
   }
 
   @media (hover: hover) {
+    .hover\:to-cyan-400:hover {
+      --tw-gradient-to: var(--color-cyan-400);
+      --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
+    }
+  }
+
+  @media (hover: hover) {
     .hover\:to-cyan-500:hover {
       --tw-gradient-to: var(--color-cyan-500);
       --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
+    }
+  }
+
+  @media (hover: hover) {
+    .hover\:bg-clip-text:hover {
+      background-clip: text;
     }
   }
 
@@ -2767,6 +2808,12 @@
   @media (hover: hover) {
     .hover\:text-purple-300:hover {
       color: var(--color-purple-300);
+    }
+  }
+
+  @media (hover: hover) {
+    .hover\:text-transparent:hover {
+      color: #0000;
     }
   }
 

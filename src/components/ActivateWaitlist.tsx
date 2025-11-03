@@ -6,6 +6,7 @@ import {
   AlertCircle,
   Sparkles,
   QrCode,
+  ExternalLink,
 } from "lucide-react";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
@@ -307,11 +308,23 @@ export function ActivateWaitlist() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="text-white/60"
+            className="text-white/60 mb-3"
           >
             Enter the verification code from your email to
             confirm your waitlist registration
           </motion.p>
+          <motion.a
+            href="https://x.com/unleaktrade/status/1981010618070307290"
+            target="_blank"
+            rel="noopener noreferrer"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            className="inline-flex items-center gap-1.5 text-sm text-white/50 hover:bg-gradient-to-r hover:from-purple-400 hover:to-cyan-400 hover:bg-clip-text hover:text-transparent transition-all group"
+          >
+            Learn more about the waitlist
+            <ExternalLink className="w-3.5 h-3.5 group-hover:text-cyan-400 transition-colors" />
+          </motion.a>
         </div>
 
         {/* Progress bar */}
