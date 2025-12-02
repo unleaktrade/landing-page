@@ -4,9 +4,6 @@ import { Linkedin, Twitter, Github, ArrowUpRight } from "lucide-react";
 import { useEffect } from "react";
 import julienImage from "figma:asset/524423e86081819620c9996fd40046b079ec4ba8.png";
 import guilhemImage from "figma:asset/754dfe5f69f5a54353b7b1fdaa778a4363ded25d.png";
-import mickaelImage from "figma:asset/09eec4444be074c31af6754b22c0533965153dc5.png";
-import jackyImage from "figma:asset/0f3686d8d676f9c37366cee2aa9a7d07b813b731.png";
-import jordanImage from "figma:asset/2a25dcf6635881ca90ff148cacc67f2338557a0b.png";
 
 interface TeamMember {
   name: string;
@@ -58,35 +55,6 @@ const teamMembers: TeamMember[] = [
     image: guilhemImage
   },
   {
-    name: "Mickael GIRONDEAU",
-    role: "Chief Product Officer",
-    location: "France",
-    tagline: "Precision product, battle-tested delivery.",
-    summary: "Former military engineer with 15+ years leading multi-million-dollar projects, now drives innovation in blockchain with precision and impact. From voting DApps to zk-proof trading systems, he delivers fast, high-quality Web3 solutions built for results.",
-    biography: "With over 15 years of experience as a military engineer leading high-stakes, multi-million-dollar projects, Mickaël brings unmatched discipline, precision, and results-driven leadership to every mission he undertakes. Renowned for turning diverse teams into unified, high-performing units, he builds success brick by brick — transforming complex visions into rock-solid achievements. Now harnessing that same strategic mindset in the blockchain arena, Mickaël quickly mastered the entire Web3 development cycle, from writing clean, efficient code to deploying powerful, user-ready solutions. His portfolio spans game-changing projects including a D21 voting DApp, an innovative token-funding research program, and a cutting-edge zk-proof-powered trading system — each delivered at speed, with precision, and designed to make an impact.",
-    expertise: ["MilitaryEngineering", "ProjectLeadership", "Web3Development", "ZKProofs", "DApps", "TeamBuilding", "HighStakesExecution"],
-    handle: "@helloMichka78",
-    links: {
-      linkedin: "https://www.linkedin.com/in/micka%C3%ABl-girondeau-773a6171/",
-      twitter: "https://x.com/helloMichka78",
-      github: "https://github.com/Mickael78000"
-    },
-    image: mickaelImage
-  },
-  {
-    name: "Jacky RABAT",
-    role: "Marketing Advisor",
-    location: "France",
-    tagline: "Signal over noise.",
-    summary: "Operational leader with 25 years of IT, ERP, and complex project management experience, now passionate about blockchain and Web3 integration in professional environments. Expert in process optimization, regulatory compliance, and secure project delivery.",
-    biography: "With over 10 years leading operations, marketing, and sales for international teams of 80+ IT experts, Jacky brings exceptional expertise in operational leadership and multidisciplinary team coordination. His 25 years of experience in IT, ERP, and complex project management have honed his skills in process optimization and regulatory compliance. Passionate about blockchain and decentralized applications, he actively supports the integration of Web3 and crypto solutions in professional environments. An expert in operational leadership and multidisciplinary team coordination, he ensures smooth execution, high performance, and innovation. Recognized for his ability to deliver secure and compliant projects, he fosters sustainable growth and added value through advanced technologies.",
-    expertise: ["Operations", "IT", "ERP", "ProjectManagement", "Blockchain", "Web3Integration", "ProcessOptimization", "RegulatoryCompliance", "Leadership"],
-    links: {
-      linkedin: "https://www.linkedin.com/in/jacky-rabat/"
-    },
-    image: jackyImage
-  },
-  {
     name: "Nicolas HAASE",
     role: "Head of Social / Community",
     location: "France",
@@ -96,23 +64,8 @@ const teamMembers: TeamMember[] = [
     expertise: ["CryptoTrading", "EVM", "Solana", "SUI", "Aptos", "DeFi", "AirdropStrategy", "CommunityBuilding", "TrendAnalysis", "FinancialInnovation"],
     handle: "@ericsalik",
     links: {
-      linkedin: "https://www.linkedin.com/in/nicolas-haase/",
       twitter: "https://x.com/ericsalik"
     }
-  },
-  {
-    name: "Jordan DE KLEIJN",
-    role: "Frontend Engineer (React)",
-    location: "Netherlands",
-    tagline: "Latency-lite, pixel-tight.",
-    summary: "Jordan crafts fast, accessible interfaces that make complex crypto flows feel simple and safe.",
-    biography: "He specializes in React/Next, TypeScript, and design systems. He delivers modular UI components, real-time dashboards, and responsive layouts; integrates securely with APIs and smart-contract calls; and enforces type-safe, testable code paths. His attention to detail yields low-latency UX and crisp data visualization.",
-    expertise: ["React", "NextJS", "TypeScript", "DesignSystems", "DataViz", "WebSecurity", "Accessibility"],
-    links: {
-      linkedin: "https://www.linkedin.com/in/821381293922a23adv/",
-      github: "https://github.com/recode-lang"
-    },
-    image: jordanImage
   }
 ];
 
