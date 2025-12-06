@@ -100,7 +100,7 @@ export function Economics() {
                   <div className="text-white/60">$5M+ → 25 bps</div>
                 </div>
                 <p className="text-white/40 text-sm">
-                  Deposited in USDC. Returned after successful settlement.
+                  Deposited in USDC. Returned after successful settlement or if a valid Quote is not selected.
                 </p>
               </div>
             </div>
@@ -129,7 +129,7 @@ export function Economics() {
                 </div>
                 <p className="text-white/40 text-sm">
                   Defaults: 15 min quote / 60 min settlement<br/>
-                  80% to counterparty / 20% to protocol
+                  100% to protocol (treasury)
                 </p>
               </div>
             </div>
