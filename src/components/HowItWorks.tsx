@@ -3,23 +3,23 @@ import { motion } from "motion/react";
 const steps = [
   {
     number: "01",
-    title: "Submit your order privately",
-    description: "Define your trade parameters—amount, price range, and timing—all kept confidential through zero-knowledge proofs."
+    title: "Maker creates RFQ",
+    description: "Initialize a Request for Quote as a draft, define parameters, then open it to the market with bond deposit—inviting multiple takers to compete."
   },
   {
     number: "02",
-    title: "Automated matching",
-    description: "Our protocol finds the optimal counterparty and execution path without revealing your position to the market."
+    title: "Takers commit quotes",
+    description: "Multiple market participants submit blind quotes via commit-reveal. Liquidity Guard validates solvency with ZK proofs and Ed25519 signatures before acceptance."
   },
   {
     number: "03",
-    title: "Fair execution guaranteed",
-    description: "Time-weighted pricing ensures you get institutional-quality fills, with cryptographic proof of fair execution."
+    title: "Quotes revealed & selected",
+    description: "After reveal phase, maker reviews all valid quotes and selects the best offer. The winning taker is chosen to proceed to settlement."
   },
   {
     number: "04",
-    title: "Instant settlement",
-    description: "Smart contracts on Solana handle settlement automatically—no trust required, no delays."
+    title: "Settlement executes",
+    description: "Selected taker deposits quote amount plus fees. Atomic swap occurs, bonds refunded to valid parties, and protocol collects penalties from defaulters."
   }
 ];
 

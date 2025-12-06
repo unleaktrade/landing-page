@@ -18,11 +18,11 @@ export function SettlementProcess() {
         >
           <p className="text-white/40 mb-4">Bringing trust and privacy back to block trades</p>
           <h2 className="text-white mb-6">
-            Powered by Zero-Knowledge Proofs
+            Private Auction with ZK-Verified Liquidity
           </h2>
           <p className="text-white/60 max-w-3xl mx-auto leading-relaxed">
             UnleakTrade is a <span className="text-purple-400">zk-powered OTC/RFQ platform</span> built on <span className="text-cyan-400">Solana</span>. 
-            Our commit–reveal mechanism with Zero-Knowledge proofs ensures confidentiality for takers while providing verified, fair RFQs to makers.
+            Makers publish RFQs and multiple takers compete with blind quotes. Our Liquidity Guard validates each quote with cryptographic attestations, ensuring only solvent participants enter the <span className="text-purple-400">auction</span>.
           </p>
         </motion.div>
 
@@ -113,10 +113,10 @@ export function SettlementProcess() {
               <div className="space-y-3">
                 <div className="flex items-center gap-2">
                   <div className="w-6 h-6 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400 text-xs">1</div>
-                  <span className="text-white/90">RFQ Published</span>
+                  <span className="text-white/90">Commit Phase</span>
                 </div>
                 <p className="text-white/50 text-sm leading-relaxed">
-                  Maker publishes request with bond deposit. Takers generate zk-proofs via API and submit hashed commitments with bonds.
+                  Maker opens RFQ with bond. Multiple takers submit blind commits with bonds. Liquidity Guard verifies each taker can cover bond, fees, and settlement leg via Ed25519-signed ZK attestations.
                 </p>
               </div>
 
@@ -124,10 +124,10 @@ export function SettlementProcess() {
               <div className="space-y-3">
                 <div className="flex items-center gap-2">
                   <div className="w-6 h-6 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400 text-xs">2</div>
-                  <span className="text-white/90">Verification & Reveal</span>
+                  <span className="text-white/90">Reveal & Selection</span>
                 </div>
                 <p className="text-white/50 text-sm leading-relaxed">
-                  Escrow verifies all zk-proofs. Valid commits move to reveal phase. Maker selects best quote and TTL countdown begins.
+                  Takers reveal quotes. Maker reviews all valid offers and selects the best one. Non-selected valid quotes receive bond refunds. Settlement created with winning taker.
                 </p>
               </div>
 
@@ -138,7 +138,7 @@ export function SettlementProcess() {
                   <span className="text-white/90">Settlement & Swap</span>
                 </div>
                 <p className="text-white/50 text-sm leading-relaxed">
-                  Both parties deposit assets. Escrow executes atomic swap, transfers fee to treasury, and returns bonds.
+                  Selected taker pays fees and deposits quote amount. Atomic swap executes: base to taker, quote to maker. Bonds refunded to valid parties. Defaulters forfeit 100% to protocol.
                 </p>
               </div>
             </div>
