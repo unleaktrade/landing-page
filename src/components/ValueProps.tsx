@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import { Shield, Eye, Scale } from "lucide-react";
+import { Shield, Eye, Scale, Unlock } from "lucide-react";
 
 const values = [
   {
@@ -16,6 +16,11 @@ const values = [
     icon: Scale,
     title: "Institutional fairness",
     description: "Time-weighted average pricing and cryptographic proofs ensure you get institutional-grade execution."
+  },
+  {
+    icon: Unlock,
+    title: "Permissionless access",
+    description: "Trade any Solana token without waiting for exchange listings. If it exists on-chain, you can trade it."
   }
 ];
 
@@ -38,7 +43,7 @@ export function ValueProps() {
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-3 gap-6">
+        <div className="grid md:grid-cols-3 lg:grid-cols-4 gap-6">
           {values.map((value, index) => (
             <motion.div
               key={value.title}

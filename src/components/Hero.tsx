@@ -23,16 +23,17 @@ export function Hero({ onOpenWaitlist }: HeroProps) {
           <div className="space-y-6">
             <img src={logoImage} alt="UnleakTrade" className="h-32 w-32 mx-auto" />
             <h1 className="text-4xl lg:text-5xl tracking-tight max-w-3xl mx-auto leading-tight">
-              Confidential trading.<br />
-              Institutional-grade fairness.<br />
-              <span className="text-white/60">Now for you.</span>
+              Guaranteed Settlement.<br />
+              Confidential OTC Trading & Auctions.<br />
+              Competitive Price Discovery.<br />
+              <span className="text-white/60">Now on Solana.</span>
             </h1>
           </div>
 
           {/* Main value prop */}
           <div className="space-y-6 pt-8">
             <h2 className="text-2xl lg:text-3xl tracking-tight max-w-3xl mx-auto">
-              Make crypto OTC private, fair, and trustless using Zero-Knowledge Proofs on Solana
+              Trade any SPL token (listed or unlisted) through private over-the-counter auctions with ZK-verified liquidity and trustless settlement
             </h2>
             
             <p className="text-white/50 max-w-2xl mx-auto text-lg leading-relaxed">
