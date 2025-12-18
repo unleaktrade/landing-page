@@ -17,7 +17,10 @@ export function Footer() {
             <a href="https://twitter.com/unleaktrade" target="_blank" rel="noopener noreferrer" className="text-sm text-white/40 hover:text-white/60 transition-colors">
               Twitter
             </a>
-            <a href="https://discord.gg/ytPhdQZMbr" target="_blank" rel="noopener noreferrer" className="text-sm text-white/40 hover:text-white/60 transition-colors">
+            <a href="https://t.me/+dwi3eXR9Q1Q4NjE0" target="_blank" rel="noopener noreferrer" className="text-sm text-white/40 hover:text-white/60 transition-colors">
+              Telegram
+            </a>
+            <a href="https://discord.com/invite/24mZUAqj4z" target="_blank" rel="noopener noreferrer" className="text-sm text-white/40 hover:text-white/60 transition-colors">
               Discord
             </a>
           </div>
