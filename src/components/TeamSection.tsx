@@ -1,6 +1,6 @@
 import { motion } from "motion/react";
 import { useNavigate } from "react-router-dom";
-import { Linkedin, Twitter, Github } from "lucide-react";
+import { Linkedin, Twitter, Github, Send, Hash } from "lucide-react";
 import julienImage from "figma:asset/524423e86081819620c9996fd40046b079ec4ba8.png";
 import guilhemImage from "figma:asset/754dfe5f69f5a54353b7b1fdaa778a4363ded25d.png";
 
@@ -16,6 +16,8 @@ interface TeamMember {
     linkedin?: string;
     twitter?: string;
     github?: string;
+    telegram?: string;
+    discord?: string;
   };
   image?: string;
 }
@@ -32,7 +34,8 @@ const teamMembers: TeamMember[] = [
     links: {
       linkedin: "https://www.linkedin.com/in/julien-sie-jsie/",
       twitter: "https://x.com/_whyvrafvr",
-      github: "https://github.com/whyvrafvr"
+      github: "https://github.com/whyvrafvr",
+      telegram: "https://t.me/whyvrafvr"
     },
     image: julienImage
   },
@@ -51,15 +54,16 @@ const teamMembers: TeamMember[] = [
     image: guilhemImage
   },
   {
-    name: "Nicolas HAASE",
-    role: "Head of Social / Community",
-    location: "France",
-    tagline: "Community is the moat.",
-    oneLiner: "Transforms ecosystem trends into education, engagement, and retention across channels.",
-    focus: ["Content & socials", "DeFi tooling", "Community ops", "Airdrop & growth loops"],
-    handle: "@ericsalik",
+    name: "Abdulrazaq ALI",
+    role: "Head of Growth & Community",
+    location: "Nigeria",
+    tagline: "Signal beats noise.",
+    oneLiner: "Builds growth systems that attract high conviction traders and filter out low signal participation.",
+    focus: ["Growth funnels & positioning", "X distribution & narrative control", "Community operations & contributor filtering", "Early-stage go-to-market execution"],
+    handle: "@Razzyox",
     links: {
-      twitter: "https://x.com/ericsalik"
+      twitter: "https://x.com/Razzyox",
+      telegram: "https://t.me/RAZZY_OX"
     }
   }
 ];
@@ -193,6 +197,30 @@ export function TeamSection() {
                           aria-label="GitHub"
                         >
                           <Github className="w-4 h-4" />
+                        </a>
+                      )}
+                      {member.links.telegram && (
+                        <a
+                          href={member.links.telegram}
+                          onClick={(e) => { e.stopPropagation(); }}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-white/30 hover:text-white/60 transition-colors"
+                          aria-label="Telegram"
+                        >
+                          <Send className="w-4 h-4" />
+                        </a>
+                      )}
+                      {member.links.discord && (
+                        <a
+                          href={member.links.discord}
+                          onClick={(e) => { e.stopPropagation(); }}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-white/30 hover:text-white/60 transition-colors"
+                          aria-label="Discord"
+                        >
+                          <Hash className="w-4 h-4" />
                         </a>
                       )}
                     </div>
