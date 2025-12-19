@@ -3,7 +3,6 @@ import { useParams } from "react-router-dom";
 import { Linkedin, Twitter, Github, ArrowUpRight, Send, Hash } from "lucide-react";
 import { useEffect } from "react";
 import julienImage from "figma:asset/524423e86081819620c9996fd40046b079ec4ba8.png";
-import guilhemImage from "figma:asset/754dfe5f69f5a54353b7b1fdaa778a4363ded25d.png";
 
 interface TeamMember {
   name: string;
@@ -27,11 +26,11 @@ interface TeamMember {
 const teamMembers: TeamMember[] = [
   {
     name: "Julien SIE",
-    role: "CEO / CTO",
+    role: "CTO / Founder",
     location: "France",
     tagline: "Engineering trust at scale.",
     summary: "Visionary tech entrepreneur with deep expertise in blockchain and token engineering, leading high-performing teams to design scalable architectures and transform complex systems into secure, value-driven solutions.",
-    biography: "As CEO and CTO of UnleakTrade, Julien drives the strategic and technical vision behind a next-generation crypto trading platform that blends transparency, scalability, and intelligent automation. His leadership focuses on building a secure, high-performance ecosystem for digital asset trading, leveraging cutting-edge blockchain, AI, and token engineering principles. With deep expertise in decentralized finance, scalable architectures, and smart contract design, he oversees the full lifecycle of product innovation — from infrastructure and data systems to user experience and market strategy. His work ensures reliability, efficiency, and long-term value creation across all aspects of the platform. His pragmatic, innovation-driven approach continues to propel UnleakTrade's mission to redefine the future of crypto trading through engineering excellence and strategic vision.",
+    biography: "As Founder and CTO of UnleakTrade, Julien drives the strategic and technical vision behind a next-generation crypto trading platform that blends transparency, scalability, and intelligent automation. His leadership focuses on building a secure, high-performance ecosystem for digital asset trading, leveraging cutting-edge blockchain, AI, and token engineering principles. With deep expertise in decentralized finance, scalable architectures, and smart contract design, he oversees the full lifecycle of product innovation — from infrastructure and data systems to user experience and market strategy. His work ensures reliability, efficiency, and long-term value creation across all aspects of the platform. His pragmatic, innovation-driven approach continues to propel UnleakTrade's mission to redefine the future of crypto trading through engineering excellence and strategic vision.",
     expertise: ["Blockchain", "TokenEngineering", "DevOps", "DeFi", "ScalableArchitecture", "SmartContracts", "Fundraising", "Investment", "Leadership", "ProductStrategy"],
     handle: "@_whyvrafvr",
     links: {
@@ -41,21 +40,6 @@ const teamMembers: TeamMember[] = [
       telegram: "https://t.me/whyvrafvr"
     },
     image: julienImage
-  },
-  {
-    name: "Guilhem BERTHALON",
-    role: "COO / CMO",
-    location: "France",
-    tagline: "From execution to adoption.",
-    summary: "Crypto-enthusiast passionate about blockchain innovation, leading international teams with deep expertise in IT architecture, digital transformation, cloud, and cybersecurity. Expert in leadership, innovation, and team scaling with a human-centered approach.",
-    biography: "With over 13 years leading international teams of 80+ IT experts, Guilhem brings exceptional expertise in IT architecture, digital transformation, CRM systems, cloud solutions, and cybersecurity to UnleakTrade. A passionate crypto-enthusiast deeply invested in blockchain innovation across SOL, SUI, EVM, and Aptos ecosystems, he combines technical mastery with strategic vision. As an application architect and technical project manager, he has driven international expansion and managed complex projects for both public and private clients. An expert in leadership, innovation, and team scaling, he combines strategic vision with a human-centered approach to ensure performance and regulatory compliance. Recognized for excellence in project management and RFPs, he fosters sustainable value creation through innovative technological solutions.",
-    expertise: ["Blockchain", "ITArchitecture", "DigitalTransformation", "Cloud", "Cybersecurity", "Leadership", "TeamScaling", "ProjectManagement"],
-    handle: "@krokko7777",
-    links: {
-      linkedin: "https://www.linkedin.com/in/guilhem-berthalon/",
-      twitter: "https://x.com/krokko7777"
-    },
-    image: guilhemImage
   },
   {
     name: "Abdulrazaq ALI",
@@ -109,9 +93,9 @@ export function TeamPage() {
             transition={{ duration: 0.6 }}
           >
             <p className="text-white/40 mb-4">Meet the team</p>
-            <h1 className="text-white mb-6">Building the future of private OTC trading.</h1>
+            <h1 className="text-white mb-6">Protocol architecture meets growth execution.</h1>
             <p className="text-white/60 max-w-2xl mx-auto">
-              A distributed team of crypto veterans, protocol architects, and operators bringing institutional-grade privacy to decentralized markets.
+              A lean, technical team building institutional-grade privacy infrastructure from first principles — deep protocol design paired with signal-led community growth.
             </p>
           </motion.div>
         </div>
@@ -298,7 +282,7 @@ export function TeamPage() {
                 We're always looking for talented individuals who share our vision for private, fair, and trustless trading.
               </p>
               <a
-                href="https://discord.com/invite/24mZUAqj4z"
+                href="https://discord.gg/h9Qb9S7Qjx"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-purple-500 to-cyan-500 text-white rounded-full hover:shadow-lg hover:shadow-purple-500/25 transition-all duration-300"

@@ -2,7 +2,6 @@ import { motion } from "motion/react";
 import { useNavigate } from "react-router-dom";
 import { Linkedin, Twitter, Github, Send, Hash } from "lucide-react";
 import julienImage from "figma:asset/524423e86081819620c9996fd40046b079ec4ba8.png";
-import guilhemImage from "figma:asset/754dfe5f69f5a54353b7b1fdaa778a4363ded25d.png";
 
 interface TeamMember {
   name: string;
@@ -25,7 +24,7 @@ interface TeamMember {
 const teamMembers: TeamMember[] = [
   {
     name: "Julien SIE",
-    role: "CEO / CTO",
+    role: "CTO / Founder",
     location: "France",
     tagline: "Engineering trust at scale.",
     oneLiner: "Visionary architect defining protocol economics, strategic direction, and technical foundations for institutional-grade privacy infrastructure.",
@@ -38,20 +37,6 @@ const teamMembers: TeamMember[] = [
       telegram: "https://t.me/whyvrafvr"
     },
     image: julienImage
-  },
-  {
-    name: "Guilhem BERTHALON",
-    role: "COO / CMO",
-    location: "France",
-    tagline: "From execution to adoption.",
-    oneLiner: "Operations and growth leader aligning compliance, partnerships, and go-to-market to drive adoption.",
-    focus: ["Ops leadership", "GTM & partnerships", "Compliance", "Growth marketing"],
-    handle: "@krokko7777",
-    links: {
-      linkedin: "https://www.linkedin.com/in/guilhem-berthalon/",
-      twitter: "https://x.com/krokko7777"
-    },
-    image: guilhemImage
   },
   {
     name: "Abdulrazaq ALI",
@@ -86,14 +71,14 @@ export function TeamSection() {
           className="text-center mb-20"
         >
           <p className="text-white/40 mb-4">The people behind UnleakTrade</p>
-          <h2 className="text-white mb-6">Built by professionals, for professionals.</h2>
+          <h2 className="text-white mb-6">Protocol architecture meets growth execution.</h2>
           <p className="text-white/60 max-w-2xl mx-auto">
-            A distributed team of crypto veterans, engineers, and operators bringing institutional-grade privacy to decentralized trading.
+            A lean, technical team building institutional-grade privacy infrastructure from first principles — deep protocol design paired with signal-led community growth.
           </p>
         </motion.div>
 
         {/* Team grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
           {teamMembers.map((member, index) => (
             <motion.div
               key={member.name}

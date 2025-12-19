@@ -21,7 +21,6 @@
         'figma:asset/fdbafc2f1e7edb4d213deafbca8c80c666dccbae.png': path.resolve(__dirname, './src/assets/fdbafc2f1e7edb4d213deafbca8c80c666dccbae.png'),
         'figma:asset/af0a6579392a99988c0ab693570446ed86a64fec.png': path.resolve(__dirname, './src/assets/af0a6579392a99988c0ab693570446ed86a64fec.png'),
         'figma:asset/77164cc6a58e276f88505209efc62dfe8b57b786.png': path.resolve(__dirname, './src/assets/77164cc6a58e276f88505209efc62dfe8b57b786.png'),
-        'figma:asset/754dfe5f69f5a54353b7b1fdaa778a4363ded25d.png': path.resolve(__dirname, './src/assets/754dfe5f69f5a54353b7b1fdaa778a4363ded25d.png'),
         'figma:asset/524423e86081819620c9996fd40046b079ec4ba8.png': path.resolve(__dirname, './src/assets/524423e86081819620c9996fd40046b079ec4ba8.png'),
         'embla-carousel-react@8.6.0': 'embla-carousel-react',
         'cmdk@1.1.1': 'cmdk',
