@@ -38,7 +38,7 @@ export function DiscordCTA() {
                   Join the Waitlist
                 </button>
                 <a
-                  href="https://discord.gg/ytPhdQZMbr"
+                  href="https://discord.gg/h9Qb9S7Qjx"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-purple-600 to-cyan-400 text-white rounded-lg hover:opacity-90 transition-opacity text-lg h-[58px]"

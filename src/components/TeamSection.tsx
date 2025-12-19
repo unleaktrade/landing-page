@@ -1,8 +1,8 @@
 import { motion } from "motion/react";
 import { useNavigate } from "react-router-dom";
-import { Linkedin, Twitter, Github } from "lucide-react";
+import { Linkedin, Twitter, Github, Send, Hash } from "lucide-react";
 import julienImage from "figma:asset/524423e86081819620c9996fd40046b079ec4ba8.png";
-import guilhemImage from "figma:asset/754dfe5f69f5a54353b7b1fdaa778a4363ded25d.png";
+import razzyImage from "figma:asset/bb27cd56b1c309d7a5f5f99c1d56c0f956feadd6.png";
 
 interface TeamMember {
   name: string;
@@ -16,6 +16,8 @@ interface TeamMember {
     linkedin?: string;
     twitter?: string;
     github?: string;
+    telegram?: string;
+    discord?: string;
   };
   image?: string;
 }
@@ -23,7 +25,7 @@ interface TeamMember {
 const teamMembers: TeamMember[] = [
   {
     name: "Julien SIE",
-    role: "CEO / CTO",
+    role: "CTO / Founder",
     location: "France",
     tagline: "Engineering trust at scale.",
     oneLiner: "Visionary architect defining protocol economics, strategic direction, and technical foundations for institutional-grade privacy infrastructure.",
@@ -32,35 +34,24 @@ const teamMembers: TeamMember[] = [
     links: {
       linkedin: "https://www.linkedin.com/in/julien-sie-jsie/",
       twitter: "https://x.com/_whyvrafvr",
-      github: "https://github.com/whyvrafvr"
+      github: "https://github.com/whyvrafvr",
+      telegram: "https://t.me/whyvrafvr"
     },
     image: julienImage
   },
   {
-    name: "Guilhem BERTHALON",
-    role: "COO / CMO",
-    location: "France",
-    tagline: "From execution to adoption.",
-    oneLiner: "Operations and growth leader aligning compliance, partnerships, and go-to-market to drive adoption.",
-    focus: ["Ops leadership", "GTM & partnerships", "Compliance", "Growth marketing"],
-    handle: "@krokko7777",
+    name: "Abdulrazaq ALI",
+    role: "Head of Growth & Community",
+    location: "Nigeria",
+    tagline: "Signal beats noise.",
+    oneLiner: "Builds growth systems that attract high conviction traders and filter out low signal participation.",
+    focus: ["Growth funnels & positioning", "X distribution & narrative control", "Community operations & contributor filtering", "Early-stage go-to-market execution"],
+    handle: "@Razzyox",
     links: {
-      linkedin: "https://www.linkedin.com/in/guilhem-berthalon/",
-      twitter: "https://x.com/krokko7777"
+      twitter: "https://x.com/Razzyox",
+      telegram: "https://t.me/RAZZY_OX"
     },
-    image: guilhemImage
-  },
-  {
-    name: "Nicolas HAASE",
-    role: "Head of Social / Community",
-    location: "France",
-    tagline: "Community is the moat.",
-    oneLiner: "Transforms ecosystem trends into education, engagement, and retention across channels.",
-    focus: ["Content & socials", "DeFi tooling", "Community ops", "Airdrop & growth loops"],
-    handle: "@ericsalik",
-    links: {
-      twitter: "https://x.com/ericsalik"
-    }
+    image: razzyImage
   }
 ];
 
@@ -82,14 +73,14 @@ export function TeamSection() {
           className="text-center mb-20"
         >
           <p className="text-white/40 mb-4">The people behind UnleakTrade</p>
-          <h2 className="text-white mb-6">Built by professionals, for professionals.</h2>
+          <h2 className="text-white mb-6">Protocol architecture meets growth execution.</h2>
           <p className="text-white/60 max-w-2xl mx-auto">
-            A distributed team of crypto veterans, engineers, and operators bringing institutional-grade privacy to decentralized trading.
+            A lean, technical team building institutional-grade privacy infrastructure from first principles — deep protocol design paired with signal-led community growth.
           </p>
         </motion.div>
 
         {/* Team grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
           {teamMembers.map((member, index) => (
             <motion.div
               key={member.name}
@@ -193,6 +184,30 @@ export function TeamSection() {
                           aria-label="GitHub"
                         >
                           <Github className="w-4 h-4" />
+                        </a>
+                      )}
+                      {member.links.telegram && (
+                        <a
+                          href={member.links.telegram}
+                          onClick={(e) => { e.stopPropagation(); }}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-white/30 hover:text-white/60 transition-colors"
+                          aria-label="Telegram"
+                        >
+                          <Send className="w-4 h-4" />
+                        </a>
+                      )}
+                      {member.links.discord && (
+                        <a
+                          href={member.links.discord}
+                          onClick={(e) => { e.stopPropagation(); }}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-white/30 hover:text-white/60 transition-colors"
+                          aria-label="Discord"
+                        >
+                          <Hash className="w-4 h-4" />
                         </a>
                       )}
                     </div>
