@@ -147,14 +147,14 @@ export function Navigation() {
           
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-6">  
-            <Link to="/team" className="text-sm text-white/60 hover:text-white transition-colors">
-              Team
-            </Link>
             <Link to="/roadmap" className="text-sm text-white/60 hover:text-white transition-colors">
               Roadmap
             </Link>
             <Link to="/faq" className="text-sm text-white/60 hover:text-white transition-colors">
               FAQ
+            </Link>
+            <Link to="/team" className="text-sm text-white/60 hover:text-white transition-colors">
+              Team
             </Link>
             
             {/* QR Code Button - Only show if user has wallet address */}
@@ -195,14 +195,6 @@ export function Navigation() {
               <nav className="relative flex flex-col h-full">
                 <div className="flex flex-col items-center px-8 pt-8 pb-6">
                   <Link 
-                    to="/team" 
-                    onClick={closeMenu}
-                    className="w-full text-center py-4 text-white/60 hover:text-white transition-colors"
-                  >
-                    Team
-                  </Link>
-                  
-                  <Link 
                     to="/roadmap" 
                     onClick={closeMenu}
                     className="w-full text-center py-4 text-white/60 hover:text-white transition-colors"
@@ -216,6 +208,14 @@ export function Navigation() {
                     className="w-full text-center py-4 text-white/60 hover:text-white transition-colors"
                   >
                     FAQ
+                  </Link>
+                  
+                  <Link 
+                    to="/team" 
+                    onClick={closeMenu}
+                    className="w-full text-center py-4 text-white/60 hover:text-white transition-colors"
+                  >
+                    Team
                   </Link>
 
                   {/* QR Code Button - Mobile */}

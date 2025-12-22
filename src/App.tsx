@@ -9,6 +9,7 @@ import { Economics } from "./components/Economics";
 import { TeamSection } from "./components/TeamSection";
 import { TeamPage } from "./components/TeamPage";
 import { Roadmap } from "./components/Roadmap";
+import { FAQ } from "./components/FAQ";
 import { DiscordCTA } from "./components/DiscordCTA";
 import { Footer } from "./components/Footer";
 import { WorkInProgress } from "./components/WorkInProgress";
@@ -91,6 +92,16 @@ function ActivateWaitlistPage() {
   );
 }
 
+function FAQPage() {
+  return (
+    <div className="min-h-screen bg-black text-white">
+      <Navigation />
+      <FAQ />
+      <Footer />
+    </div>
+  );
+}
+
 export default function App() {
   const [isWaitlistOpen, setIsWaitlistOpen] = useState(false);
 
@@ -128,7 +139,7 @@ export default function App() {
         <Route path="/waitlist" element={<WaitlistPage />} />
         <Route path="/waitlist/:sponsor" element={<WaitlistPage />} />
         <Route path="/activate/:token" element={<ActivateWaitlistPage />} />
-        <Route path="/faq" element={<WorkInProgressPage />} />
+        <Route path="/faq" element={<FAQPage />} />
         <Route path="/app" element={<WaitlistPage />}  />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
