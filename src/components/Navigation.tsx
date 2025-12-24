@@ -153,9 +153,9 @@ export function Navigation() {
             <Link to="/faq" className="text-sm text-white/60 hover:text-white transition-colors">
               FAQ
             </Link>
-            <Link to="/team" className="text-sm text-white/60 hover:text-white transition-colors">
+            {/*<Link to="/team" className="text-sm text-white/60 hover:text-white transition-colors">
               Team
-            </Link>
+            </Link>*/}
             
             {/* QR Code Button - Only show if user has wallet address */}
             {hasWalletAddress && (
@@ -210,13 +210,13 @@ export function Navigation() {
                     FAQ
                   </Link>
                   
-                  <Link 
+                  {/*<Link 
                     to="/team" 
                     onClick={closeMenu}
                     className="w-full text-center py-4 text-white/60 hover:text-white transition-colors"
                   >
                     Team
-                  </Link>
+                  </Link>*/}
 
                   {/* QR Code Button - Mobile */}
                   {hasWalletAddress && (

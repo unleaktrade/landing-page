@@ -48,7 +48,7 @@ function HomePage({ onOpenWaitlist }: { onOpenWaitlist: () => void }) {
       <HowItWorks />
       <SettlementProcess />
       <Economics />
-      <TeamSection />
+      {/* <TeamSection /> */}
       <DiscordCTA />
       <Footer />
     </div>
