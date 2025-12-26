@@ -17,6 +17,22 @@ const faqData: FAQItem[] = [
   },
   {
     category: "Platform Basics",
+    question: "Why join the waitlist, and why might my signup not work?",
+    answer:
+      "The waitlist exists to **progressively onboard participants** and ensure the early network is composed of serious makers, takers, and liquidity providers. UnleakTrade relies on economic incentives, bonding, and private RFQ flows, so controlled access helps prevent spam and ensures healthy early liquidity.\n\n" +
+      "Joining the waitlist also lets you:\n" +
+      "• Secure early access to the app\n" +
+      "• Signal interest to potential counterparties\n" +
+      "• Become eligible to sponsor others\n\n" +
+      "If you’ve filled the form but it doesn’t work, the most common reason is an **invalid or missing sponsor address**. Joining the waitlist currently requires a **sponsor**: a wallet address that has **already joined the waitlist**.\n\n" +
+      "To fix the issue:\n" +
+      "• Double-check that the sponsor wallet address is **correctly formatted**\n" +
+      "• Ensure the sponsor has **already successfully joined the waitlist**\n" +
+      "• If you don’t have a sponsor, you can use the following **public sponsor address** to join:\n\n" +
+      "**GhTppHPoSppnBurco1sPuYWyn3mejhsaRdRbt3dHtFyc**",
+  },
+  {
+    category: "Platform Basics",
     question:
       "Why use this OTC instead of another OTC venue or an AMM?",
     answer:
