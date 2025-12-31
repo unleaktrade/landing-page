@@ -146,12 +146,20 @@ export function Navigation() {
           </Link>
           
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-6">  
-            <Link to="/roadmap" className="text-sm text-white/60 hover:text-white transition-colors">
-              Roadmap
-            </Link>
+          <div className="hidden md:flex items-center gap-6"> 
             <Link to="/faq" className="text-sm text-white/60 hover:text-white transition-colors">
               FAQ
+            </Link>
+            <a 
+              href="https://unleaktrade.gitbook.io/unleaktrade-docs" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-sm text-white/60 hover:text-white transition-colors"
+            >
+              Documentation
+            </a>
+            <Link to="/roadmap" className="text-sm text-white/60 hover:text-white transition-colors">
+              Roadmap
             </Link>
             {/*<Link to="/team" className="text-sm text-white/60 hover:text-white transition-colors">
               Team
@@ -195,19 +203,29 @@ export function Navigation() {
               <nav className="relative flex flex-col h-full">
                 <div className="flex flex-col items-center px-8 pt-8 pb-6">
                   <Link 
-                    to="/roadmap" 
-                    onClick={closeMenu}
-                    className="w-full text-center py-4 text-white/60 hover:text-white transition-colors"
-                  >
-                    Roadmap
-                  </Link>
-
-                  <Link 
                     to="/faq" 
                     onClick={closeMenu}
                     className="w-full text-center py-4 text-white/60 hover:text-white transition-colors"
                   >
                     FAQ
+                  </Link>
+
+                  <a 
+                    href="https://unleaktrade.gitbook.io/unleaktrade-docs" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    onClick={closeMenu}
+                    className="w-full text-center py-4 text-white/60 hover:text-white transition-colors"
+                  >
+                    Documentation
+                  </a>
+
+                  <Link 
+                    to="/roadmap" 
+                    onClick={closeMenu}
+                    className="w-full text-center py-4 text-white/60 hover:text-white transition-colors"
+                  >
+                    Roadmap
                   </Link>
                   
                   {/*<Link 
