@@ -3,7 +3,6 @@ import { useParams } from "react-router-dom";
 import { Linkedin, Twitter, Github, ArrowUpRight, Send, Hash } from "lucide-react";
 import { useEffect } from "react";
 import julienImage from "figma:asset/524423e86081819620c9996fd40046b079ec4ba8.png";
-import razzyImage from "figma:asset/bb27cd56b1c309d7a5f5f99c1d56c0f956feadd6.png";
 
 interface TeamMember {
   name: string;
@@ -42,21 +41,6 @@ const teamMembers: TeamMember[] = [
     },
     image: julienImage
   },
-  {
-    name: "Abdulrazaq ALI",
-    role: "Head of Growth & Community",
-    location: "Nigeria",
-    tagline: "Signal beats noise.",
-    summary: "Growth and community strategist with 4+ years of hands-on experience building, filtering, and scaling crypto communities across Solana, Kaspa, and Web3 ecosystems.",
-    biography: "Growth and community strategist with 4+ years of hands-on experience building, filtering, and scaling crypto communities across Solana, Kaspa, and Web3 ecosystems. Background includes FlashBlock, CryptoSky, Kasanova, BritCard, and multiple early stage protocols. Specializes in signal-led distribution on X, manual vetting, and private Discord/Telegram execution designed to attract serious traders, contributors, and long-term participants. Optimizes for leverage over vanity metrics through positioning, funnels, and execution loops that compound trust, participation, and depth.",
-    expertise: ["GrowthFunnels", "XDistribution", "NarrativeControl", "CommunityOperations", "ContributorFiltering", "GoToMarket", "Solana", "Kaspa", "Web3", "SignalLedStrategy"],
-    handle: "@Razzyox",
-    links: {
-      twitter: "https://x.com/Razzyox",
-      telegram: "https://t.me/RAZZY_OX"
-    },
-    image: razzyImage
-  }
 ];
 
 export function TeamPage() {

@@ -2,7 +2,6 @@ import { motion } from "motion/react";
 import { useNavigate } from "react-router-dom";
 import { Linkedin, Twitter, Github, Send, Hash } from "lucide-react";
 import julienImage from "figma:asset/524423e86081819620c9996fd40046b079ec4ba8.png";
-import razzyImage from "figma:asset/bb27cd56b1c309d7a5f5f99c1d56c0f956feadd6.png";
 
 interface TeamMember {
   name: string;
@@ -39,20 +38,6 @@ const teamMembers: TeamMember[] = [
     },
     image: julienImage
   },
-  {
-    name: "Abdulrazaq ALI",
-    role: "Head of Growth & Community",
-    location: "Nigeria",
-    tagline: "Signal beats noise.",
-    oneLiner: "Builds growth systems that attract high conviction traders and filter out low signal participation.",
-    focus: ["Growth funnels & positioning", "X distribution & narrative control", "Community operations & contributor filtering", "Early-stage go-to-market execution"],
-    handle: "@Razzyox",
-    links: {
-      twitter: "https://x.com/Razzyox",
-      telegram: "https://t.me/RAZZY_OX"
-    },
-    image: razzyImage
-  }
 ];
 
 export function TeamSection() {
