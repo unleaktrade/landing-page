@@ -37,7 +37,7 @@ const teamMembers: TeamMember[] = [
       telegram: "https://t.me/whyvrafvr"
     },
     image: julienImage
-  },
+  }
 ];
 
 export function TeamSection() {
