@@ -8,6 +8,7 @@ import { SettlementProcess } from "./components/SettlementProcess";
 import { Economics } from "./components/Economics";
 import { TeamSection } from "./components/TeamSection";
 import { TeamPage } from "./components/TeamPage";
+import { BuilderPage } from "./components/BuilderPage";
 import { Roadmap } from "./components/Roadmap";
 import { FAQ } from "./components/FAQ";
 import { DiscordCTA } from "./components/DiscordCTA";
@@ -102,6 +103,16 @@ function FAQPage() {
   );
 }
 
+function BuilderPageWrapper() {
+  return (
+    <div className="min-h-screen bg-black text-white">
+      <Navigation />
+      <BuilderPage />
+      <Footer />
+    </div>
+  );
+}
+
 export default function App() {
   const [isWaitlistOpen, setIsWaitlistOpen] = useState(false);
 
@@ -141,6 +152,7 @@ export default function App() {
         <Route path="/activate/:token" element={<ActivateWaitlistPage />} />
         <Route path="/faq" element={<FAQPage />} />
         <Route path="/app" element={<WaitlistPage />}  />
+        <Route path="/builder" element={<BuilderPageWrapper />}  />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
       <WaitlistDialog open={isWaitlistOpen} onOpenChange={setIsWaitlistOpen} />

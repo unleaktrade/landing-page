@@ -40,7 +40,7 @@ const teamMembers: TeamMember[] = [
       telegram: "https://t.me/whyvrafvr"
     },
     image: julienImage
-  },
+  }
 ];
 
 export function TeamPage() {
@@ -78,10 +78,10 @@ export function TeamPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <p className="text-white/40 mb-4">Meet the team</p>
-            <h1 className="text-white mb-6">Protocol architecture meets growth execution.</h1>
+            <p className="text-white/40 mb-4">Meet the builder</p>
+            <h1 className="text-white mb-6">Building institutional-grade privacy from first principles.</h1>
             <p className="text-white/60 max-w-2xl mx-auto">
-              A lean, technical team building institutional-grade privacy infrastructure from first principles — deep protocol design paired with signal-led community growth.
+              An independent project by Julien SIE — combining deep protocol design with strategic vision to redefine crypto OTC trading.
             </p>
           </motion.div>
         </div>

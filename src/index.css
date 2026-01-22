@@ -2392,6 +2392,18 @@
     font-style: italic;
   }
 
+  .underline {
+    text-decoration-line: underline;
+  }
+
+  .decoration-dotted {
+    text-decoration-style: dotted;
+  }
+
+  .underline-offset-2 {
+    text-underline-offset: 2px;
+  }
+
   .underline-offset-4 {
     text-underline-offset: 4px;
   }
@@ -3168,6 +3180,12 @@
   }
 
   @media (width >= 40rem) {
+    .sm\:inline {
+      display: inline;
+    }
+  }
+
+  @media (width >= 40rem) {
     .sm\:max-w-lg {
       max-width: var(--container-lg);
     }
@@ -3194,6 +3212,12 @@
   @media (width >= 40rem) {
     .sm\:justify-end {
       justify-content: flex-end;
+    }
+  }
+
+  @media (width >= 40rem) {
+    .sm\:gap-3 {
+      gap: calc(var(--spacing) * 3);
     }
   }
 
