@@ -76,6 +76,28 @@ const faqData: FAQItem[] = [
       "On UnleakTrade, takers are bidders: they respond to a maker's RFQ by submitting bids/quotes during the commit/reveal auction. If a taker is selected, they must fund their side of the settlement (and pay the protocol fee, in USDC) within the funding time window.",
   },
   {
+    category: "Roles & Participants",
+    question: "Who is the facilitator on UnleakTrade?",
+    answer:
+      "A facilitator is an **optional** participant who helps connect makers and takers (for example by sourcing liquidity or coordinating off-chain relationships around an RFQ). They do not submit quotes, select winners, or settle trades. They can be designated at the RFQ level by the maker and at the quote level by the taker.",
+  },
+  {
+    category: "Roles & Participants",
+    question:
+      "Can a facilitator change RFQ state, deadlines, or outcomes?",
+    answer:
+      "No. Facilitators have **no special authority** over protocol logic. They cannot open/select/settle RFQs, bypass TTL deadlines, or alter outcomes. The on-chain state machine enforces transitions deterministically based on valid actions and timing rules.",
+  },
+  {
+    category: "Roles & Participants",
+    question: "When can facilitator addresses be set or updated?",
+    answer:
+      "Facilitator updates are state-gated:\n\n" +
+      "• The maker can set/clear the **RFQ facilitator** while the RFQ is in `Draft`, `Open`, `Committed`, or `Revealed`\n" +
+      "• A taker can set/clear the **quote facilitator** while the RFQ is in `Draft`, `Open`, `Committed`, `Revealed`, or `Selected`\n\n" +
+      "After settlement is completed, facilitator designation is effectively fixed and only reward claiming remains.",
+  },
+  {
     category: "Core Concepts",
     question: "What's a Quote vs a Bid vs an Auction?",
     answer:
@@ -111,6 +133,17 @@ const faqData: FAQItem[] = [
     question: 'What are "fees" on UnleakTrade?',
     answer:
       "A protocol fee is paid during funding/settlement: in the reference sequence, the selected taker deposits their settlement asset and pays a fee in **USDC (USD Coin)**, which is transferred to the UnleakTrade treasury. The exact fee amount/rate is a protocol parameter.",
+  },
+  {
+    category: "Economics & Incentives",
+    question: "How does the facilitator reward work?",
+    answer:
+      "Facilitator rewards are **optional** and only exist on successful settlement.\n\n" +
+      "A facilitator can claim a share of the taker fee only if:\n" +
+      "• the RFQ facilitator address is set\n" +
+      "• the selected quote facilitator is set\n" +
+      "• both addresses are the **same**\n\n" +
+      "When those conditions are met, treasury receives the taker fee minus facilitator share, and the facilitator claims the share after settlement via `withdraw_reward`. By default, facilitator share is configured at **1000 bps (10%)** of the taker fee (configurable by protocol settings).",
   },
   {
     category: "Economics & Incentives",
