@@ -18,7 +18,6 @@ import { WaitlistDialog } from "./components/WaitlistDialog";
 import { WaitlistPage } from "./components/WaitlistPage";
 import { ActivateWaitlist } from "./components/ActivateWaitlist";
 import { Toaster } from "sonner@2.0.3";
-import faviconImage from "figma:asset/77164cc6a58e276f88505209efc62dfe8b57b786.png";
 
 // Component to scroll to top on route change
 function ScrollToTop() {
@@ -115,29 +114,6 @@ function BuilderPageWrapper() {
 
 export default function App() {
   const [isWaitlistOpen, setIsWaitlistOpen] = useState(false);
-
-  useEffect(() => {
-    // Set document title
-    document.title = "UnleakTrade - Confidential OTC Trading on Solana";
-    
-    // Set favicon
-    const link = document.querySelector("link[rel*='icon']") || document.createElement('link');
-    link.type = 'image/png';
-    link.rel = 'icon';
-    link.href = faviconImage;
-    if (!document.querySelector("link[rel*='icon']")) {
-      document.head.appendChild(link);
-    }
-    
-    // Set meta description
-    let metaDescription = document.querySelector('meta[name="description"]');
-    if (!metaDescription) {
-      metaDescription = document.createElement('meta');
-      metaDescription.setAttribute('name', 'description');
-      document.head.appendChild(metaDescription);
-    }
-    metaDescription.setAttribute('content', 'Make crypto OTC private, fair, and trustless using Zero-Knowledge Proofs on Solana. Institutional-grade fairness for everyone.');
-  }, []);
 
   return (
     <BrowserRouter>
