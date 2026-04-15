@@ -68,12 +68,12 @@ export function WaitlistPage() {
     setIsSubmitting(true);
     setProgress(0);
 
+    let progressInterval: ReturnType<typeof setInterval> | undefined;
     try {
-      // Simulate progress
-      const progressInterval = setInterval(() => {
+      progressInterval = setInterval(() => {
         setProgress((prev) => {
           if (prev >= 90) {
-            clearInterval(progressInterval);
+            if (progressInterval) clearInterval(progressInterval);
             return 90;
           }
           return prev + 10;
@@ -94,8 +94,6 @@ export function WaitlistPage() {
           }),
         },
       );
-
-      clearInterval(progressInterval);
 
       if (response.status === 202) {
         const responseData = await response.json();
@@ -134,6 +132,7 @@ export function WaitlistPage() {
           "Unable to connect to the server. Please try again later.",
       });
     } finally {
+      if (progressInterval) clearInterval(progressInterval);
       setIsSubmitting(false);
     }
   };
