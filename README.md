@@ -1,92 +1,132 @@
 # 🛡️ UnleakTrade Landing Page
 
-Welcome to the official **UnleakTrade** landing page — a high-performance and visually engaging web experience designed to introduce the UnleakTrade ecosystem.
+The official **UnleakTrade** landing page — a fast, modern web experience introducing the UnleakTrade ecosystem: confidential OTC trading, RFQs, and trustless settlement on Solana.
 
 ---
 
 ## 🚀 Overview
 
-This project is built using **Vite** and **React**, focusing on speed, maintainability, and scalability.  
-It represents the public-facing entry point to the UnleakTrade platform and emphasizes performance, simplicity, and brand identity.
-
----
-
-## ✨ Features
-
-- ⚡ **Vite-powered** — instant hot reloads and optimized builds  
-- 🎨 **Modern design** following UnleakTrade’s dark aesthetic  
-- 📱 **Fully responsive** across devices  
-- 🧱 **Clean modular structure** for easy maintenance  
-- 🔧 **Automated CI/CD** with GitHub Actions — auto-deploys on commits to `main`  
+Single-page React application rendered client-side with React Router. Static marketing pages plus a waitlist registration + activation flow backed by a small external API.
 
 ---
 
 ## 🧰 Tech Stack
 
-| Layer | Technology |
-|-------|-------------|
-| Framework | [Vite](https://vitejs.dev/) + [React](https://react.dev/) |
-| Styling | Tailwind CSS |
-| Deployment | GitHub Pages (via GitHub Actions) |
-| Language | JavaScript / TypeScript |
+| Layer       | Technology                                                              |
+|-------------|-------------------------------------------------------------------------|
+| Build tool  | [Vite 8](https://vitejs.dev/) + [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react) |
+| UI          | [React 19](https://react.dev/) + TypeScript                             |
+| Routing     | [react-router-dom 7](https://reactrouter.com/)                          |
+| Styling     | Tailwind CSS + [Radix UI](https://www.radix-ui.com/) primitives (shadcn/ui) |
+| Animation   | [Motion](https://motion.dev/)                                           |
+| Forms       | [react-hook-form](https://react-hook-form.com/)                         |
+| Notifications | [sonner](https://sonner.emilkowal.ski/)                               |
+| Icons       | [lucide-react](https://lucide.dev/)                                     |
+| Web3 (validation) | [@solana/web3.js](https://solana-labs.github.io/solana-web3.js/)  |
+| Testing     | [Vitest 4](https://vitest.dev/) + [Testing Library](https://testing-library.com/) + jsdom + v8 coverage |
+| CI / Deploy | GitHub Actions → GitHub Pages                                           |
+
+**Node:** 22.x LTS (Vite 8 requires `>=20.19` or `>=22.12`).
 
 ---
 
 ## 🧭 Local Development
 
-Run the project locally for development and testing:
-
 ```bash
-# Clone the repository
 git clone https://github.com/unleaktrade/landing-page.git
 cd landing-page
 
-# Install dependencies
 npm install
-
-# Start the local server
 npm run dev
 ```
 
-The site will be available at [http://localhost:3000](http://localhost:3000).
+The dev server runs at [http://localhost:3000](http://localhost:3000).
+
+### Available scripts
+
+| Command             | Purpose                                                          |
+|---------------------|------------------------------------------------------------------|
+| `npm run dev`       | Vite dev server with HMR                                         |
+| `npm run build`     | Production build (output → `build/`)                             |
+| `npm test`          | Run the full test suite once                                     |
+| `npm run test:watch`| Watch mode for local TDD                                         |
+| `npm run coverage`  | Run tests with v8 coverage and enforce the 80% threshold         |
 
 ---
 
-## ⚙️ DevOps Pipeline
+## 🧪 Testing
 
-This project includes an **automated GitHub Actions workflow** that:  
+Vitest runs in a jsdom environment with Testing Library and a shared setup file (`src/test/setup.ts`) that shims `matchMedia`, `scrollTo`, `IntersectionObserver`, and `ResizeObserver`.
 
-- Builds the project on every push to the main branch  
-- Automatically deploys the latest version to **GitHub Pages**  
+Coverage thresholds are enforced at **80%** (lines / branches / functions / statements). The following paths are excluded as vendored or non-business code:
 
-No manual deployment steps are required — simply commit and push your changes.
+- `src/components/ui/**` — shadcn/ui primitives
+- `src/components/figma/**`
+- `src/assets/**`, `src/styles/**`, `src/guidelines/**`
+- `src/main.tsx`
+
+Coverage HTML report is written to `coverage/` after `npm run coverage`.
+
+---
+
+## 🗺️ Project structure
+
+```
+src/
+├── App.tsx                    # Router + top-level layout
+├── main.tsx                   # Entrypoint
+├── components/
+│   ├── <page sections>.tsx    # Hero, FAQ, Roadmap, Team, Waitlist…
+│   ├── ui/                    # shadcn/ui primitives (vendored)
+│   ├── figma/                 # Figma export helpers
+│   └── utils/validation.ts    # Email / Solana-address / SHA3 validators
+└── test/
+    ├── setup.ts               # jsdom shims + RTL cleanup
+    ├── routes.test.tsx        # Route-level mounts and navigation
+    ├── interactions.test.tsx  # Form submission, dialogs, accordions
+    ├── dead-components.test.tsx
+    └── smoke.test.tsx
+```
+
+---
+
+## ⚙️ CI / CD
+
+Two GitHub Actions workflows:
+
+- **`ci.yml`** — on push (non-main) and pull requests: installs deps, builds, runs tests with coverage. Coverage dropping below 80% fails the run.
+- **`deploy.yml`** — on push to `main`: builds and publishes to GitHub Pages (`unleak.trade`).
+
+No manual deployment — merging to `main` is the release.
 
 ---
 
 ## 🖼️ Branding
 
-The favicon and title are configured in the `index.html` file:
+The favicon and title are configured in `index.html`:
 
 ```html
-<title>UnleakTrade | Welcome</title>
+<title>UnleakTrade | Confidential Solana OTC Trading & RFQs</title>
 <link rel="icon" type="image/png" href="/favicon.png" />
 ```
 
-To update branding, replace the favicon in `public/favicon.png`.
-
----
+To change branding, replace `public/favicon.png` and update the `<title>` / meta tags in `index.html`.
 
 ---
 
 ## 🤝 Contributing
 
-Pull requests are welcome!
-Please follow conventional commit messages and open an issue before introducing major changes.
+Pull requests are welcome. Please:
+
+1. Open an issue before large changes.
+2. Keep `npm test` and `npm run build` green in your branch.
+3. Follow the existing commit style (subject mirrors the related GitHub issue title).
+
+---
 
 ## 📜 License
 
-This project is licensed under the **MIT License**.  
-See the `LICENSE` file for details.
+MIT — see the `LICENSE` file.
 
 ---
 
