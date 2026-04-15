@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useForm } from "react-hook-form@7.55.0";
+import { useForm } from "react-hook-form";
 import {
   Dialog,
   DialogContent,
@@ -10,7 +10,7 @@ import {
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Button } from "./ui/button";
-import { toast } from "sonner@2.0.3";
+import { toast } from "sonner";
 import { ExternalLink } from "lucide-react";
 import {
   isOnCurveAddress,

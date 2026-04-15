@@ -17,7 +17,7 @@ import { WorkInProgress } from "./components/WorkInProgress";
 import { WaitlistDialog } from "./components/WaitlistDialog";
 import { WaitlistPage } from "./components/WaitlistPage";
 import { ActivateWaitlist } from "./components/ActivateWaitlist";
-import { Toaster } from "sonner@2.0.3";
+import { Toaster } from "sonner";
 
 // Component to scroll to top on route change
 function ScrollToTop() {

@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { useForm } from "react-hook-form@7.55.0";
+import { useForm } from "react-hook-form";
 import { motion } from "motion/react";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Button } from "./ui/button";
-import { toast } from "sonner@2.0.3";
+import { toast } from "sonner";
 import { CheckCircle2, Lock, ExternalLink } from "lucide-react";
 import {
   isOnCurveAddress,
