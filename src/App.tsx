@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { Navigation } from "./components/Navigation";
+import { WarpField } from "./components/WarpField";
 import { Hero } from "./components/Hero";
 import { ValueProps } from "./components/ValueProps";
 import { HowItWorks } from "./components/HowItWorks";
@@ -41,7 +42,7 @@ function ScrollToTop() {
 
 function HomePage({ onOpenWaitlist }: { onOpenWaitlist: () => void }) {
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen text-white">
       <Navigation />
       <Hero onOpenWaitlist={onOpenWaitlist} />
       <ValueProps />
@@ -57,7 +58,7 @@ function HomePage({ onOpenWaitlist }: { onOpenWaitlist: () => void }) {
 
 function RoadmapPage() {
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen text-white">
       <Navigation />
       <Roadmap />
       <Footer />
@@ -67,7 +68,7 @@ function RoadmapPage() {
 
 function TeamPageWrapper() {
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen text-white">
       <Navigation />
       <TeamPage />
       <Footer />
@@ -77,7 +78,7 @@ function TeamPageWrapper() {
 
 function WorkInProgressPage() {
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen text-white">
       <Navigation />
       <WorkInProgress />
     </div>
@@ -86,7 +87,7 @@ function WorkInProgressPage() {
 
 function ActivateWaitlistPage() {
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen text-white">
       <ActivateWaitlist />
     </div>
   );
@@ -94,7 +95,7 @@ function ActivateWaitlistPage() {
 
 function FAQPage() {
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen text-white">
       <Navigation />
       <FAQ />
       <Footer />
@@ -104,7 +105,7 @@ function FAQPage() {
 
 function BuilderPageWrapper() {
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen text-white">
       <Navigation />
       <BuilderPage />
       <Footer />
@@ -117,6 +118,7 @@ export default function App() {
 
   return (
     <BrowserRouter>
+      <WarpField />
       <ScrollToTop />
       <Routes>
         <Route path="/" element={<HomePage onOpenWaitlist={() => setIsWaitlistOpen(true)} />} />
