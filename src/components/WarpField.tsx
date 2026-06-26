@@ -1,67 +1,300 @@
 import { useEffect, useRef } from "react";
 
 /**
- * NetworkField — a sharp, crypto-themed animated background.
+ * WarpField — a true 3D, crypto-themed animated background (WebGL).
  *
- * A structured mesh of geometric nodes (a settlement / liquidity network)
- * connected by crisp edges, with bright "packets" — transactions settling —
- * streaming along the edges. Nodes are laid out on a jittered grid so the
- * result reads as a network/ledger rather than a starfield, and they drift
- * gently for life.
+ * A structured 3D lattice of nodes (a settlement / liquidity network) wired by
+ * crisp edges, with bright "packets" — transactions settling — streaming along
+ * the edges. The whole volume slowly auto-orbits so depth and parallax read as
+ * genuinely three-dimensional. Rendered as a fixed, full-viewport,
+ * pointer-events-none backdrop behind the page content.
  *
- * Performance: nodes sit on a fixed grid with edges computed once. Every frame
- * draws just a single opaque clear, two batched edge strokes and two batched
- * node fills (grouped by colour), plus a handful of packet sprites — a few
- * draw calls total, regardless of node count. The loop pauses when the tab is
- * hidden and honours prefers-reduced-motion (renders one static frame).
+ * Why WebGL / why this shape:
+ *  - The scene lives in a resolution-independent 3D volume. A viewport resize
+ *    only updates the GL viewport + projection aspect — geometry is NEVER
+ *    regenerated. This structurally eliminates the previous mobile bug where
+ *    scrolling (which fires `resize` as the URL bar collapses) re-seeded the
+ *    mesh and made it flicker/redraw.
+ *  - All per-frame work lives on the GPU: geometry is uploaded once into static
+ *    buffers, and every frame only updates a handful of uniforms (an MVP matrix
+ *    + time). Node drift and packet travel run in the vertex shader, so the CPU
+ *    does almost nothing and there are just two draw calls (lines + points).
+ *  - Motion is purely time-driven, never bound to scroll position, so scrolling
+ *    is free of any rendering cost.
  *
- * Rendered as a fixed, full-viewport, pointer-events-none backdrop behind the
- * page content.
+ * Stability guardrails: DPR cap, ~30fps throttle, prefers-reduced-motion (one
+ * static frame), pause when the tab is hidden, WebGL context-loss recovery, and
+ * a graceful no-op fallback (opaque black canvas) when WebGL is unavailable.
  */
-const PURPLE: [number, number, number] = [139, 92, 246]; // #8B5CF6
-const CYAN: [number, number, number] = [14, 165, 233]; // #0EA5E9
+
+const PURPLE: [number, number, number] = [139 / 255, 92 / 255, 246 / 255]; // #8B5CF6
+const CYAN: [number, number, number] = [14 / 255, 165 / 255, 233 / 255]; // #0EA5E9
 
 const CFG = {
-  cell: 180, // grid cell size (CSS px) — node density
-  jitter: 0.4, // random offset as a fraction of a cell
-  maxLink: 1.5, // connect nodes within maxLink * cell (home distance)
-  drift: 8, // node drift amplitude (px)
-  driftSpeed: 0.22, // base drift angular speed (rad/s)
-  nodeSize: 2.3, // diamond half-size (px)
-  edgeAlpha: 0.09, // web brightness (faint)
-  nodeAlpha: 0.4,
-  packetRatio: 0.14, // packets per edge
-  packetSize: 1.3,
-  packetMinSpeed: 0.08, // t units / second
-  packetMaxSpeed: 0.22,
-  dprCap: 1.5, // sharp but bounded GPU upload for the fixed layer
-  fps: 30, // throttle the fixed-layer repaint (halves texture re-upload)
+  // lattice (resolution-independent 3D volume, centered on the origin)
+  nx: 9,
+  ny: 6,
+  nz: 5,
+  spacing: 0.42,
+  jitter: 0.07, // small, so the lattice reads as intentional — not random
+  maxLink: 1.6, // connect nodes within maxLink * spacing (axis + face diagonals)
+  // packets
+  packetRatio: 0.5, // packets per edge
+  packetMinSpeed: 0.04, // t units / second
+  packetMaxSpeed: 0.12,
+  // look
+  edgeBright: 0.5,
+  nodeBright: 0.95,
+  packetBright: 1.4,
+  nodeSize: 3.4, // base point size (px, before depth + DPR scaling)
+  packetSize: 3.0,
+  drift: 0.035, // node drift amplitude (world units)
+  // camera
+  fov: (55 * Math.PI) / 180,
+  camZ: 3.4, // camera distance from the origin
+  tilt: 0.4, // constant pitch (rad)
+  orbitSpeed: 0.09, // yaw angular speed (rad/s) — slow + calm
+  // perf
+  dprCap: 2,
+  fps: 30,
 };
 
-interface FieldNode {
-  hx: number;
-  hy: number;
-  x: number;
-  y: number;
-  phase: number;
-  sp: number;
-  ax: number;
-  ay: number;
-  cyan: boolean;
-}
-interface Edge {
-  a: number;
-  b: number;
-  cyan: boolean;
-}
-interface Packet {
-  edge: number;
-  t: number;
-  vt: number;
-  cyan: boolean;
+// --- tiny column-major mat4 helpers (no matrix library) ---
+type M4 = number[];
+
+function multiply(a: M4, b: M4): M4 {
+  const o = new Array(16) as M4;
+  for (let c = 0; c < 4; c++) {
+    for (let r = 0; r < 4; r++) {
+      o[c * 4 + r] =
+        a[r] * b[c * 4] +
+        a[4 + r] * b[c * 4 + 1] +
+        a[8 + r] * b[c * 4 + 2] +
+        a[12 + r] * b[c * 4 + 3];
+    }
+  }
+  return o;
 }
 
-const rgba = ([r, g, b]: number[], a: number) => `rgba(${r},${g},${b},${a})`;
+function perspective(fovy: number, aspect: number, near: number, far: number): M4 {
+  const f = 1 / Math.tan(fovy / 2);
+  const nf = 1 / (near - far);
+  return [
+    f / aspect, 0, 0, 0,
+    0, f, 0, 0,
+    0, 0, (far + near) * nf, -1,
+    0, 0, 2 * far * near * nf, 0,
+  ];
+}
+
+function rotationY(a: number): M4 {
+  const c = Math.cos(a);
+  const s = Math.sin(a);
+  return [c, 0, -s, 0, 0, 1, 0, 0, s, 0, c, 0, 0, 0, 0, 1];
+}
+
+function rotationX(a: number): M4 {
+  const c = Math.cos(a);
+  const s = Math.sin(a);
+  return [1, 0, 0, 0, 0, c, s, 0, 0, -s, c, 0, 0, 0, 0, 1];
+}
+
+function translation(x: number, y: number, z: number): M4 {
+  return [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, x, y, z, 1];
+}
+
+// --- shaders (WebGL1 / GLSL ES 1.0) ---
+const DISPLACE = `
+  vec3 displace(vec3 p, float ph){
+    return p + u_drift * vec3(
+      sin(u_time * 0.5 + ph),
+      cos(u_time * 0.45 + ph * 1.3),
+      sin(u_time * 0.4 + ph * 0.7));
+  }`;
+
+const POINT_VS = `
+  precision mediump float;
+  attribute vec3 a_a; attribute float a_pa;
+  attribute vec3 a_b; attribute float a_pb;
+  attribute float a_seed; attribute float a_speed;
+  attribute vec3 a_color; attribute float a_size;
+  uniform mat4 u_mvp; uniform float u_time; uniform float u_drift;
+  uniform float u_fade; uniform float u_pixelRatio;
+  varying vec3 v_color; varying float v_fade;
+  ${DISPLACE}
+  void main(){
+    float t = fract(a_seed + a_speed * u_time);
+    vec3 p = mix(displace(a_a, a_pa), displace(a_b, a_pb), t);
+    vec4 clip = u_mvp * vec4(p, 1.0);
+    gl_Position = clip;
+    float fade = clamp(u_fade / clip.w, 0.18, 1.0);
+    gl_PointSize = a_size * fade * u_pixelRatio;
+    v_color = a_color;
+    v_fade = fade;
+  }`;
+
+const POINT_FS = `
+  precision mediump float;
+  varying vec3 v_color; varying float v_fade;
+  void main(){
+    vec2 c = gl_PointCoord - 0.5;
+    float d = dot(c, c);
+    if (d > 0.25) discard;
+    float a = smoothstep(0.25, 0.0, d);
+    gl_FragColor = vec4(v_color * v_fade * a, 1.0);
+  }`;
+
+const LINE_VS = `
+  precision mediump float;
+  attribute vec3 a_pos; attribute float a_phase; attribute vec3 a_color;
+  uniform mat4 u_mvp; uniform float u_time; uniform float u_drift; uniform float u_fade;
+  varying vec3 v_color; varying float v_fade;
+  ${DISPLACE}
+  void main(){
+    vec3 p = displace(a_pos, a_phase);
+    vec4 clip = u_mvp * vec4(p, 1.0);
+    gl_Position = clip;
+    v_fade = clamp(u_fade / clip.w, 0.18, 1.0);
+    v_color = a_color;
+  }`;
+
+const LINE_FS = `
+  precision mediump float;
+  varying vec3 v_color; varying float v_fade;
+  void main(){ gl_FragColor = vec4(v_color * v_fade, 1.0); }`;
+
+const POINT_STRIDE = 14; // floats per point vertex
+const LINE_STRIDE = 7; // floats per line vertex
+
+interface Geometry {
+  pointData: Float32Array;
+  pointCount: number;
+  lineData: Float32Array;
+  lineCount: number; // edges (2 vertices each)
+}
+
+function buildGeometry(): Geometry {
+  const { nx, ny, nz, spacing, jitter } = CFG;
+  const rnd = (a: number, b: number) => a + Math.random() * (b - a);
+
+  interface N {
+    x: number;
+    y: number;
+    z: number;
+    phase: number;
+    col: [number, number, number];
+  }
+  const nodes: N[] = [];
+  const idx = new Int32Array(nx * ny * nz);
+  const at = (i: number, j: number, k: number) => i * ny * nz + j * nz + k;
+
+  for (let i = 0; i < nx; i++) {
+    for (let j = 0; j < ny; j++) {
+      for (let k = 0; k < nz; k++) {
+        nodes.push({
+          x: (i - (nx - 1) / 2) * spacing + rnd(-jitter, jitter),
+          y: (j - (ny - 1) / 2) * spacing + rnd(-jitter, jitter),
+          z: (k - (nz - 1) / 2) * spacing + rnd(-jitter, jitter),
+          phase: Math.random() * Math.PI * 2,
+          col: Math.random() < 0.5 ? CYAN : PURPLE,
+        });
+        idx[at(i, j, k)] = nodes.length - 1;
+      }
+    }
+  }
+
+  // structured edges: axis neighbours + face diagonals within range
+  const offs = [
+    [1, 0, 0],
+    [0, 1, 0],
+    [0, 0, 1],
+    [1, 1, 0],
+    [1, 0, 1],
+    [0, 1, 1],
+  ];
+  const maxD2 = (CFG.maxLink * spacing) ** 2;
+  const edges: Array<[number, number]> = [];
+  for (let i = 0; i < nx; i++) {
+    for (let j = 0; j < ny; j++) {
+      for (let k = 0; k < nz; k++) {
+        const a = nodes[idx[at(i, j, k)]];
+        for (const [di, dj, dk] of offs) {
+          const ni = i + di;
+          const nj = j + dj;
+          const nk = k + dk;
+          if (ni >= nx || nj >= ny || nk >= nz) continue;
+          const bIdx = idx[at(ni, nj, nk)];
+          const b = nodes[bIdx];
+          const dx = a.x - b.x;
+          const dy = a.y - b.y;
+          const dz = a.z - b.z;
+          if (dx * dx + dy * dy + dz * dz > maxD2) continue;
+          edges.push([idx[at(i, j, k)], bIdx]);
+        }
+      }
+    }
+  }
+
+  // packets ride a subset of edges, animated entirely in the vertex shader
+  interface P {
+    edge: number;
+    seed: number;
+    speed: number;
+  }
+  const packets: P[] = [];
+  const pc = Math.floor(edges.length * CFG.packetRatio);
+  for (let p = 0; p < pc; p++) {
+    packets.push({
+      edge: Math.floor(Math.random() * edges.length),
+      seed: Math.random(),
+      speed:
+        rnd(CFG.packetMinSpeed, CFG.packetMaxSpeed) *
+        (Math.random() < 0.5 ? 1 : -1),
+    });
+  }
+
+  // pack point buffer: nodes (static points), then packets (moving points)
+  const pointCount = nodes.length + packets.length;
+  const pointData = new Float32Array(pointCount * POINT_STRIDE);
+  let o = 0;
+  const pushPoint = (
+    ax: number, ay: number, az: number, pa: number,
+    bx: number, by: number, bz: number, pb: number,
+    seed: number, speed: number,
+    col: [number, number, number], bright: number, size: number
+  ) => {
+    pointData[o++] = ax; pointData[o++] = ay; pointData[o++] = az; pointData[o++] = pa;
+    pointData[o++] = bx; pointData[o++] = by; pointData[o++] = bz; pointData[o++] = pb;
+    pointData[o++] = seed; pointData[o++] = speed;
+    pointData[o++] = col[0] * bright; pointData[o++] = col[1] * bright; pointData[o++] = col[2] * bright;
+    pointData[o++] = size;
+  };
+  for (const n of nodes) {
+    pushPoint(n.x, n.y, n.z, n.phase, n.x, n.y, n.z, n.phase, 0, 0, n.col, CFG.nodeBright, CFG.nodeSize);
+  }
+  for (const p of packets) {
+    const a = nodes[edges[p.edge][0]];
+    const b = nodes[edges[p.edge][1]];
+    pushPoint(a.x, a.y, a.z, a.phase, b.x, b.y, b.z, b.phase, p.seed, p.speed, a.col, CFG.packetBright, CFG.packetSize);
+  }
+
+  // pack line buffer: 2 vertices per edge
+  const lineData = new Float32Array(edges.length * 2 * LINE_STRIDE);
+  let e = 0;
+  const pushLineVert = (n: N) => {
+    lineData[e++] = n.x; lineData[e++] = n.y; lineData[e++] = n.z; lineData[e++] = n.phase;
+    lineData[e++] = n.col[0] * CFG.edgeBright;
+    lineData[e++] = n.col[1] * CFG.edgeBright;
+    lineData[e++] = n.col[2] * CFG.edgeBright;
+  };
+  for (const [ai, bi] of edges) {
+    const a = nodes[ai];
+    pushLineVert(a); // both endpoints share endpoint A's colour for a clean edge
+    pushLineVert({ ...nodes[bi], col: a.col });
+  }
+
+  return { pointData, pointCount, lineData, lineCount: edges.length };
+}
 
 export function WarpField() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -69,196 +302,175 @@ export function WarpField() {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext("2d", { alpha: false });
-    if (!ctx) return;
+
+    const opts: WebGLContextAttributes = {
+      alpha: false,
+      antialias: true,
+      depth: false,
+      premultipliedAlpha: true,
+      powerPreference: "low-power",
+      failIfMajorPerformanceCaveat: false,
+    };
+    const gl = (canvas.getContext("webgl", opts) ||
+      canvas.getContext("experimental-webgl", opts)) as WebGLRenderingContext | null;
+    // Bail gracefully when WebGL is unavailable (or under a non-WebGL test mock).
+    // The opaque black canvas keeps the page looking correct.
+    if (!gl || typeof gl.createProgram !== "function") return;
 
     const reduceMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
     ).matches;
 
-    let W = 0;
-    let H = 0;
-    let nodes: FieldNode[] = [];
-    let edges: Edge[] = [];
-    let packets: Packet[] = [];
+    // geometry is generated once and reused across context-loss restores
+    const geo = buildGeometry();
 
-    const rand = (a: number, b: number) => a + Math.random() * (b - a);
+    // --- GL resources (recreated on context restore) ---
+    let pointProg: WebGLProgram | null = null;
+    let lineProg: WebGLProgram | null = null;
+    let pointBuf: WebGLBuffer | null = null;
+    let lineBuf: WebGLBuffer | null = null;
+    let glReady = false;
 
-    function build() {
-      W = window.innerWidth;
-      H = window.innerHeight;
+    const pLoc: Record<string, number> = {};
+    const lLoc: Record<string, number> = {};
+    const pUni: Record<string, WebGLUniformLocation | null> = {};
+    const lUni: Record<string, WebGLUniformLocation | null> = {};
+
+    const compile = (type: number, src: string) => {
+      const sh = gl.createShader(type)!;
+      gl.shaderSource(sh, src);
+      gl.compileShader(sh);
+      return sh;
+    };
+    const linkProg = (vs: string, fs: string) => {
+      const p = gl.createProgram()!;
+      gl.attachShader(p, compile(gl.VERTEX_SHADER, vs));
+      gl.attachShader(p, compile(gl.FRAGMENT_SHADER, fs));
+      gl.linkProgram(p);
+      return p;
+    };
+
+    function setupGL() {
+      pointProg = linkProg(POINT_VS, POINT_FS);
+      lineProg = linkProg(LINE_VS, LINE_FS);
+
+      for (const a of ["a_a", "a_pa", "a_b", "a_pb", "a_seed", "a_speed", "a_color", "a_size"])
+        pLoc[a] = gl.getAttribLocation(pointProg, a);
+      for (const u of ["u_mvp", "u_time", "u_drift", "u_fade", "u_pixelRatio"])
+        pUni[u] = gl.getUniformLocation(pointProg, u);
+      for (const a of ["a_pos", "a_phase", "a_color"])
+        lLoc[a] = gl.getAttribLocation(lineProg, a);
+      for (const u of ["u_mvp", "u_time", "u_drift", "u_fade"])
+        lUni[u] = gl.getUniformLocation(lineProg, u);
+
+      pointBuf = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, pointBuf);
+      gl.bufferData(gl.ARRAY_BUFFER, geo.pointData, gl.STATIC_DRAW);
+
+      lineBuf = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, lineBuf);
+      gl.bufferData(gl.ARRAY_BUFFER, geo.lineData, gl.STATIC_DRAW);
+
+      gl.disable(gl.DEPTH_TEST);
+      gl.enable(gl.BLEND);
+      gl.blendFunc(gl.ONE, gl.ONE); // additive glow
+      gl.clearColor(0, 0, 0, 1);
+      glReady = true;
+    }
+
+    // --- sizing: resolution-independent scene, so resize is cheap ---
+    let proj: M4 = perspective(CFG.fov, 1, 0.1, 100);
+    let pixelRatio = 1;
+    let lastW = -1;
+
+    function resize() {
       const dpr = Math.min(window.devicePixelRatio || 1, CFG.dprCap);
-      canvas.width = Math.floor(W * dpr);
-      canvas.height = Math.floor(H * dpr);
-      ctx!.setTransform(dpr, 0, 0, dpr, 0, 0);
-
-      const cell = CFG.cell;
-      const cols = Math.ceil(W / cell) + 2;
-      const rows = Math.ceil(H / cell) + 2;
-      const jit = cell * CFG.jitter;
-
-      nodes = [];
-      const idx: number[][] = [];
-      for (let r = 0; r < rows; r++) {
-        idx[r] = [];
-        for (let c = 0; c < cols; c++) {
-          const hx = c * cell - cell / 2 + rand(-jit, jit);
-          const hy = r * cell - cell / 2 + rand(-jit, jit);
-          idx[r][c] = nodes.length;
-          nodes.push({
-            hx,
-            hy,
-            x: hx,
-            y: hy,
-            phase: Math.random() * Math.PI * 2,
-            sp: CFG.driftSpeed * rand(0.6, 1.4),
-            ax: CFG.drift * rand(0.5, 1),
-            ay: CFG.drift * rand(0.5, 1),
-            cyan: Math.random() < 0.5,
-          });
-        }
-      }
-
-      // connect each node to right / down / diagonal neighbours within range
-      const maxD = CFG.maxLink * cell;
-      const maxD2 = maxD * maxD;
-      edges = [];
-      const neigh = [
-        [0, 1],
-        [1, 0],
-        [1, 1],
-        [1, -1],
-      ];
-      for (let r = 0; r < rows; r++) {
-        for (let c = 0; c < cols; c++) {
-          const ai = idx[r][c];
-          const a = nodes[ai];
-          for (const [dr, dc] of neigh) {
-            const nr = r + dr;
-            const nc = c + dc;
-            if (nr < 0 || nr >= rows || nc < 0 || nc >= cols) continue;
-            const bi = idx[nr][nc];
-            const b = nodes[bi];
-            const dx = a.hx - b.hx;
-            const dy = a.hy - b.hy;
-            if (dx * dx + dy * dy > maxD2) continue;
-            edges.push({ a: ai, b: bi, cyan: a.cyan });
-          }
-        }
-      }
-
-      // seed packets on a subset of edges
-      packets = [];
-      const count = Math.floor(edges.length * CFG.packetRatio);
-      for (let i = 0; i < count; i++) {
-        const edge = Math.floor(Math.random() * edges.length);
-        packets.push({
-          edge,
-          t: Math.random(),
-          vt:
-            rand(CFG.packetMinSpeed, CFG.packetMaxSpeed) *
-            (Math.random() < 0.5 ? 1 : -1),
-          cyan: edges[edge].cyan,
-        });
-      }
+      pixelRatio = dpr;
+      const cssW = window.innerWidth;
+      // Use a STABLE height (largest plausible viewport) so the mobile URL bar
+      // collapsing/expanding during scroll never resizes the drawing buffer.
+      const cssH = Math.max(
+        window.innerHeight,
+        document.documentElement.clientHeight || 0,
+        window.screen ? window.screen.height : 0
+      );
+      canvas.width = Math.floor(cssW * dpr);
+      canvas.height = Math.floor(cssH * dpr);
+      gl.viewport(0, 0, canvas.width, canvas.height);
+      proj = perspective(CFG.fov, cssW / cssH, 0.1, 100);
+      lastW = cssW;
     }
 
-    function drawEdges(cyan: boolean) {
-      ctx!.beginPath();
-      for (const e of edges) {
-        if (e.cyan !== cyan) continue;
-        const a = nodes[e.a];
-        const b = nodes[e.b];
-        ctx!.moveTo(a.x, a.y);
-        ctx!.lineTo(b.x, b.y);
-      }
-      ctx!.strokeStyle = rgba(cyan ? CYAN : PURPLE, CFG.edgeAlpha);
-      ctx!.lineWidth = 1;
-      ctx!.stroke();
+    function bindAttrib(loc: number, size: number, strideFloats: number, offsetFloats: number) {
+      if (loc < 0) return;
+      gl.enableVertexAttribArray(loc);
+      gl.vertexAttribPointer(loc, size, gl.FLOAT, false, strideFloats * 4, offsetFloats * 4);
+    }
+    const disableAttribs = (loc: Record<string, number>) => {
+      for (const k in loc) if (loc[k] >= 0) gl.disableVertexAttribArray(loc[k]);
+    };
+
+    function draw(time: number) {
+      if (!glReady) return;
+      const model = multiply(rotationX(CFG.tilt), rotationY(time * CFG.orbitSpeed));
+      const view = translation(0, 0, -CFG.camZ);
+      const mvp = multiply(proj, multiply(view, model));
+
+      gl.clear(gl.COLOR_BUFFER_BIT);
+
+      // edges
+      gl.useProgram(lineProg);
+      gl.uniformMatrix4fv(lUni.u_mvp, false, mvp);
+      gl.uniform1f(lUni.u_time, time);
+      gl.uniform1f(lUni.u_drift, CFG.drift);
+      gl.uniform1f(lUni.u_fade, CFG.camZ);
+      gl.bindBuffer(gl.ARRAY_BUFFER, lineBuf);
+      bindAttrib(lLoc.a_pos, 3, LINE_STRIDE, 0);
+      bindAttrib(lLoc.a_phase, 1, LINE_STRIDE, 3);
+      bindAttrib(lLoc.a_color, 3, LINE_STRIDE, 4);
+      gl.lineWidth(1);
+      gl.drawArrays(gl.LINES, 0, geo.lineCount * 2);
+      disableAttribs(lLoc);
+
+      // nodes + packets
+      gl.useProgram(pointProg);
+      gl.uniformMatrix4fv(pUni.u_mvp, false, mvp);
+      gl.uniform1f(pUni.u_time, time);
+      gl.uniform1f(pUni.u_drift, CFG.drift);
+      gl.uniform1f(pUni.u_fade, CFG.camZ);
+      gl.uniform1f(pUni.u_pixelRatio, pixelRatio);
+      gl.bindBuffer(gl.ARRAY_BUFFER, pointBuf);
+      bindAttrib(pLoc.a_a, 3, POINT_STRIDE, 0);
+      bindAttrib(pLoc.a_pa, 1, POINT_STRIDE, 3);
+      bindAttrib(pLoc.a_b, 3, POINT_STRIDE, 4);
+      bindAttrib(pLoc.a_pb, 1, POINT_STRIDE, 7);
+      bindAttrib(pLoc.a_seed, 1, POINT_STRIDE, 8);
+      bindAttrib(pLoc.a_speed, 1, POINT_STRIDE, 9);
+      bindAttrib(pLoc.a_color, 3, POINT_STRIDE, 10);
+      bindAttrib(pLoc.a_size, 1, POINT_STRIDE, 13);
+      gl.drawArrays(gl.POINTS, 0, geo.pointCount);
+      disableAttribs(pLoc);
     }
 
-    function drawNodes(cyan: boolean) {
-      const s = CFG.nodeSize;
-      ctx!.beginPath();
-      for (const n of nodes) {
-        if (n.cyan !== cyan) continue;
-        ctx!.moveTo(n.x, n.y - s);
-        ctx!.lineTo(n.x + s, n.y);
-        ctx!.lineTo(n.x, n.y + s);
-        ctx!.lineTo(n.x - s, n.y);
-        ctx!.closePath();
-      }
-      ctx!.fillStyle = rgba(cyan ? CYAN : PURPLE, CFG.nodeAlpha);
-      ctx!.fill();
-    }
-
-    function drawFrame(dt: number, time: number) {
-      // gentle node drift
-      for (const n of nodes) {
-        n.x = n.hx + Math.sin(time * n.sp + n.phase) * n.ax;
-        n.y = n.hy + Math.cos(time * n.sp * 0.9 + n.phase) * n.ay;
-      }
-
-      ctx!.globalCompositeOperation = "source-over";
-      ctx!.fillStyle = "#000";
-      ctx!.fillRect(0, 0, W, H);
-
-      drawEdges(false);
-      drawEdges(true);
-      drawNodes(false);
-      drawNodes(true);
-
-      // packets — bright transactions streaming along edges (additive glints)
-      ctx!.globalCompositeOperation = "lighter";
-      const ps = CFG.packetSize;
-      for (const p of packets) {
-        p.t += p.vt * dt;
-        if (p.t > 1) p.t -= 1;
-        else if (p.t < 0) p.t += 1;
-        const e = edges[p.edge];
-        const a = nodes[e.a];
-        const b = nodes[e.b];
-        const x = a.x + (b.x - a.x) * p.t;
-        const y = a.y + (b.y - a.y) * p.t;
-        const col = p.cyan ? CYAN : PURPLE;
-        // short comet trail along the edge
-        const tt = p.t - 0.06 * Math.sign(p.vt);
-        const xt = a.x + (b.x - a.x) * tt;
-        const yt = a.y + (b.y - a.y) * tt;
-        ctx!.strokeStyle = rgba(col, 0.45);
-        ctx!.lineWidth = 1.2;
-        ctx!.beginPath();
-        ctx!.moveTo(xt, yt);
-        ctx!.lineTo(x, y);
-        ctx!.stroke();
-        ctx!.fillStyle = rgba(col, 0.9);
-        ctx!.fillRect(x - ps, y - ps, ps * 2, ps * 2);
-      }
-      ctx!.globalCompositeOperation = "source-over";
-    }
-
-    // --- run loop, throttled to CFG.fps and paused when the tab is hidden ---
+    // --- run loop: throttled to CFG.fps, paused when the tab is hidden ---
     const minInterval = 1000 / CFG.fps;
     let rafId = 0;
     let running = false;
-    let prev = 0;
+    let startTime = 0;
     let lastDraw = 0;
-    let time = 0;
 
     const tick = (now: number) => {
       if (!running) return;
       rafId = requestAnimationFrame(tick);
       if (now - lastDraw < minInterval) return; // throttle the repaint
-      const dt = Math.min(0.05, (now - prev) / 1000 || 0);
-      prev = now;
       lastDraw = now;
-      time += dt;
-      drawFrame(dt, time);
+      draw((now - startTime) / 1000);
     };
     const start = () => {
-      if (running || reduceMotion) return;
+      if (running || reduceMotion || !glReady) return;
       running = true;
-      prev = performance.now();
+      startTime = performance.now();
+      lastDraw = 0;
       rafId = requestAnimationFrame(tick);
     };
     const stop = () => {
@@ -267,31 +479,50 @@ export function WarpField() {
       rafId = 0;
     };
 
-    build();
-
-    if (reduceMotion) {
-      drawFrame(0, 0); // single static frame
-    } else {
-      start();
-    }
+    setupGL();
+    resize();
+    if (reduceMotion) draw(0); // single static frame
+    else start();
 
     let resizeRaf = 0;
     const onResize = () => {
+      // Only react to WIDTH changes (orientation / desktop resize). Height-only
+      // changes from the mobile URL bar must NOT rebuild anything.
+      if (window.innerWidth === lastW) return;
       cancelAnimationFrame(resizeRaf);
-      resizeRaf = requestAnimationFrame(() => build());
+      resizeRaf = requestAnimationFrame(() => {
+        resize();
+        if (reduceMotion) draw(0);
+      });
     };
     const onVisibility = () => {
       if (document.hidden) stop();
       else start();
     };
+    const onLost = (e: Event) => {
+      e.preventDefault();
+      stop();
+      glReady = false;
+    };
+    const onRestored = () => {
+      setupGL();
+      resize();
+      if (reduceMotion) draw(0);
+      else start();
+    };
+
     window.addEventListener("resize", onResize);
     document.addEventListener("visibilitychange", onVisibility);
+    canvas.addEventListener("webglcontextlost", onLost, false);
+    canvas.addEventListener("webglcontextrestored", onRestored, false);
 
     return () => {
       stop();
       cancelAnimationFrame(resizeRaf);
       window.removeEventListener("resize", onResize);
       document.removeEventListener("visibilitychange", onVisibility);
+      canvas.removeEventListener("webglcontextlost", onLost);
+      canvas.removeEventListener("webglcontextrestored", onRestored);
     };
   }, []);
 
