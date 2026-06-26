@@ -22,7 +22,7 @@ const PURPLE: [number, number, number] = [139, 92, 246]; // #8B5CF6
 const CYAN: [number, number, number] = [14, 165, 233]; // #0EA5E9
 
 const CFG = {
-  cell: 160, // grid cell size (CSS px) — node density
+  cell: 180, // grid cell size (CSS px) — node density
   jitter: 0.4, // random offset as a fraction of a cell
   maxLink: 1.5, // connect nodes within maxLink * cell (home distance)
   drift: 8, // node drift amplitude (px)
@@ -30,11 +30,12 @@ const CFG = {
   nodeSize: 2.3, // diamond half-size (px)
   edgeAlpha: 0.09, // web brightness (faint)
   nodeAlpha: 0.4,
-  packetRatio: 0.22, // packets per edge
+  packetRatio: 0.14, // packets per edge
   packetSize: 1.3,
   packetMinSpeed: 0.08, // t units / second
   packetMaxSpeed: 0.22,
-  dprCap: 2, // keep it sharp on hi-dpi, but bounded
+  dprCap: 1.5, // sharp but bounded GPU upload for the fixed layer
+  fps: 30, // throttle the fixed-layer repaint (halves texture re-upload)
 };
 
 interface FieldNode {
@@ -236,19 +237,23 @@ export function WarpField() {
       ctx!.globalCompositeOperation = "source-over";
     }
 
-    // --- run loop, paused when the tab is hidden ---
+    // --- run loop, throttled to CFG.fps and paused when the tab is hidden ---
+    const minInterval = 1000 / CFG.fps;
     let rafId = 0;
     let running = false;
     let prev = 0;
+    let lastDraw = 0;
     let time = 0;
 
     const tick = (now: number) => {
       if (!running) return;
+      rafId = requestAnimationFrame(tick);
+      if (now - lastDraw < minInterval) return; // throttle the repaint
       const dt = Math.min(0.05, (now - prev) / 1000 || 0);
       prev = now;
+      lastDraw = now;
       time += dt;
       drawFrame(dt, time);
-      rafId = requestAnimationFrame(tick);
     };
     const start = () => {
       if (running || reduceMotion) return;
@@ -294,7 +299,11 @@ export function WarpField() {
     <canvas
       ref={canvasRef}
       aria-hidden="true"
-      className="fixed inset-0 w-full h-full -z-10 pointer-events-none"
+      // Explicit negative z-index (the `-z-10` utility does not apply here) so
+      // this opaque fixed layer composites *below* the scrolling page content.
+      // The black background avoids any flash before the first canvas paint.
+      style={{ zIndex: -1, backgroundColor: "#000" }}
+      className="fixed inset-0 w-full h-full pointer-events-none"
     />
   );
 }

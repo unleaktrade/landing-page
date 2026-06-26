@@ -6,7 +6,7 @@ export function WorkInProgress() {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-black flex items-center justify-center px-6">
+    <div className="min-h-screen flex items-center justify-center px-6">
       <div className="max-w-2xl w-full text-center">
         {/* Animated icon */}
         <motion.div
