@@ -127,6 +127,13 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  /* Black base behind the fixed NetworkField backdrop (prevents any flash on
+     pages whose wrapper background is transparent). */
+  html,
+  body {
+    background-color: #000;
+  }
 }
 
 /**

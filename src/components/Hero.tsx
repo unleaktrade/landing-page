@@ -1,6 +1,5 @@
 import { motion } from "motion/react";
 import logoImage from "../assets/fdbafc2f1e7edb4d213deafbca8c80c666dccbae.png";
-import { WarpField } from "./WarpField";
 
 interface HeroProps {
   onOpenWaitlist?: () => void;
@@ -9,9 +8,6 @@ interface HeroProps {
 export function Hero({ onOpenWaitlist }: HeroProps) {
   return (
     <section className="relative pt-32 pb-20 px-6 lg:px-8 overflow-hidden">
-      {/* Discreet animated warp-network background (hero only, pauses off-screen) */}
-      <WarpField />
-
       {/* Subtle gradient orbs - positioned lower to avoid logo overlap */}
       <div className="absolute top-[400px] left-1/4 w-96 h-96 bg-purple-600/10 rounded-full blur-3xl" />
       <div className="absolute top-[450px] right-1/4 w-96 h-96 bg-cyan-400/10 rounded-full blur-3xl" />

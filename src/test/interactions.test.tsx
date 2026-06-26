@@ -184,6 +184,8 @@ describe('Navigation', () => {
       beginPath: vi.fn(),
       moveTo: vi.fn(),
       lineTo: vi.fn(),
+      closePath: vi.fn(),
+      fill: vi.fn(),
       stroke: vi.fn(),
       drawImage: vi.fn(),
       createRadialGradient: vi.fn(() => ({ addColorStop: vi.fn() })),

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { Navigation } from "./components/Navigation";
+import { WarpField } from "./components/WarpField";
 import { Hero } from "./components/Hero";
 import { ValueProps } from "./components/ValueProps";
 import { HowItWorks } from "./components/HowItWorks";
@@ -41,7 +42,8 @@ function ScrollToTop() {
 
 function HomePage({ onOpenWaitlist }: { onOpenWaitlist: () => void }) {
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen text-white">
+      <WarpField />
       <Navigation />
       <Hero onOpenWaitlist={onOpenWaitlist} />
       <ValueProps />
