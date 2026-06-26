@@ -171,7 +171,8 @@ describe('Navigation', () => {
   });
 
   it('opens the mobile menu when hamburger is clicked and mounts the animated canvas', async () => {
-    // Provide a fake 2D context so MovingSquares runs its full effect
+    // Provide a fake 2D context so the animated canvases (MovingSquares and
+    // the global WarpField background) run their full effect.
     const ctx = {
       setTransform: vi.fn(),
       clearRect: vi.fn(),
@@ -180,8 +181,17 @@ describe('Navigation', () => {
       rotate: vi.fn(),
       fillRect: vi.fn(),
       restore: vi.fn(),
+      beginPath: vi.fn(),
+      moveTo: vi.fn(),
+      lineTo: vi.fn(),
+      stroke: vi.fn(),
+      drawImage: vi.fn(),
+      createRadialGradient: vi.fn(() => ({ addColorStop: vi.fn() })),
       set fillStyle(_v: unknown) {},
+      set strokeStyle(_v: unknown) {},
       set globalAlpha(_v: unknown) {},
+      set globalCompositeOperation(_v: unknown) {},
+      set lineWidth(_v: unknown) {},
     };
     const getContextSpy = vi
       .spyOn(HTMLCanvasElement.prototype, 'getContext')
