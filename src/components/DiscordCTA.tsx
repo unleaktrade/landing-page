@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion } from "motion/react";
-import solanaLogo from "figma:asset/af0a6579392a99988c0ab693570446ed86a64fec.png";
+import solanaLogo from "../assets/af0a6579392a99988c0ab693570446ed86a64fec.png";
 import { WaitlistDialog } from "./WaitlistDialog";
 
 export function DiscordCTA() {

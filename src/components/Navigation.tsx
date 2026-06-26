@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { Menu, X, QrCode } from "lucide-react";
-import logoImage from "figma:asset/fdbafc2f1e7edb4d213deafbca8c80c666dccbae.png";
+import logoImage from "../assets/fdbafc2f1e7edb4d213deafbca8c80c666dccbae.png";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
 import { QRCodeDialog } from "./QRCodeDialog";
 

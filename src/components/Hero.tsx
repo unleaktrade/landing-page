@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import logoImage from "figma:asset/fdbafc2f1e7edb4d213deafbca8c80c666dccbae.png";
+import logoImage from "../assets/fdbafc2f1e7edb4d213deafbca8c80c666dccbae.png";
 
 interface HeroProps {
   onOpenWaitlist?: () => void;

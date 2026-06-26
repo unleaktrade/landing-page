@@ -5,7 +5,7 @@ import { Button } from "./ui/button";
 import { toast } from "sonner";
 import { Copy, Check, Share2, Download, ExternalLink } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
-import logoImage from "figma:asset/77164cc6a58e276f88505209efc62dfe8b57b786.png";
+import logoImage from "../assets/77164cc6a58e276f88505209efc62dfe8b57b786.png";
 
 interface QRCodeDialogProps {
   open: boolean;

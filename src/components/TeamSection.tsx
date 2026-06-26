@@ -1,7 +1,7 @@
 import { motion } from "motion/react";
 import { useNavigate } from "react-router-dom";
 import { Linkedin, Twitter, Github, Send, Hash } from "lucide-react";
-import julienImage from "figma:asset/524423e86081819620c9996fd40046b079ec4ba8.png";
+import julienImage from "../assets/524423e86081819620c9996fd40046b079ec4ba8.png";
 
 interface TeamMember {
   name: string;
