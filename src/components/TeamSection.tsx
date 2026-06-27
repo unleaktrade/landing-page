@@ -78,7 +78,7 @@ export function TeamSection() {
               {/* Card - clickable to team page */}
               <div
                 onClick={() => navigate(`/team/${member.name.toLowerCase().replace(/\s+/g, '-')}`)}
-                className="relative h-full bg-white/[0.02] border border-white/10 rounded-2xl p-6 hover:border-white/20 transition-all duration-300 cursor-pointer"
+                className="relative h-full bg-white/[0.03] backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:border-white/20 transition-all duration-300 cursor-pointer"
               >
                 {/* Gradient glow on hover */}
                 <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-purple-500/10 via-cyan-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />

@@ -15,7 +15,7 @@ export function DiscordCTA() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="relative p-12 lg:p-16 rounded-3xl border border-white/10 bg-gradient-to-br from-purple-600/5 via-transparent to-cyan-400/5 overflow-hidden"
+            className="relative p-12 lg:p-16 rounded-3xl border border-white/10 bg-white/[0.03] backdrop-blur-sm overflow-hidden"
           >
             {/* Background gradient effect */}
             <div className="absolute inset-0 bg-gradient-to-br from-purple-600/10 to-cyan-400/10 opacity-0 group-hover:opacity-100 transition-opacity" />
