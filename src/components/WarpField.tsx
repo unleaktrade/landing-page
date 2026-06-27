@@ -1,300 +1,143 @@
 import { useEffect, useRef } from "react";
 
 /**
- * WarpField — a true 3D, crypto-themed animated background (WebGL).
+ * WarpField — a dark hexagonal-honeycomb animated background (WebGL).
  *
- * A structured 3D lattice of nodes (a settlement / liquidity network) wired by
- * crisp edges, with bright "packets" — transactions settling — streaming along
- * the edges. The whole volume slowly auto-orbits so depth and parallax read as
- * genuinely three-dimensional. Rendered as a fixed, full-viewport,
- * pointer-events-none backdrop behind the page content.
+ * Near-black hex tiles separated by thin glowing seams in the brand's
+ * purple→cyan range, with a soft bevel, a few subtly brighter "raised" tiles,
+ * faint sparkle specks and a gentle vignette — a calm, even, crypto-grid
+ * backdrop. Rendered as a fixed, full-viewport, pointer-events-none layer
+ * behind the page content.
  *
- * Why WebGL / why this shape:
- *  - The scene lives in a resolution-independent 3D volume. A viewport resize
- *    only updates the GL viewport + projection aspect — geometry is NEVER
- *    regenerated. This structurally eliminates the previous mobile bug where
- *    scrolling (which fires `resize` as the URL bar collapses) re-seeded the
- *    mesh and made it flicker/redraw.
- *  - All per-frame work lives on the GPU: geometry is uploaded once into static
- *    buffers, and every frame only updates a handful of uniforms (an MVP matrix
- *    + time). Node drift and packet travel run in the vertex shader, so the CPU
- *    does almost nothing and there are just two draw calls (lines + points).
- *  - Motion is purely time-driven, never bound to scroll position, so scrolling
- *    is free of any rendering cost.
+ * Why this shape / why a fullscreen shader:
+ *  - The honeycomb is drawn procedurally by a single fullscreen-quad fragment
+ *    shader, so coverage is perfectly EVEN everywhere — there are no moving
+ *    geometry gaps (which is what produced the "black blocks/voids" of the
+ *    earlier 3D node-mesh version).
+ *  - One draw call, no vertex geometry, all work on the GPU. Per frame only two
+ *    uniforms change (time + resolution). The CPU does essentially nothing.
+ *  - Motion is purely time-driven, never bound to scroll. A viewport resize only
+ *    updates the GL viewport + a resolution uniform — nothing is rebuilt — so the
+ *    mobile URL bar collapsing/expanding during scroll can never cause a
+ *    flicker/redraw (the original issue #30 bug).
  *
  * Stability guardrails: DPR cap, ~30fps throttle, prefers-reduced-motion (one
  * static frame), pause when the tab is hidden, WebGL context-loss recovery, and
  * a graceful no-op fallback (opaque black canvas) when WebGL is unavailable.
  */
 
-const PURPLE: [number, number, number] = [139 / 255, 92 / 255, 246 / 255]; // #8B5CF6
-const CYAN: [number, number, number] = [14 / 255, 165 / 255, 233 / 255]; // #0EA5E9
+const PURPLE = "vec3(0.545, 0.361, 0.965)"; // #8B5CF6
+const CYAN = "vec3(0.055, 0.647, 0.914)"; // #0EA5E9
 
 const CFG = {
-  // lattice (resolution-independent 3D volume, centered on the origin)
-  nx: 9,
-  ny: 6,
-  nz: 5,
-  spacing: 0.42,
-  jitter: 0.07, // small, so the lattice reads as intentional — not random
-  maxLink: 1.6, // connect nodes within maxLink * spacing (axis + face diagonals)
-  // packets
-  packetRatio: 0.5, // packets per edge
-  packetMinSpeed: 0.04, // t units / second
-  packetMaxSpeed: 0.12,
-  // look
-  edgeBright: 0.5,
-  nodeBright: 0.95,
-  packetBright: 1.4,
-  nodeSize: 3.4, // base point size (px, before depth + DPR scaling)
-  packetSize: 3.0,
-  drift: 0.035, // node drift amplitude (world units)
-  // camera
-  fov: (55 * Math.PI) / 180,
-  camZ: 3.4, // camera distance from the origin
-  tilt: 0.4, // constant pitch (rad)
-  orbitSpeed: 0.09, // yaw angular speed (rad/s) — slow + calm
-  // perf
+  hexScale: 9.0, // ~hex rows across the viewport height (density)
+  seamWidth: 0.085, // glow band width near the tile border (< 0.5)
+  master: 0.8, // master glow intensity — lower = darker
+  fillBright: 0.18, // faint top-surface fill on raised tiles
+  pulseSpeed: 0.6, // per-tile shimmer speed
+  raisedFrac: 0.14, // fraction of brighter / "raised" tiles
+  sparkle: 0.5, // sparkle-speck strength
+  starDensity: 26.0, // sparkle grid density
+  drift: 0.012, // ultra-slow whole-field drift
   dprCap: 2,
   fps: 30,
 };
 
-// --- tiny column-major mat4 helpers (no matrix library) ---
-type M4 = number[];
+const f = (n: number) => n.toFixed(6);
 
-function multiply(a: M4, b: M4): M4 {
-  const o = new Array(16) as M4;
-  for (let c = 0; c < 4; c++) {
-    for (let r = 0; r < 4; r++) {
-      o[c * 4 + r] =
-        a[r] * b[c * 4] +
-        a[4 + r] * b[c * 4 + 1] +
-        a[8 + r] * b[c * 4 + 2] +
-        a[12 + r] * b[c * 4 + 3];
-    }
-  }
-  return o;
-}
-
-function perspective(fovy: number, aspect: number, near: number, far: number): M4 {
-  const f = 1 / Math.tan(fovy / 2);
-  const nf = 1 / (near - far);
-  return [
-    f / aspect, 0, 0, 0,
-    0, f, 0, 0,
-    0, 0, (far + near) * nf, -1,
-    0, 0, 2 * far * near * nf, 0,
-  ];
-}
-
-function rotationY(a: number): M4 {
-  const c = Math.cos(a);
-  const s = Math.sin(a);
-  return [c, 0, -s, 0, 0, 1, 0, 0, s, 0, c, 0, 0, 0, 0, 1];
-}
-
-function rotationX(a: number): M4 {
-  const c = Math.cos(a);
-  const s = Math.sin(a);
-  return [1, 0, 0, 0, 0, c, s, 0, 0, -s, c, 0, 0, 0, 0, 1];
-}
-
-function translation(x: number, y: number, z: number): M4 {
-  return [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, x, y, z, 1];
-}
-
-// --- shaders (WebGL1 / GLSL ES 1.0) ---
-const DISPLACE = `
-  vec3 displace(vec3 p, float ph){
-    return p + u_drift * vec3(
-      sin(u_time * 0.5 + ph),
-      cos(u_time * 0.45 + ph * 1.3),
-      sin(u_time * 0.4 + ph * 0.7));
-  }`;
-
-const POINT_VS = `
+const QUAD_VS = `
   precision mediump float;
-  attribute vec3 a_a; attribute float a_pa;
-  attribute vec3 a_b; attribute float a_pb;
-  attribute float a_seed; attribute float a_speed;
-  attribute vec3 a_color; attribute float a_size;
-  uniform mat4 u_mvp; uniform float u_time; uniform float u_drift;
-  uniform float u_fade; uniform float u_pixelRatio;
-  varying vec3 v_color; varying float v_fade;
-  ${DISPLACE}
+  attribute vec2 a_pos;
+  void main(){ gl_Position = vec4(a_pos, 0.0, 1.0); }`;
+
+const HEX_FS = `
+  precision mediump float;
+  uniform vec2 u_resolution;
+  uniform float u_time;
+
+  const vec3 PURPLE = ${PURPLE};
+  const vec3 CYAN = ${CYAN};
+  const float HEXSCALE = ${f(CFG.hexScale)};
+  const float SEAMW = ${f(CFG.seamWidth)};
+  const float MASTER = ${f(CFG.master)};
+  const float FILLBRIGHT = ${f(CFG.fillBright)};
+  const float PULSESPEED = ${f(CFG.pulseSpeed)};
+  const float RAISEDFRAC = ${f(CFG.raisedFrac)};
+  const float SPARKLE = ${f(CFG.sparkle)};
+  const float STARDENSITY = ${f(CFG.starDensity)};
+  const float DRIFT = ${f(CFG.drift)};
+
+  float hash21(vec2 p){
+    p = fract(p * vec2(123.34, 456.21));
+    p += dot(p, p + 45.32);
+    return fract(p.x * p.y);
+  }
+
+  // nearest hex cell: returns vec4(localCoords, cellId)
+  vec4 hexCoords(vec2 uv){
+    vec2 r = vec2(1.0, 1.7320508);
+    vec2 h = r * 0.5;
+    vec2 a = mod(uv, r) - h;
+    vec2 b = mod(uv - h, r) - h;
+    vec2 gv = dot(a, a) < dot(b, b) ? a : b;
+    return vec4(gv, uv - gv);
+  }
+
+  // distance from cell center to the hex border (border at 0.5)
+  float hexEdge(vec2 p){
+    p = abs(p);
+    return max(dot(p, normalize(vec2(1.0, 1.7320508))), p.x);
+  }
+
   void main(){
-    float t = fract(a_seed + a_speed * u_time);
-    vec3 p = mix(displace(a_a, a_pa), displace(a_b, a_pb), t);
-    vec4 clip = u_mvp * vec4(p, 1.0);
-    gl_Position = clip;
-    float fade = clamp(u_fade / clip.w, 0.18, 1.0);
-    gl_PointSize = a_size * fade * u_pixelRatio;
-    v_color = a_color;
-    v_fade = fade;
+    vec2 uv = (gl_FragCoord.xy - 0.5 * u_resolution) / u_resolution.y;
+    uv *= HEXSCALE;
+    uv += vec2(u_time * DRIFT, u_time * DRIFT * 0.6);
+
+    // flat-top hexagons (compute in swapped space)
+    vec2 huv = uv.yx;
+    vec4 hc = hexCoords(huv);
+    vec2 gv = hc.xy;
+    vec2 id = hc.zw;
+
+    float eDist = hexEdge(gv);
+    float rnd = hash21(id + 0.5);
+    float raised = step(1.0 - RAISEDFRAC, rnd);
+    float pulse = 0.5 + 0.5 * sin(u_time * PULSESPEED + rnd * 6.2831);
+
+    // seam glow + a thinner bright core for a beveled lip
+    float seam = smoothstep(0.5 - SEAMW, 0.5, eDist);
+    float core = smoothstep(0.5 - SEAMW * 0.35, 0.5, eDist);
+    float glow = seam * 0.55 + core * 0.45;
+
+    // colour: gentle screen-space gradient blended with per-hex variation
+    float cmix = clamp(0.5 + 0.5 * sin(id.x * 0.35 + id.y * 0.3) * 0.7 + (rnd - 0.5) * 0.5, 0.0, 1.0);
+    vec3 col = mix(PURPLE, CYAN, cmix);
+
+    float intensity = glow * (0.55 + 0.45 * pulse) * (0.75 + raised * 0.7);
+    vec3 color = col * intensity * MASTER;
+
+    // faint top-surface fill on raised tiles
+    color += col * (FILLBRIGHT * raised * (1.0 - seam) * (0.6 + 0.4 * pulse));
+
+    // sparkle specks sitting on the tile faces
+    vec2 starCell = floor(huv * STARDENSITY);
+    float star = smoothstep(0.975, 1.0, hash21(starCell + 7.0));
+    float twk = 0.5 + 0.5 * sin(u_time * 2.0 + hash21(starCell) * 6.2831);
+    color += vec3(0.6, 0.7, 1.0) * star * twk * SPARKLE * (1.0 - seam);
+
+    // depth: dim toward the top ("back"), plus a soft vignette
+    vec2 sc = gl_FragCoord.xy / u_resolution;
+    float depth = mix(0.55, 1.0, sc.y);
+    vec2 vd = (sc - 0.5) * vec2(u_resolution.x / u_resolution.y, 1.0);
+    float vig = smoothstep(1.05, 0.35, length(vd) * 1.2);
+    color *= depth * vig;
+
+    // near-black base tint so tiles read as dark glass, never pure void
+    color += vec3(0.012, 0.016, 0.028);
+
+    gl_FragColor = vec4(color, 1.0);
   }`;
-
-const POINT_FS = `
-  precision mediump float;
-  varying vec3 v_color; varying float v_fade;
-  void main(){
-    vec2 c = gl_PointCoord - 0.5;
-    float d = dot(c, c);
-    if (d > 0.25) discard;
-    float a = smoothstep(0.25, 0.0, d);
-    gl_FragColor = vec4(v_color * v_fade * a, 1.0);
-  }`;
-
-const LINE_VS = `
-  precision mediump float;
-  attribute vec3 a_pos; attribute float a_phase; attribute vec3 a_color;
-  uniform mat4 u_mvp; uniform float u_time; uniform float u_drift; uniform float u_fade;
-  varying vec3 v_color; varying float v_fade;
-  ${DISPLACE}
-  void main(){
-    vec3 p = displace(a_pos, a_phase);
-    vec4 clip = u_mvp * vec4(p, 1.0);
-    gl_Position = clip;
-    v_fade = clamp(u_fade / clip.w, 0.18, 1.0);
-    v_color = a_color;
-  }`;
-
-const LINE_FS = `
-  precision mediump float;
-  varying vec3 v_color; varying float v_fade;
-  void main(){ gl_FragColor = vec4(v_color * v_fade, 1.0); }`;
-
-const POINT_STRIDE = 14; // floats per point vertex
-const LINE_STRIDE = 7; // floats per line vertex
-
-interface Geometry {
-  pointData: Float32Array;
-  pointCount: number;
-  lineData: Float32Array;
-  lineCount: number; // edges (2 vertices each)
-}
-
-function buildGeometry(): Geometry {
-  const { nx, ny, nz, spacing, jitter } = CFG;
-  const rnd = (a: number, b: number) => a + Math.random() * (b - a);
-
-  interface N {
-    x: number;
-    y: number;
-    z: number;
-    phase: number;
-    col: [number, number, number];
-  }
-  const nodes: N[] = [];
-  const idx = new Int32Array(nx * ny * nz);
-  const at = (i: number, j: number, k: number) => i * ny * nz + j * nz + k;
-
-  for (let i = 0; i < nx; i++) {
-    for (let j = 0; j < ny; j++) {
-      for (let k = 0; k < nz; k++) {
-        nodes.push({
-          x: (i - (nx - 1) / 2) * spacing + rnd(-jitter, jitter),
-          y: (j - (ny - 1) / 2) * spacing + rnd(-jitter, jitter),
-          z: (k - (nz - 1) / 2) * spacing + rnd(-jitter, jitter),
-          phase: Math.random() * Math.PI * 2,
-          col: Math.random() < 0.5 ? CYAN : PURPLE,
-        });
-        idx[at(i, j, k)] = nodes.length - 1;
-      }
-    }
-  }
-
-  // structured edges: axis neighbours + face diagonals within range
-  const offs = [
-    [1, 0, 0],
-    [0, 1, 0],
-    [0, 0, 1],
-    [1, 1, 0],
-    [1, 0, 1],
-    [0, 1, 1],
-  ];
-  const maxD2 = (CFG.maxLink * spacing) ** 2;
-  const edges: Array<[number, number]> = [];
-  for (let i = 0; i < nx; i++) {
-    for (let j = 0; j < ny; j++) {
-      for (let k = 0; k < nz; k++) {
-        const a = nodes[idx[at(i, j, k)]];
-        for (const [di, dj, dk] of offs) {
-          const ni = i + di;
-          const nj = j + dj;
-          const nk = k + dk;
-          if (ni >= nx || nj >= ny || nk >= nz) continue;
-          const bIdx = idx[at(ni, nj, nk)];
-          const b = nodes[bIdx];
-          const dx = a.x - b.x;
-          const dy = a.y - b.y;
-          const dz = a.z - b.z;
-          if (dx * dx + dy * dy + dz * dz > maxD2) continue;
-          edges.push([idx[at(i, j, k)], bIdx]);
-        }
-      }
-    }
-  }
-
-  // packets ride a subset of edges, animated entirely in the vertex shader
-  interface P {
-    edge: number;
-    seed: number;
-    speed: number;
-  }
-  const packets: P[] = [];
-  const pc = Math.floor(edges.length * CFG.packetRatio);
-  for (let p = 0; p < pc; p++) {
-    packets.push({
-      edge: Math.floor(Math.random() * edges.length),
-      seed: Math.random(),
-      speed:
-        rnd(CFG.packetMinSpeed, CFG.packetMaxSpeed) *
-        (Math.random() < 0.5 ? 1 : -1),
-    });
-  }
-
-  // pack point buffer: nodes (static points), then packets (moving points)
-  const pointCount = nodes.length + packets.length;
-  const pointData = new Float32Array(pointCount * POINT_STRIDE);
-  let o = 0;
-  const pushPoint = (
-    ax: number, ay: number, az: number, pa: number,
-    bx: number, by: number, bz: number, pb: number,
-    seed: number, speed: number,
-    col: [number, number, number], bright: number, size: number
-  ) => {
-    pointData[o++] = ax; pointData[o++] = ay; pointData[o++] = az; pointData[o++] = pa;
-    pointData[o++] = bx; pointData[o++] = by; pointData[o++] = bz; pointData[o++] = pb;
-    pointData[o++] = seed; pointData[o++] = speed;
-    pointData[o++] = col[0] * bright; pointData[o++] = col[1] * bright; pointData[o++] = col[2] * bright;
-    pointData[o++] = size;
-  };
-  for (const n of nodes) {
-    pushPoint(n.x, n.y, n.z, n.phase, n.x, n.y, n.z, n.phase, 0, 0, n.col, CFG.nodeBright, CFG.nodeSize);
-  }
-  for (const p of packets) {
-    const a = nodes[edges[p.edge][0]];
-    const b = nodes[edges[p.edge][1]];
-    pushPoint(a.x, a.y, a.z, a.phase, b.x, b.y, b.z, b.phase, p.seed, p.speed, a.col, CFG.packetBright, CFG.packetSize);
-  }
-
-  // pack line buffer: 2 vertices per edge
-  const lineData = new Float32Array(edges.length * 2 * LINE_STRIDE);
-  let e = 0;
-  const pushLineVert = (n: N) => {
-    lineData[e++] = n.x; lineData[e++] = n.y; lineData[e++] = n.z; lineData[e++] = n.phase;
-    lineData[e++] = n.col[0] * CFG.edgeBright;
-    lineData[e++] = n.col[1] * CFG.edgeBright;
-    lineData[e++] = n.col[2] * CFG.edgeBright;
-  };
-  for (const [ai, bi] of edges) {
-    const a = nodes[ai];
-    pushLineVert(a); // both endpoints share endpoint A's colour for a clean edge
-    pushLineVert({ ...nodes[bi], col: a.col });
-  }
-
-  return { pointData, pointCount, lineData, lineCount: edges.length };
-}
 
 export function WarpField() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -305,9 +148,8 @@ export function WarpField() {
 
     const opts: WebGLContextAttributes = {
       alpha: false,
-      antialias: true,
+      antialias: false,
       depth: false,
-      premultipliedAlpha: true,
       powerPreference: "low-power",
       failIfMajorPerformanceCaveat: false,
     };
@@ -321,20 +163,13 @@ export function WarpField() {
       "(prefers-reduced-motion: reduce)"
     ).matches;
 
-    // geometry is generated once and reused across context-loss restores
-    const geo = buildGeometry();
-
     // --- GL resources (recreated on context restore) ---
-    let pointProg: WebGLProgram | null = null;
-    let lineProg: WebGLProgram | null = null;
-    let pointBuf: WebGLBuffer | null = null;
-    let lineBuf: WebGLBuffer | null = null;
+    let prog: WebGLProgram | null = null;
+    let quadBuf: WebGLBuffer | null = null;
+    let aPos = -1;
+    let uRes: WebGLUniformLocation | null = null;
+    let uTime: WebGLUniformLocation | null = null;
     let glReady = false;
-
-    const pLoc: Record<string, number> = {};
-    const lLoc: Record<string, number> = {};
-    const pUni: Record<string, WebGLUniformLocation | null> = {};
-    const lUni: Record<string, WebGLUniformLocation | null> = {};
 
     const compile = (type: number, src: string) => {
       const sh = gl.createShader(type)!;
@@ -342,50 +177,34 @@ export function WarpField() {
       gl.compileShader(sh);
       return sh;
     };
-    const linkProg = (vs: string, fs: string) => {
-      const p = gl.createProgram()!;
-      gl.attachShader(p, compile(gl.VERTEX_SHADER, vs));
-      gl.attachShader(p, compile(gl.FRAGMENT_SHADER, fs));
-      gl.linkProgram(p);
-      return p;
-    };
 
     function setupGL() {
-      pointProg = linkProg(POINT_VS, POINT_FS);
-      lineProg = linkProg(LINE_VS, LINE_FS);
+      prog = gl.createProgram()!;
+      gl.attachShader(prog, compile(gl.VERTEX_SHADER, QUAD_VS));
+      gl.attachShader(prog, compile(gl.FRAGMENT_SHADER, HEX_FS));
+      gl.linkProgram(prog);
+      aPos = gl.getAttribLocation(prog, "a_pos");
+      uRes = gl.getUniformLocation(prog, "u_resolution");
+      uTime = gl.getUniformLocation(prog, "u_time");
 
-      for (const a of ["a_a", "a_pa", "a_b", "a_pb", "a_seed", "a_speed", "a_color", "a_size"])
-        pLoc[a] = gl.getAttribLocation(pointProg, a);
-      for (const u of ["u_mvp", "u_time", "u_drift", "u_fade", "u_pixelRatio"])
-        pUni[u] = gl.getUniformLocation(pointProg, u);
-      for (const a of ["a_pos", "a_phase", "a_color"])
-        lLoc[a] = gl.getAttribLocation(lineProg, a);
-      for (const u of ["u_mvp", "u_time", "u_drift", "u_fade"])
-        lUni[u] = gl.getUniformLocation(lineProg, u);
-
-      pointBuf = gl.createBuffer();
-      gl.bindBuffer(gl.ARRAY_BUFFER, pointBuf);
-      gl.bufferData(gl.ARRAY_BUFFER, geo.pointData, gl.STATIC_DRAW);
-
-      lineBuf = gl.createBuffer();
-      gl.bindBuffer(gl.ARRAY_BUFFER, lineBuf);
-      gl.bufferData(gl.ARRAY_BUFFER, geo.lineData, gl.STATIC_DRAW);
+      quadBuf = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, quadBuf);
+      gl.bufferData(
+        gl.ARRAY_BUFFER,
+        new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]),
+        gl.STATIC_DRAW
+      );
 
       gl.disable(gl.DEPTH_TEST);
-      gl.enable(gl.BLEND);
-      gl.blendFunc(gl.ONE, gl.ONE); // additive glow
-      gl.clearColor(0, 0, 0, 1);
+      gl.disable(gl.BLEND);
       glReady = true;
     }
 
-    // --- sizing: resolution-independent scene, so resize is cheap ---
-    let proj: M4 = perspective(CFG.fov, 1, 0.1, 100);
-    let pixelRatio = 1;
+    // --- sizing: resolution-independent shader, so resize is cheap ---
     let lastW = -1;
 
     function resize() {
       const dpr = Math.min(window.devicePixelRatio || 1, CFG.dprCap);
-      pixelRatio = dpr;
       const cssW = window.innerWidth;
       // Use a STABLE height (largest plausible viewport) so the mobile URL bar
       // collapsing/expanding during scroll never resizes the drawing buffer.
@@ -397,59 +216,18 @@ export function WarpField() {
       canvas.width = Math.floor(cssW * dpr);
       canvas.height = Math.floor(cssH * dpr);
       gl.viewport(0, 0, canvas.width, canvas.height);
-      proj = perspective(CFG.fov, cssW / cssH, 0.1, 100);
       lastW = cssW;
     }
 
-    function bindAttrib(loc: number, size: number, strideFloats: number, offsetFloats: number) {
-      if (loc < 0) return;
-      gl.enableVertexAttribArray(loc);
-      gl.vertexAttribPointer(loc, size, gl.FLOAT, false, strideFloats * 4, offsetFloats * 4);
-    }
-    const disableAttribs = (loc: Record<string, number>) => {
-      for (const k in loc) if (loc[k] >= 0) gl.disableVertexAttribArray(loc[k]);
-    };
-
     function draw(time: number) {
       if (!glReady) return;
-      const model = multiply(rotationX(CFG.tilt), rotationY(time * CFG.orbitSpeed));
-      const view = translation(0, 0, -CFG.camZ);
-      const mvp = multiply(proj, multiply(view, model));
-
-      gl.clear(gl.COLOR_BUFFER_BIT);
-
-      // edges
-      gl.useProgram(lineProg);
-      gl.uniformMatrix4fv(lUni.u_mvp, false, mvp);
-      gl.uniform1f(lUni.u_time, time);
-      gl.uniform1f(lUni.u_drift, CFG.drift);
-      gl.uniform1f(lUni.u_fade, CFG.camZ);
-      gl.bindBuffer(gl.ARRAY_BUFFER, lineBuf);
-      bindAttrib(lLoc.a_pos, 3, LINE_STRIDE, 0);
-      bindAttrib(lLoc.a_phase, 1, LINE_STRIDE, 3);
-      bindAttrib(lLoc.a_color, 3, LINE_STRIDE, 4);
-      gl.lineWidth(1);
-      gl.drawArrays(gl.LINES, 0, geo.lineCount * 2);
-      disableAttribs(lLoc);
-
-      // nodes + packets
-      gl.useProgram(pointProg);
-      gl.uniformMatrix4fv(pUni.u_mvp, false, mvp);
-      gl.uniform1f(pUni.u_time, time);
-      gl.uniform1f(pUni.u_drift, CFG.drift);
-      gl.uniform1f(pUni.u_fade, CFG.camZ);
-      gl.uniform1f(pUni.u_pixelRatio, pixelRatio);
-      gl.bindBuffer(gl.ARRAY_BUFFER, pointBuf);
-      bindAttrib(pLoc.a_a, 3, POINT_STRIDE, 0);
-      bindAttrib(pLoc.a_pa, 1, POINT_STRIDE, 3);
-      bindAttrib(pLoc.a_b, 3, POINT_STRIDE, 4);
-      bindAttrib(pLoc.a_pb, 1, POINT_STRIDE, 7);
-      bindAttrib(pLoc.a_seed, 1, POINT_STRIDE, 8);
-      bindAttrib(pLoc.a_speed, 1, POINT_STRIDE, 9);
-      bindAttrib(pLoc.a_color, 3, POINT_STRIDE, 10);
-      bindAttrib(pLoc.a_size, 1, POINT_STRIDE, 13);
-      gl.drawArrays(gl.POINTS, 0, geo.pointCount);
-      disableAttribs(pLoc);
+      gl.useProgram(prog);
+      gl.uniform2f(uRes, canvas.width, canvas.height);
+      gl.uniform1f(uTime, time);
+      gl.bindBuffer(gl.ARRAY_BUFFER, quadBuf);
+      gl.enableVertexAttribArray(aPos);
+      gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
+      gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
     }
 
     // --- run loop: throttled to CFG.fps, paused when the tab is hidden ---
@@ -487,7 +265,7 @@ export function WarpField() {
     let resizeRaf = 0;
     const onResize = () => {
       // Only react to WIDTH changes (orientation / desktop resize). Height-only
-      // changes from the mobile URL bar must NOT rebuild anything.
+      // changes from the mobile URL bar must NOT rebuild the drawing buffer.
       if (window.innerWidth === lastW) return;
       cancelAnimationFrame(resizeRaf);
       resizeRaf = requestAnimationFrame(() => {
