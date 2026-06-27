@@ -3,9 +3,9 @@ import { DollarSign, Shield, Clock } from "lucide-react";
 
 export function Economics() {
   return (
-    <section className="relative py-32 px-6 lg:px-8 overflow-hidden">
+    <section className="relative py-20 lg:py-32 px-6 lg:px-8 overflow-hidden">
       {/* Background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black via-cyan-950/10 to-black pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-cyan-500/[0.04] to-transparent pointer-events-none" />
       
       <div className="relative max-w-6xl mx-auto">
         {/* Header */}
@@ -35,7 +35,7 @@ export function Economics() {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="relative group"
           >
-            <div className="relative bg-white/[0.02] border border-white/10 rounded-2xl p-6 hover:border-white/20 transition-all duration-500 h-full">
+            <div className="relative bg-white/[0.03] backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:border-white/20 transition-all duration-500 h-full">
               <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-purple-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
               
               <div className="relative">
@@ -59,7 +59,7 @@ export function Economics() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="relative group"
           >
-            <div className="relative bg-white/[0.02] border border-white/10 rounded-2xl p-6 hover:border-white/20 transition-all duration-500 h-full">
+            <div className="relative bg-white/[0.03] backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:border-white/20 transition-all duration-500 h-full">
               <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-cyan-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
               
               <div className="relative">
@@ -86,7 +86,7 @@ export function Economics() {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="relative group"
           >
-            <div className="relative bg-white/[0.02] border border-white/10 rounded-2xl p-6 hover:border-white/20 transition-all duration-500 h-full">
+            <div className="relative bg-white/[0.03] backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:border-white/20 transition-all duration-500 h-full">
               <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-purple-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
               
               <div className="relative">
@@ -114,7 +114,7 @@ export function Economics() {
             transition={{ duration: 0.6, delay: 0.4 }}
             className="relative group"
           >
-            <div className="relative bg-white/[0.02] border border-white/10 rounded-2xl p-6 hover:border-white/20 transition-all duration-500 h-full">
+            <div className="relative bg-white/[0.03] backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:border-white/20 transition-all duration-500 h-full">
               <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-cyan-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
               
               <div className="relative">
@@ -144,7 +144,7 @@ export function Economics() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.5 }}
-            className="relative bg-gradient-to-br from-purple-500/10 via-transparent to-cyan-500/10 border border-white/10 rounded-2xl p-8"
+            className="relative bg-white/[0.03] backdrop-blur-sm border border-white/10 rounded-2xl p-8"
           >
             <div className="space-y-4">
               <div>
@@ -189,7 +189,7 @@ export function Economics() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.6 }}
-            className="relative bg-gradient-to-br from-purple-500/10 via-transparent to-cyan-500/10 border border-white/10 rounded-2xl p-8"
+            className="relative bg-white/[0.03] backdrop-blur-sm border border-white/10 rounded-2xl p-8"
           >
             <div className="space-y-4">
               <div>

@@ -245,7 +245,7 @@ export function WaitlistPage() {
         {/* Form */}
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="space-y-6 bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-8"
+          className="space-y-6 bg-white/[0.03] backdrop-blur-sm border border-white/10 rounded-2xl p-8"
         >
           <div className="space-y-5">
             {/* Address Field */}

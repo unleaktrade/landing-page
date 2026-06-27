@@ -26,7 +26,7 @@ const values = [
 
 export function ValueProps() {
   return (
-    <section className="py-32 px-6 lg:px-8">
+    <section className="py-20 lg:py-32 px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -51,7 +51,7 @@ export function ValueProps() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
-              className="p-8 rounded-2xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.04] transition-colors group"
+              className="p-8 rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-sm hover:border-white/20 transition-colors group"
             >
               <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-purple-600/20 to-cyan-400/20 flex items-center justify-center mb-6 group-hover:from-purple-600/30 group-hover:to-cyan-400/30 transition-colors">
                 <value.icon className="w-6 h-6 text-purple-400" />

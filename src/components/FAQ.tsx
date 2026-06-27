@@ -244,9 +244,9 @@ export function FAQ() {
   });
 
   return (
-    <section className="relative py-32 px-6 overflow-hidden">
+    <section className="relative py-20 lg:py-32 px-6 overflow-hidden">
       {/* Background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black via-purple-950/5 to-black pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-purple-500/[0.04] to-transparent pointer-events-none" />
 
       <div className="relative max-w-4xl mx-auto">
         {/* Header */}
@@ -285,7 +285,7 @@ export function FAQ() {
               placeholder="Search questions..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-white/[0.02] border border-white/10 rounded-xl pl-12 pr-4 py-3 text-white placeholder:text-white/30 focus:outline-none focus:border-white/20 transition-colors"
+              className="w-full bg-white/[0.03] backdrop-blur-sm border border-white/10 rounded-xl pl-12 pr-4 py-3 text-white placeholder:text-white/30 focus:outline-none focus:border-white/20 transition-colors"
             />
           </div>
 
@@ -295,7 +295,7 @@ export function FAQ() {
               onClick={() => setSelectedCategory(null)}
               className={`px-4 py-2 rounded-full text-sm transition-all ${!selectedCategory
                 ? "bg-gradient-to-r from-purple-500 to-cyan-500 text-white"
-                : "bg-white/[0.02] border border-white/10 text-white/60 hover:text-white/90 hover:border-white/20"
+                : "bg-white/[0.03] backdrop-blur-sm border border-white/10 text-white/60 hover:text-white/90 hover:border-white/20"
                 }`}
             >
               All
@@ -312,7 +312,7 @@ export function FAQ() {
                 }
                 className={`px-4 py-2 rounded-full text-sm transition-all ${selectedCategory === category
                   ? "bg-gradient-to-r from-purple-500 to-cyan-500 text-white"
-                  : "bg-white/[0.02] border border-white/10 text-white/60 hover:text-white/90 hover:border-white/20"
+                  : "bg-white/[0.03] backdrop-blur-sm border border-white/10 text-white/60 hover:text-white/90 hover:border-white/20"
                   }`}
               >
                 {category}
@@ -347,7 +347,7 @@ export function FAQ() {
                   />
 
                   <div
-                    className={`relative bg-white/[0.02] border rounded-xl transition-all duration-300 ${isOpen
+                    className={`relative bg-white/[0.03] backdrop-blur-sm border rounded-xl transition-all duration-300 ${isOpen
                       ? "border-white/20"
                       : "border-white/10 group-hover:border-white/15"
                       }`}

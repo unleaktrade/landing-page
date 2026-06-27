@@ -25,7 +25,7 @@ const steps = [
 
 export function HowItWorks() {
   return (
-    <section className="py-32 px-6 lg:px-8 bg-white/[0.01]">
+    <section className="py-20 lg:py-32 px-6 lg:px-8 bg-white/[0.01]">
       <div className="max-w-6xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -52,7 +52,7 @@ export function HowItWorks() {
               transition={{ duration: 0.6, delay: index * 0.1 }}
               className="group"
             >
-              <div className="flex items-start gap-8 p-8 rounded-2xl border border-white/5 bg-black hover:bg-white/[0.02] transition-all">
+              <div className="flex items-start gap-8 p-8 rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-sm hover:border-white/20 transition-all">
                 <div className="text-6xl font-light text-white/10 group-hover:text-white/20 transition-colors">
                   {step.number}
                 </div>

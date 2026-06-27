@@ -25,7 +25,7 @@ export function BuilderPage() {
     <div className="min-h-screen text-white">
       {/* Hero section */}
       <section className="relative pt-32 pb-20 px-6 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-purple-950/20 via-black to-black pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-b from-purple-500/[0.06] via-transparent to-transparent pointer-events-none" />
         
         <div className="relative max-w-4xl mx-auto text-center">
           <motion.div
@@ -49,7 +49,7 @@ export function BuilderPage() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="relative bg-white/[0.02] border border-white/10 rounded-3xl p-8 md:p-12 overflow-hidden"
+            className="relative bg-white/[0.03] backdrop-blur-sm border border-white/10 rounded-3xl p-8 md:p-12 overflow-hidden"
           >
             <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 via-transparent to-cyan-500/5 pointer-events-none" />
             
@@ -134,7 +134,7 @@ export function BuilderPage() {
               </div>
 
               {/* Journey */}
-              <div className="relative bg-gradient-to-br from-purple-500/10 via-transparent to-cyan-500/10 border border-white/10 rounded-xl p-6 mt-6">
+              <div className="relative bg-white/[0.03] backdrop-blur-sm border border-white/10 rounded-xl p-6 mt-6">
                 <p className="text-white/70 leading-relaxed italic">
                   "This is a solo journey driven by conviction: that crypto markets deserve the same privacy guarantees that institutions take for granted, 
                   and that Zero-Knowledge technology can finally make this a reality. UnleakTrade started as a technical challenge and evolved into a mission — 
@@ -157,7 +157,7 @@ export function BuilderPage() {
             className="group"
           >
             {/* Card */}
-            <div className="relative bg-white/[0.02] border border-white/10 rounded-3xl p-8 md:p-12 hover:border-white/20 transition-all duration-500">
+            <div className="relative bg-white/[0.03] backdrop-blur-sm border border-white/10 rounded-3xl p-8 md:p-12 hover:border-white/20 transition-all duration-500">
               {/* Gradient glow on hover */}
               <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-purple-500/5 via-cyan-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
               
@@ -278,7 +278,7 @@ export function BuilderPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="relative bg-white/[0.02] border border-white/10 rounded-3xl p-12 text-center overflow-hidden mt-8"
+            className="relative bg-white/[0.03] backdrop-blur-sm border border-white/10 rounded-3xl p-12 text-center overflow-hidden mt-8"
           >
             <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 via-transparent to-cyan-500/10 pointer-events-none" />
             <div className="relative">

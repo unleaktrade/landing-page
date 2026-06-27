@@ -162,7 +162,7 @@ export function Roadmap() {
     <div className="min-h-screen text-white">
       {/* Hero section */}
       <section className="relative pt-32 pb-20 px-6 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-purple-950/20 via-black to-black pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-b from-purple-500/[0.06] via-transparent to-transparent pointer-events-none" />
         
         <div className="relative max-w-4xl mx-auto text-center">
           <motion.div
@@ -212,7 +212,7 @@ export function Roadmap() {
                       onClick={() => togglePhase(phase.id)}
                       className="w-full text-left group"
                     >
-                      <div className={`relative bg-white/[0.02] border border-white/10 rounded-2xl p-6 md:p-8 hover:border-white/20 transition-all duration-500 ${
+                      <div className={`relative bg-white/[0.03] backdrop-blur-sm border border-white/10 rounded-2xl p-6 md:p-8 hover:border-white/20 transition-all duration-500 ${
                         expandedPhase === phase.id ? "border-white/20" : ""
                       }`}>
                         <div className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${getStatusColor(phase.status)} opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none`} />
@@ -262,7 +262,7 @@ export function Roadmap() {
                                 {phase.focus.steps && phase.focus.steps.length > 0 && (
                                   <div className="space-y-4 mb-4">
                                     {phase.focus.steps.map((step, stepIndex) => (
-                                      <div key={stepIndex} className="bg-white/[0.02] border border-white/5 rounded-xl p-4">
+                                      <div key={stepIndex} className="bg-white/[0.03] backdrop-blur-sm border border-white/10 rounded-xl p-4">
                                         <h5 className="text-white/90 text-sm mb-3">{step.title}</h5>
                                         <ul className="space-y-2">
                                           {step.items.map((item, itemIndex) => (
@@ -291,7 +291,7 @@ export function Roadmap() {
                               </div>
 
                               {/* Outcome */}
-                              <div className="bg-gradient-to-br from-purple-500/10 via-transparent to-cyan-500/10 border border-white/10 rounded-xl p-4">
+                              <div className="bg-white/[0.03] backdrop-blur-sm border border-white/10 rounded-xl p-4">
                                 <div className="flex gap-3">
                                   <div className="w-5 h-5 rounded-lg bg-gradient-to-br from-purple-500/20 to-cyan-500/20 flex items-center justify-center flex-shrink-0">
                                     <Target className="w-3 h-3 text-cyan-400" />

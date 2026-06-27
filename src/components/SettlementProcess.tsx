@@ -3,9 +3,9 @@ import { Shield, Eye, EyeOff, CheckCircle, Lock } from "lucide-react";
 
 export function SettlementProcess() {
   return (
-    <section className="relative py-32 px-6 lg:px-8 overflow-hidden">
+    <section className="relative py-20 lg:py-32 px-6 lg:px-8 overflow-hidden">
       {/* Background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black via-purple-950/10 to-black pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-purple-500/[0.04] to-transparent pointer-events-none" />
       
       <div className="relative max-w-6xl mx-auto">
         {/* Header */}
@@ -36,7 +36,7 @@ export function SettlementProcess() {
             transition={{ duration: 0.6 }}
             className="relative group"
           >
-            <div className="relative bg-white/[0.02] border border-white/10 rounded-2xl p-8 hover:border-white/20 transition-all duration-500">
+            <div className="relative bg-white/[0.03] backdrop-blur-sm border border-white/10 rounded-2xl p-8 hover:border-white/20 transition-all duration-500">
               <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-cyan-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
               
               <div className="relative">
@@ -65,7 +65,7 @@ export function SettlementProcess() {
             transition={{ duration: 0.6 }}
             className="relative group"
           >
-            <div className="relative bg-white/[0.02] border border-white/10 rounded-2xl p-8 hover:border-white/20 transition-all duration-500">
+            <div className="relative bg-white/[0.03] backdrop-blur-sm border border-white/10 rounded-2xl p-8 hover:border-white/20 transition-all duration-500">
               <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-purple-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
               
               <div className="relative">
@@ -93,7 +93,7 @@ export function SettlementProcess() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="relative bg-white/[0.02] border border-white/10 rounded-3xl p-8 lg:p-12"
+          className="relative bg-white/[0.03] backdrop-blur-sm border border-white/10 rounded-3xl p-8 lg:p-12"
         >
           <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-purple-500/5 via-cyan-500/5 to-transparent pointer-events-none" />
           
