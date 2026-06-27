@@ -25,7 +25,7 @@ export function BuilderPage() {
     <div className="min-h-screen text-white">
       {/* Hero section */}
       <section className="relative pt-32 pb-20 px-6 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-purple-950/20 via-black to-black pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-b from-purple-500/[0.06] via-transparent to-transparent pointer-events-none" />
         
         <div className="relative max-w-4xl mx-auto text-center">
           <motion.div
