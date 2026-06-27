@@ -52,7 +52,7 @@ export function HowItWorks() {
               transition={{ duration: 0.6, delay: index * 0.1 }}
               className="group"
             >
-              <div className="flex items-start gap-8 p-8 rounded-2xl border border-white/5 bg-black hover:bg-white/[0.02] transition-all">
+              <div className="flex items-start gap-8 p-8 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md hover:bg-white/[0.08] transition-all">
                 <div className="text-6xl font-light text-white/10 group-hover:text-white/20 transition-colors">
                   {step.number}
                 </div>
