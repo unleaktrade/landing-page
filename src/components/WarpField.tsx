@@ -40,16 +40,17 @@ const CFG = {
   spacing: 0.42,
   jitter: 0.07, // small, so the lattice reads as intentional — not random
   maxLink: 1.6, // connect nodes within maxLink * spacing (axis + face diagonals)
-  // packets
-  packetRatio: 0.3, // packets per edge
-  packetMinSpeed: 0.04, // t units / second
-  packetMaxSpeed: 0.12,
+  // messages — packets travel edge-to-edge as colored comet streaks
+  packetRatio: 0.2, // messages per edge — sparse & intentional, not a swarm
+  packetMinSpeed: 0.05, // t units / second
+  packetMaxSpeed: 0.14,
+  packetTrail: 0.12, // comet tail length, as a fraction of an edge
   // look — kept dim/restrained so it reads as a serious backdrop, not "arcade"
   edgeBright: 0.32,
   nodeBright: 0.6,
-  packetBright: 0.8,
+  messageBright: 1.3, // moving messages are brighter so they "pop"
   nodeSize: 3.4, // base point size (px, before depth + DPR scaling)
-  packetSize: 3.0,
+  packetSize: 3.8, // message head size
   drift: 0.035, // node drift amplitude (world units)
   // camera
   fov: (55 * Math.PI) / 180,
@@ -165,14 +166,46 @@ const LINE_FS = `
   varying vec3 v_color; varying float v_fade;
   void main(){ gl_FragColor = vec4(v_color * v_fade, 1.0); }`;
 
+// Message comet streaks: each packet is a 2-vertex line (tail a_end=0 → head
+// a_end=1) that slides along its edge over time, fading from a bright head to a
+// transparent tail — a colored signal travelling from one node to another.
+const STREAK_VS = `
+  precision mediump float;
+  attribute vec3 a_a; attribute float a_pa;
+  attribute vec3 a_b; attribute float a_pb;
+  attribute float a_seed; attribute float a_speed;
+  attribute vec3 a_color; attribute float a_end;
+  uniform mat4 u_mvp; uniform float u_time; uniform float u_drift;
+  uniform float u_fade; uniform float u_trail;
+  varying vec3 v_color; varying float v_fade; varying float v_alpha;
+  ${DISPLACE}
+  void main(){
+    float headT = fract(a_seed + a_speed * u_time);
+    float t = clamp(headT - u_trail * sign(a_speed) * (1.0 - a_end), 0.0, 1.0);
+    vec3 p = mix(displace(a_a, a_pa), displace(a_b, a_pb), t);
+    vec4 clip = u_mvp * vec4(p, 1.0);
+    gl_Position = clip;
+    v_fade = clamp(u_fade / clip.w, 0.18, 1.0);
+    v_color = a_color;
+    v_alpha = a_end; // 1 at the head, 0 at the tail
+  }`;
+
+const STREAK_FS = `
+  precision mediump float;
+  varying vec3 v_color; varying float v_fade; varying float v_alpha;
+  void main(){ gl_FragColor = vec4(v_color * v_fade * v_alpha, 1.0); }`;
+
 const POINT_STRIDE = 14; // floats per point vertex
 const LINE_STRIDE = 7; // floats per line vertex
+const STREAK_STRIDE = 14; // floats per streak vertex (a_end replaces a_size)
 
 interface Geometry {
   pointData: Float32Array;
   pointCount: number;
   lineData: Float32Array;
   lineCount: number; // edges (2 vertices each)
+  streakData: Float32Array;
+  streakCount: number; // messages (2 vertices each)
 }
 
 function buildGeometry(): Geometry {
@@ -277,7 +310,8 @@ function buildGeometry(): Geometry {
   for (const p of packets) {
     const a = nodes[edges[p.edge][0]];
     const b = nodes[edges[p.edge][1]];
-    pushPoint(a.x, a.y, a.z, a.phase, b.x, b.y, b.z, b.phase, p.seed, p.speed, a.col, CFG.packetBright, CFG.packetSize);
+    // bright round "head" of the message
+    pushPoint(a.x, a.y, a.z, a.phase, b.x, b.y, b.z, b.phase, p.seed, p.speed, a.col, CFG.messageBright, CFG.packetSize);
   }
 
   // pack line buffer: 2 vertices per edge
@@ -295,7 +329,31 @@ function buildGeometry(): Geometry {
     pushLineVert({ ...nodes[bi], col: a.col });
   }
 
-  return { pointData, pointCount, lineData, lineCount: edges.length };
+  // pack streak buffer: 2 vertices per message (tail a_end=0, head a_end=1)
+  const streakData = new Float32Array(packets.length * 2 * STREAK_STRIDE);
+  let s = 0;
+  const pushStreakVert = (a: N, b: N, seed: number, speed: number, col: [number, number, number], end: number) => {
+    streakData[s++] = a.x; streakData[s++] = a.y; streakData[s++] = a.z; streakData[s++] = a.phase;
+    streakData[s++] = b.x; streakData[s++] = b.y; streakData[s++] = b.z; streakData[s++] = b.phase;
+    streakData[s++] = seed; streakData[s++] = speed;
+    streakData[s++] = col[0] * CFG.messageBright; streakData[s++] = col[1] * CFG.messageBright; streakData[s++] = col[2] * CFG.messageBright;
+    streakData[s++] = end;
+  };
+  for (const p of packets) {
+    const a = nodes[edges[p.edge][0]];
+    const b = nodes[edges[p.edge][1]];
+    pushStreakVert(a, b, p.seed, p.speed, a.col, 0); // tail
+    pushStreakVert(a, b, p.seed, p.speed, a.col, 1); // head
+  }
+
+  return {
+    pointData,
+    pointCount,
+    lineData,
+    lineCount: edges.length,
+    streakData,
+    streakCount: packets.length,
+  };
 }
 
 export function WarpField() {
@@ -329,14 +387,18 @@ export function WarpField() {
     // --- GL resources (recreated on context restore) ---
     let pointProg: WebGLProgram | null = null;
     let lineProg: WebGLProgram | null = null;
+    let streakProg: WebGLProgram | null = null;
     let pointBuf: WebGLBuffer | null = null;
     let lineBuf: WebGLBuffer | null = null;
+    let streakBuf: WebGLBuffer | null = null;
     let glReady = false;
 
     const pLoc: Record<string, number> = {};
     const lLoc: Record<string, number> = {};
+    const sLoc: Record<string, number> = {};
     const pUni: Record<string, WebGLUniformLocation | null> = {};
     const lUni: Record<string, WebGLUniformLocation | null> = {};
+    const sUni: Record<string, WebGLUniformLocation | null> = {};
 
     const compile = (type: number, src: string) => {
       const sh = gl.createShader(type)!;
@@ -365,6 +427,12 @@ export function WarpField() {
       for (const u of ["u_mvp", "u_time", "u_drift", "u_fade"])
         lUni[u] = gl.getUniformLocation(lineProg, u);
 
+      streakProg = linkProg(STREAK_VS, STREAK_FS);
+      for (const a of ["a_a", "a_pa", "a_b", "a_pb", "a_seed", "a_speed", "a_color", "a_end"])
+        sLoc[a] = gl.getAttribLocation(streakProg, a);
+      for (const u of ["u_mvp", "u_time", "u_drift", "u_fade", "u_trail"])
+        sUni[u] = gl.getUniformLocation(streakProg, u);
+
       pointBuf = gl.createBuffer();
       gl.bindBuffer(gl.ARRAY_BUFFER, pointBuf);
       gl.bufferData(gl.ARRAY_BUFFER, geo.pointData, gl.STATIC_DRAW);
@@ -372,6 +440,10 @@ export function WarpField() {
       lineBuf = gl.createBuffer();
       gl.bindBuffer(gl.ARRAY_BUFFER, lineBuf);
       gl.bufferData(gl.ARRAY_BUFFER, geo.lineData, gl.STATIC_DRAW);
+
+      streakBuf = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, streakBuf);
+      gl.bufferData(gl.ARRAY_BUFFER, geo.streakData, gl.STATIC_DRAW);
 
       gl.disable(gl.DEPTH_TEST);
       gl.enable(gl.BLEND);
@@ -434,7 +506,29 @@ export function WarpField() {
       gl.drawArrays(gl.LINES, 0, geo.lineCount * 2);
       disableAttribs(lLoc);
 
-      // nodes + packets
+      // messages — comet streaks travelling along edges (bright head → faded tail)
+      if (geo.streakCount > 0) {
+        gl.useProgram(streakProg);
+        gl.uniformMatrix4fv(sUni.u_mvp, false, mvp);
+        gl.uniform1f(sUni.u_time, time);
+        gl.uniform1f(sUni.u_drift, CFG.drift);
+        gl.uniform1f(sUni.u_fade, CFG.camZ);
+        gl.uniform1f(sUni.u_trail, CFG.packetTrail);
+        gl.bindBuffer(gl.ARRAY_BUFFER, streakBuf);
+        bindAttrib(sLoc.a_a, 3, STREAK_STRIDE, 0);
+        bindAttrib(sLoc.a_pa, 1, STREAK_STRIDE, 3);
+        bindAttrib(sLoc.a_b, 3, STREAK_STRIDE, 4);
+        bindAttrib(sLoc.a_pb, 1, STREAK_STRIDE, 7);
+        bindAttrib(sLoc.a_seed, 1, STREAK_STRIDE, 8);
+        bindAttrib(sLoc.a_speed, 1, STREAK_STRIDE, 9);
+        bindAttrib(sLoc.a_color, 3, STREAK_STRIDE, 10);
+        bindAttrib(sLoc.a_end, 1, STREAK_STRIDE, 13);
+        gl.lineWidth(1);
+        gl.drawArrays(gl.LINES, 0, geo.streakCount * 2);
+        disableAttribs(sLoc);
+      }
+
+      // nodes + message heads
       gl.useProgram(pointProg);
       gl.uniformMatrix4fv(pUni.u_mvp, false, mvp);
       gl.uniform1f(pUni.u_time, time);
