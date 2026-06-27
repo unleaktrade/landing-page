@@ -44,7 +44,7 @@ export function TeamSection() {
   const navigate = useNavigate();
 
   return (
-    <section className="relative py-32 px-6 overflow-hidden">
+    <section className="relative py-20 lg:py-32 px-6 overflow-hidden">
       {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-to-b from-black via-purple-950/5 to-black pointer-events-none" />
 

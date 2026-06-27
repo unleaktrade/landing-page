@@ -244,7 +244,7 @@ export function FAQ() {
   });
 
   return (
-    <section className="relative py-32 px-6 overflow-hidden">
+    <section className="relative py-20 lg:py-32 px-6 overflow-hidden">
       {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-purple-500/[0.04] to-transparent pointer-events-none" />
 

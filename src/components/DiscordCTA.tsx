@@ -8,7 +8,7 @@ export function DiscordCTA() {
 
   return (
     <>
-      <section className="py-32 px-6 lg:px-8">
+      <section className="py-20 lg:py-32 px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
