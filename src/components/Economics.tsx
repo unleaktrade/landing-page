@@ -144,7 +144,7 @@ export function Economics() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.5 }}
-            className="relative bg-gradient-to-br from-purple-500/10 via-transparent to-cyan-500/10 border border-white/10 rounded-2xl p-8"
+            className="relative bg-white/[0.03] backdrop-blur-sm border border-white/10 rounded-2xl p-8"
           >
             <div className="space-y-4">
               <div>
@@ -189,7 +189,7 @@ export function Economics() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.6 }}
-            className="relative bg-gradient-to-br from-purple-500/10 via-transparent to-cyan-500/10 border border-white/10 rounded-2xl p-8"
+            className="relative bg-white/[0.03] backdrop-blur-sm border border-white/10 rounded-2xl p-8"
           >
             <div className="space-y-4">
               <div>

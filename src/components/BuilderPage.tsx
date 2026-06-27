@@ -134,7 +134,7 @@ export function BuilderPage() {
               </div>
 
               {/* Journey */}
-              <div className="relative bg-gradient-to-br from-purple-500/10 via-transparent to-cyan-500/10 border border-white/10 rounded-xl p-6 mt-6">
+              <div className="relative bg-white/[0.03] backdrop-blur-sm border border-white/10 rounded-xl p-6 mt-6">
                 <p className="text-white/70 leading-relaxed italic">
                   "This is a solo journey driven by conviction: that crypto markets deserve the same privacy guarantees that institutions take for granted, 
                   and that Zero-Knowledge technology can finally make this a reality. UnleakTrade started as a technical challenge and evolved into a mission — 

@@ -291,7 +291,7 @@ export function Roadmap() {
                               </div>
 
                               {/* Outcome */}
-                              <div className="bg-gradient-to-br from-purple-500/10 via-transparent to-cyan-500/10 border border-white/10 rounded-xl p-4">
+                              <div className="bg-white/[0.03] backdrop-blur-sm border border-white/10 rounded-xl p-4">
                                 <div className="flex gap-3">
                                   <div className="w-5 h-5 rounded-lg bg-gradient-to-br from-purple-500/20 to-cyan-500/20 flex items-center justify-center flex-shrink-0">
                                     <Target className="w-3 h-3 text-cyan-400" />
