@@ -124,6 +124,15 @@ const faqData: FAQItem[] = [
   {
     category: "Technical Mechanics",
     question:
+      "Why start with ed25519 signatures instead of zero-knowledge proofs?",
+    answer:
+      "Zero-knowledge is UnleakTrade's long-term privacy model, but our first job is to bootstrap a real two-sided market — makers and takers with genuine volume — on security that is proven, cheap, and fast *today*. That's why liquidity is currently verified with **ed25519 signatures** rather than zero-knowledge proofs.\n\n" +
+      "Before a taker commits a quote, the **Liquidity Guard** checks that their balances cover the bond and the potential settlement, then issues an **ed25519 signed attestation** that rides in the same transaction as the on-chain commit. Solana verifies this signature natively (via its built-in ed25519 program), and any commit without a valid attestation is rejected on-chain.\n\n" +
+      "ed25519 is a battle-tested, widely audited signature scheme: extremely cheap and fast to verify, and it gives us tamper-proof, verifiable liquidity guarantees without the added latency, cost, and engineering surface of a full zero-knowledge system. In short, **zero-knowledge is the destination, not the starting line** — ed25519 lets us ship a secure market now.",
+  },
+  {
+    category: "Technical Mechanics",
+    question:
       'What is the "Liquidity Guard"? (and what does "REST API" mean?)',
     answer:
       "Liquidity Guard is an off-chain microservice that (1) verifies liquidity/solvency before commitment, (2) generates signed attestations for makers and takers, and (3) feeds validated actions to the on-chain Settlement Engine.\n\nA **REST API (Representational State Transfer Application Programming Interface)** is simply an HTTP service interface; here it's used to request and receive the signed attestation material needed for the on-chain commit step.",
@@ -174,6 +183,14 @@ const faqData: FAQItem[] = [
     question: "Is there custody risk?",
     answer:
       'The design is escrow-style and program-enforced: assets are deposited into program-controlled accounts for the purpose of atomic settlement, then released according to the RFQ state machine. This is not "custody" in the traditional centralized sense, but it is still smart-contract escrow: the trust assumption is the correctness/security of the on-chain program.',
+  },
+  {
+    category: "Settlement & Security",
+    question: "Will UnleakTrade migrate to zero-knowledge, and when?",
+    answer:
+      "Yes. Zero-knowledge is UnleakTrade's committed direction, and the roadmap is deliberately sequenced: **build the market first, then deepen trust-minimization.**\n\n" +
+      "Today's **ed25519** attestations rely on the **Liquidity Guard** as an off-chain attester — the guarantees are enforced on-chain, but the solvency check itself is trusted to that service. The zero-knowledge migration replaces that model: participants will be able to **prove solvency without revealing balances or trading strategy, and without a trusted off-chain attester.**\n\n" +
+      "From a user's perspective the experience stays the same — verified liquidity, private auctions, atomic settlement — while the underlying trust assumptions get progressively stronger. We move to zero-knowledge once the market and its participants are established, so the upgrade lands on a live, liquid venue rather than an empty one.",
   },
   {
     category: "Platform Basics",
