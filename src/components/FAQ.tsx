@@ -13,7 +13,7 @@ const faqData: FAQItem[] = [
     category: "Platform Basics",
     question: "What is UnleakTrade?",
     answer:
-      "UnleakTrade is a private **OTC (Over-The-Counter)** auction platform on **Solana** for trading any **SPL (Solana Program Library) token** (listed or unlisted) via private auctions, with **ZK (Zero-Knowledge)** verified liquidity and trustless, fully on-chain settlement.",
+      "UnleakTrade is a private **OTC (Over-The-Counter)** auction platform on **Solana** for trading any **SPL (Solana Program Library) token** (listed or unlisted) via private auctions, with **attestation-verified liquidity** and trustless, fully on-chain settlement.",
   },
   {
     category: "Platform Basics",
@@ -42,7 +42,7 @@ const faqData: FAQItem[] = [
     category: "Economics & Incentives",
     question: "What's the minimum trade size?",
     answer:
-      "There is **no enforced minimum trade size** on UnleakTrade: you can create an **RFQ (Request For Quote)** for any amount, including smaller tickets like **$2,000**. All settled OTC trades pay a **flat 5 bps (0.05%) protocol fee**, regardless of size, paid in **USDC (USD Coin)**.\n\nThat said, OTC auctions are generally **most efficient above ~$10,000**, where avoiding slippage and information leakage meaningfully outweighs on-chain AMM execution. Below that range, AMMs may offer simpler or cheaper execution, but UnleakTrade intentionally keeps the fee model simple and lets participants choose the execution venue that best fits their trade.",
+      "There is **no enforced minimum trade size** on UnleakTrade: you can create an **RFQ (Request For Quote)** for any amount, including smaller tickets like **$2,000**. The protocol fee is **set per-RFQ by the maker** (a `taker_fee_bps` rate in basis points) and is paid by the **selected taker** in the **RFQ's quote token**, **on top of** the quoted amount and **only on successful settlement** — so the maker always receives the full quote.\n\nThat said, OTC auctions are generally **most efficient above ~$10,000**, where avoiding slippage and information leakage meaningfully outweighs on-chain AMM execution. Below that range, AMMs may offer simpler or cheaper execution, but UnleakTrade intentionally keeps the fee model simple and lets participants choose the execution venue that best fits their trade.",
   },
   {
     category: "Platform Basics",
@@ -73,7 +73,7 @@ const faqData: FAQItem[] = [
     category: "Roles & Participants",
     question: "Who is the taker on UnleakTrade?",
     answer:
-      "On UnleakTrade, takers are bidders: they respond to a maker's RFQ by submitting bids/quotes during the commit/reveal auction. If a taker is selected, they must fund their side of the settlement (and pay the protocol fee, in USDC) within the funding time window.",
+      "On UnleakTrade, takers are bidders: they respond to a maker's RFQ by submitting bids/quotes during the commit/reveal auction. If a taker is selected, they must fund their side of the settlement (and pay the protocol fee, in the RFQ's quote token) within the funding time window.",
   },
   {
     category: "Roles & Participants",
@@ -113,26 +113,26 @@ const faqData: FAQItem[] = [
     category: "Technical Mechanics",
     question: "Is it fully on-chain?",
     answer:
-      'The settlement engine is an on-chain Solana program that enforces the RFQ lifecycle, bond accounting, state transitions, and atomic settlement. There is also an off-chain component ("Liquidity Guard") that performs validation and generates attestations and ZK proofs used during the process, but the final enforcement and settlement happen on-chain.',
+      'The settlement engine is an on-chain Solana program that enforces the RFQ lifecycle, bond accounting, state transitions, and atomic settlement. There is also an off-chain component ("Liquidity Guard") that performs validation and generates signed attestations used during the process, but the final enforcement and settlement happen on-chain.',
   },
   {
     category: "Technical Mechanics",
-    question: "What's ZK (Zero-Knowledge) doing here?",
+    question: "How is liquidity verified before a quote is committed?",
     answer:
-      "ZK (Zero-Knowledge) is used so a participant can prove something (for example, eligibility/solvency constraints required by the protocol flow) without publicly revealing sensitive details. In UnleakTrade's flow, takers generate a ZK proof via a REST API and submit it with their commitment; invalid proofs are rejected.",
+      "Before a taker commits a quote, the **Liquidity Guard** runs an automatic **liquidity check** that verifies the taker's balances cover the bond and the potential settlement. It then issues a **signed attestation** (an ed25519 signature) that rides in the same transaction as the on-chain commit; the program verifies this attestation, and commits without a valid one are rejected.",
   },
   {
     category: "Technical Mechanics",
     question:
       'What is the "Liquidity Guard"? (and what does "REST API" mean?)',
     answer:
-      "Liquidity Guard is an off-chain microservice that (1) verifies liquidity/solvency before commitment, (2) generates signed attestations for makers and takers, and (3) feeds validated actions to the on-chain Settlement Engine.\n\nA **REST API (Representational State Transfer Application Programming Interface)** is simply an HTTP service interface; here it's used to request and receive ZK proof material needed for the on-chain commit step.",
+      "Liquidity Guard is an off-chain microservice that (1) verifies liquidity/solvency before commitment, (2) generates signed attestations for makers and takers, and (3) feeds validated actions to the on-chain Settlement Engine.\n\nA **REST API (Representational State Transfer Application Programming Interface)** is simply an HTTP service interface; here it's used to request and receive the signed attestation material needed for the on-chain commit step.",
   },
   {
     category: "Economics & Incentives",
     question: 'What are "fees" on UnleakTrade?',
     answer:
-      "A protocol fee is paid during funding/settlement: in the reference sequence, the selected taker deposits their settlement asset and pays a fee in **USDC (USD Coin)**, which is transferred to the UnleakTrade treasury. The exact fee amount/rate is a protocol parameter.",
+      "A protocol fee is paid during funding/settlement: the selected taker deposits their settlement asset and pays a fee in the **RFQ's quote token**, which is transferred to the UnleakTrade treasury (minus any facilitator share). The rate is set per-RFQ by the maker as a `taker_fee_bps` value and is charged **on top of** the quoted amount, so the maker receives the full quote.",
   },
   {
     category: "Economics & Incentives",
@@ -149,7 +149,7 @@ const faqData: FAQItem[] = [
     category: "Economics & Incentives",
     question: 'What are "bonds" and why do they exist?',
     answer:
-      "A bond is a USDC amount posted by *each participant* to make griefing expensive and force timely completion. Bonds are held in an RFQ-owned USDC token account (an **ATA = Associated Token Account**) and are returned on successful settlement. If someone fails to do their required step in time, their bond can be slashed and redistributed. Counterparties **have skin-in-the-game**.",
+      "A bond is a USDC amount posted by *each participant* to make griefing expensive and force timely completion. Bonds are held in an RFQ-owned USDC token account (an **ATA = Associated Token Account**) and are returned on successful settlement. If someone fails to do their required step in time, their bond can be slashed (routed entirely to the protocol treasury, never to the counterparty). Counterparties **have skin-in-the-game**.",
   },
   {
     category: "Economics & Incentives",
@@ -167,7 +167,7 @@ const faqData: FAQItem[] = [
     category: "Settlement & Security",
     question: "How does settlement work?",
     answer:
-      "After the maker selects a winning taker quote, both sides deposit the required assets during the funding phase. Once funded, the program executes the swap atomically: it transfers the quote asset to the maker, the base asset to the taker, transfers the fee to the treasury, and returns both bonds (unless a timeout rule triggered slashing).",
+      "After the maker selects a winning taker quote, both sides deposit the required assets during the funding phase. Once funded, the program executes the swap atomically: it transfers the quote asset to the maker, the base asset to the taker, transfers the fee to the treasury (minus any facilitator share), and returns both bonds (unless a timeout rule triggered slashing).",
   },
   {
     category: "Settlement & Security",
