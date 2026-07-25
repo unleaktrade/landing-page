@@ -53,7 +53,7 @@ export function Hero({ onOpenWaitlist }: HeroProps) {
               onClick={onOpenWaitlist}
               className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-purple-600 to-cyan-400 text-white rounded-lg hover:opacity-90 transition-opacity"
             >
-              Join the Waitlist
+              Request Access
             </button>
           </motion.div>
         </motion.div>

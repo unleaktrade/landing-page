@@ -11,11 +11,13 @@ import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Button } from "./ui/button";
 import { toast } from "sonner";
-import { ExternalLink } from "lucide-react";
+import { CheckCircle2, ExternalLink } from "lucide-react";
 import {
   isOnCurveAddress,
   isValidEmail,
 } from "./utils/validation";
+import { WAITLIST_INFO_URL } from "./utils/links";
+import { BetaAccessCard } from "./BetaAccessCard";
 
 interface WaitlistDialogProps {
   open: boolean;
@@ -34,6 +36,7 @@ export function WaitlistDialog({
 }: WaitlistDialogProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [isSuccess, setIsSuccess] = useState(false);
 
   const {
     register,
@@ -52,6 +55,14 @@ export function WaitlistDialog({
   const resetForm = () => {
     reset();
     setProgress(0);
+  };
+
+  const handleOpenChange = (nextOpen: boolean) => {
+    if (!nextOpen) {
+      resetForm();
+      setIsSuccess(false);
+    }
+    onOpenChange(nextOpen);
   };
 
   const onSubmit = async (data: FormData) => {
@@ -97,18 +108,13 @@ export function WaitlistDialog({
         }
 
         setProgress(100);
+        setIsSuccess(true);
 
         toast.success("Verification email sent!", {
           description:
-            "Please check your inbox and confirm your email address to complete your waitlist registration.",
+            "Confirm your email to secure your spot — then try the beta at app.unleak.trade (Solana Devnet, no real funds).",
           duration: 6000,
         });
-
-        // Reset form and close dialog after a short delay
-        setTimeout(() => {
-          resetForm();
-          onOpenChange(false);
-        }, 2000);
       } else {
         setProgress(0);
         const errorData = await response
@@ -132,37 +138,69 @@ export function WaitlistDialog({
     }
   };
 
+  if (isSuccess) {
+    return (
+      <Dialog open={open} onOpenChange={handleOpenChange}>
+        <DialogContent className="bg-black border-white/10 text-white max-w-md max-h-[90vh] overflow-y-auto p-4 sm:p-6">
+          <DialogHeader>
+            <div className="flex justify-center mb-4">
+              <CheckCircle2 className="w-12 h-12 text-cyan-400" />
+            </div>
+            <DialogTitle className="text-xl sm:text-2xl text-center bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent">
+              Check your email to confirm
+            </DialogTitle>
+            <DialogDescription className="text-white/60 text-xs sm:text-sm leading-relaxed text-center pt-2">
+              We've sent a verification link. Confirm it to lock in
+              your spot in the early community.
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-4 pt-2">
+            <BetaAccessCard />
+            <button
+              type="button"
+              onClick={() => handleOpenChange(false)}
+              className="w-full text-white/40 hover:text-white/60 transition-colors text-sm"
+            >
+              Close
+            </button>
+          </div>
+        </DialogContent>
+      </Dialog>
+    );
+  }
+
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent className="bg-black border-white/10 text-white max-w-md max-h-[90vh] overflow-y-auto p-4 sm:p-6">
         <DialogHeader>
           <DialogTitle className="text-xl sm:text-2xl bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent">
-            Join the Waitlist
+            Request Access
           </DialogTitle>
           <div className="space-y-2 sm:space-y-3 pt-2">
-            <DialogDescription className="text-white/60 text-xs sm:text-sm leading-relaxed">
-              Gain exclusive early access to UnleakTrade's
-              preview platform and compete for rewards in our
-              referral program.
+            <DialogDescription className="text-white/80 text-xs sm:text-sm leading-relaxed">
+              Request access. Try the beta. Help shape what we
+              build next.
             </DialogDescription>
             <DialogDescription className="text-white/60 text-xs sm:text-sm leading-relaxed">
-              Waitlist members enjoy privileged access to
-              exclusive market intelligence, our private
-              competition dashboard, and performance-based
-              rewards for sponsoring select participants.{" "}
+              UnleakTrade is opening up to an exclusive early
+              community. Request access to join the members who
+              test the beta, compete for referral rewards, and
+              shape what we build next.
             </DialogDescription>
-            <DialogDescription className="text-white/80 text-xs sm:text-sm leading-relaxed ">
-              This invitation-only program is reserved for discerning
-              traders seeking a strategic edge in confidential
-              OTC markets on Solana.{" "}
+            <DialogDescription className="text-white/60 text-xs sm:text-sm leading-relaxed">
+              Members get privileged access to exclusive market
+              intelligence, our private competition dashboard,
+              and performance-based rewards for sponsoring
+              select participants.{" "}
             </DialogDescription>
             <a
-              href="https://x.com/unleaktrade/status/1981010618070307290"
+              href={WAITLIST_INFO_URL}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1 text-xs sm:text-sm text-white/50 hover:bg-gradient-to-r hover:from-purple-400 hover:to-cyan-400 hover:bg-clip-text hover:text-transparent transition-all group mt-2"
             >
-              Learn more about the waitlist
+              Learn more about early access
               <ExternalLink className="w-3 h-3 group-hover:text-cyan-400 transition-colors" />
             </a>
           </div>
@@ -291,7 +329,7 @@ export function WaitlistDialog({
               >
                 {isSubmitting
                   ? "Submitting..."
-                  : "Join Waitlist"}
+                  : "Request Access"}
               </Button>
             </div>
           </form>

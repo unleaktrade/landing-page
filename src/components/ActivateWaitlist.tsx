@@ -14,6 +14,8 @@ import { Progress } from "./ui/progress";
 import { toast } from "sonner";
 import { isValidSHA3Hash } from "./utils/validation";
 import { QRCodeDialog } from "./QRCodeDialog";
+import { WAITLIST_INFO_URL } from "./utils/links";
+import { BetaAccessCard } from "./BetaAccessCard";
 
 type ActivationStatus =
   | "idle"
@@ -215,13 +217,25 @@ export function ActivateWaitlist() {
           >
             <h1 className="text-3xl md:text-4xl mb-4">
               <span className="bg-gradient-to-r from-purple-500 to-cyan-400 bg-clip-text text-transparent">
-                Welcome to the Waitlist!
+                You're In. Welcome to the Early Community!
               </span>
             </h1>
             <p className="text-white/60 mb-6">
               You'll receive a confirmation email shortly.
-              You're now officially on the UnleakTrade waitlist.
+              You're now an early member of UnleakTrade — the
+              community that gets first access and helps shape
+              what we build next.
             </p>
+          </motion.div>
+
+          {/* Beta invitation */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            className="mb-8"
+          >
+            <BetaAccessCard />
           </motion.div>
 
           {/* Sponsor invitation */}
@@ -240,9 +254,9 @@ export function ActivateWaitlist() {
               </div>
 
               <p className="text-white/60 mb-6">
-                Want to move up the waitlist? Share your wallet
-                address to sponsor other users and earn priority
-                access.
+                Grow the early community. Share your wallet
+                address to sponsor others and earn priority
+                perks.
               </p>
 
               <div className="flex flex-col gap-3">
@@ -309,10 +323,10 @@ export function ActivateWaitlist() {
             className="text-white/60 mb-3"
           >
             Enter the verification code from your email to
-            confirm your waitlist registration
+            confirm your spot in the early community
           </motion.p>
           <motion.a
-            href="https://x.com/unleaktrade/status/1981010618070307290"
+            href={WAITLIST_INFO_URL}
             target="_blank"
             rel="noopener noreferrer"
             initial={{ opacity: 0, y: 10 }}
@@ -320,7 +334,7 @@ export function ActivateWaitlist() {
             transition={{ delay: 0.4 }}
             className="inline-flex items-center gap-1.5 text-sm text-white/50 hover:bg-gradient-to-r hover:from-purple-400 hover:to-cyan-400 hover:bg-clip-text hover:text-transparent transition-all group"
           >
-            Learn more about the waitlist
+            Learn more about early access
             <ExternalLink className="w-3.5 h-3.5 group-hover:text-cyan-400 transition-colors" />
           </motion.a>
         </div>

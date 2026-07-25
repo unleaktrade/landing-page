@@ -11,6 +11,8 @@ import {
   isOnCurveAddress,
   isValidEmail,
 } from "./utils/validation";
+import { WAITLIST_INFO_URL } from "./utils/links";
+import { BetaAccessCard } from "./BetaAccessCard";
 
 interface FormData {
   address: string;
@@ -111,7 +113,7 @@ export function WaitlistPage() {
 
         toast.success("Verification email sent!", {
           description:
-            "Please check your inbox and confirm your email address to complete your waitlist registration.",
+            "Confirm your email to secure your spot — then try the beta at app.unleak.trade (Solana Devnet, no real funds).",
           duration: 6000,
         });
       } else {
@@ -162,13 +164,14 @@ export function WaitlistPage() {
           <div className="space-y-4 mb-8">
             <p className="text-white/60 text-center">
               We've sent a verification link to your email address. Please
-              check your inbox and click the link to complete your waitlist
-              registration.
+              check your inbox and click the link to lock in your spot in
+              the early community.
             </p>
             <p className="text-white/40 text-center text-sm">
               Don't forget to check your spam or junk folder if you don't see
               the email within a few minutes.
             </p>
+            <BetaAccessCard />
           </div>
 
           <Button
@@ -197,30 +200,29 @@ export function WaitlistPage() {
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-4xl mb-4 text-center bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent">
-            Join the Waitlist
+            Request Access
           </h1>
           <div className="space-y-3 text-left">
-            <p className="text-white/60 leading-relaxed">
-              Gain exclusive early access to UnleakTrade's preview platform
-              and compete for rewards in our referral program.
+            <p className="text-white/80 leading-relaxed">
+              Request access. Try the beta. Help shape what we build next.
             </p>
             <p className="text-white/60 leading-relaxed">
-              Waitlist members enjoy privileged access to exclusive market
+              UnleakTrade is opening up to an exclusive early community.
+              Request access to join the members who test the beta, compete
+              for referral rewards, and shape what we build next.
+            </p>
+            <p className="text-white/60 leading-relaxed">
+              Members get privileged access to exclusive market
               intelligence, our private competition dashboard, and
               performance-based rewards for sponsoring select participants.
             </p>
-            <p className="text-white/80 leading-relaxed">
-              This invitation-only program is reserved for discerning
-              traders seeking a strategic edge in confidential OTC markets
-              on Solana.
-            </p>
             <a
-              href="https://x.com/unleaktrade/status/1981010618070307290"
+              href={WAITLIST_INFO_URL}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1.5 text-sm text-white/50 hover:bg-gradient-to-r hover:from-purple-400 hover:to-cyan-400 hover:bg-clip-text hover:text-transparent transition-all group"
             >
-              Learn more about the waitlist
+              Learn more about early access
               <ExternalLink className="w-3.5 h-3.5 group-hover:text-cyan-400 transition-colors" />
             </a>
           </div>
@@ -369,7 +371,7 @@ export function WaitlistPage() {
             disabled={isSubmitting || !isValid}
             className="w-full bg-gradient-to-r from-purple-600 to-cyan-400 text-white hover:opacity-90 transition-opacity disabled:opacity-50 h-12"
           >
-            {isSubmitting ? "Submitting..." : "Join Waitlist"}
+            {isSubmitting ? "Submitting..." : "Request Access"}
           </Button>
 
           {/* Back to Home Link */}

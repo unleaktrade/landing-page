@@ -2,6 +2,7 @@ import { useState } from "react";
 import { motion } from "motion/react";
 import solanaLogo from "../assets/af0a6579392a99988c0ab693570446ed86a64fec.png";
 import { WaitlistDialog } from "./WaitlistDialog";
+import { DISCORD_URL } from "./utils/links";
 
 export function DiscordCTA() {
   const [isWaitlistOpen, setIsWaitlistOpen] = useState(false);
@@ -35,10 +36,10 @@ export function DiscordCTA() {
                   onClick={() => setIsWaitlistOpen(true)}
                   className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-purple-600 to-cyan-400 text-white rounded-lg hover:opacity-90 transition-opacity text-lg h-[58px]"
                 >
-                  Join the Waitlist
+                  Request Access
                 </button>
                 <a
-                  href="https://discord.gg/h9Qb9S7Qjx"
+                  href={DISCORD_URL}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-purple-600 to-cyan-400 text-white rounded-lg hover:opacity-90 transition-opacity text-lg h-[58px]"

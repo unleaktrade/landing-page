@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { Linkedin, Twitter, Github, ArrowUpRight, Send, Hash } from "lucide-react";
 import { useEffect } from "react";
 import julienImage from "../assets/524423e86081819620c9996fd40046b079ec4ba8.png";
+import { DISCORD_URL } from "./utils/links";
 
 interface TeamMember {
   name: string;
@@ -268,7 +269,7 @@ export function TeamPage() {
                 We're always looking for talented individuals who share our vision for private, fair, and trustless trading.
               </p>
               <a
-                href="https://discord.gg/h9Qb9S7Qjx"
+                href={DISCORD_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-purple-500 to-cyan-500 text-white rounded-full hover:shadow-lg hover:shadow-purple-500/25 transition-all duration-300"

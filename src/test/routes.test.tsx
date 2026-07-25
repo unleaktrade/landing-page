@@ -18,7 +18,7 @@ afterEach(() => {
 describe('App routing', () => {
   it('renders the home page with Hero CTA', () => {
     renderAt('/');
-    expect(screen.getAllByRole('button', { name: /join the waitlist/i }).length).toBeGreaterThan(0);
+    expect(screen.getAllByRole('button', { name: /request access/i }).length).toBeGreaterThan(0);
   });
 
   it('renders the roadmap page', () => {
@@ -71,25 +71,25 @@ describe('App routing', () => {
 
   it('redirects unknown routes to home', () => {
     renderAt('/totally-made-up-path');
-    expect(screen.getAllByRole('button', { name: /join the waitlist/i }).length).toBeGreaterThan(0);
+    expect(screen.getAllByRole('button', { name: /request access/i }).length).toBeGreaterThan(0);
   });
 
   it('opens the waitlist dialog when the hero CTA is clicked', async () => {
     renderAt('/');
     const user = userEvent.setup();
-    const buttons = screen.getAllByRole('button', { name: /join the waitlist/i });
+    const buttons = screen.getAllByRole('button', { name: /request access/i });
     await user.click(buttons[0]);
-    // Dialog heading is an additional "Join the Waitlist" text
-    expect(screen.getAllByText(/join the waitlist/i).length).toBeGreaterThanOrEqual(3);
+    // Dialog title and submit add additional "Request Access" text
+    expect(screen.getAllByText(/request access/i).length).toBeGreaterThanOrEqual(3);
   });
 
   it('opens the DiscordCTA-triggered waitlist dialog too', async () => {
     renderAt('/');
     const user = userEvent.setup();
-    const buttons = screen.getAllByRole('button', { name: /join the waitlist/i });
+    const buttons = screen.getAllByRole('button', { name: /request access/i });
     // last one is DiscordCTA's
     await user.click(buttons[buttons.length - 1]);
-    expect(screen.getAllByText(/join the waitlist/i).length).toBeGreaterThanOrEqual(3);
+    expect(screen.getAllByText(/request access/i).length).toBeGreaterThanOrEqual(3);
   });
 
   it('calls window.scrollTo on route change via ScrollToTop', async () => {
