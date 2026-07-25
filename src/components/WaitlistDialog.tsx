@@ -182,7 +182,6 @@ export function WaitlistDialog({
               Request access. Try the beta. Help shape what we
               build next.
             </DialogDescription>
-            <BetaLiveCallout />
             <DialogDescription className="text-white/60 text-xs sm:text-sm leading-relaxed">
               UnleakTrade is opening up to an exclusive early
               community. Request access to join the members who
@@ -195,6 +194,7 @@ export function WaitlistDialog({
               and performance-based rewards for sponsoring
               select participants.{" "}
             </DialogDescription>
+            <BetaLiveCallout />
             <a
               href={WAITLIST_INFO_URL}
               target="_blank"

@@ -206,7 +206,6 @@ export function WaitlistPage() {
             <p className="text-white/80 leading-relaxed">
               Request access. Try the beta. Help shape what we build next.
             </p>
-            <BetaLiveCallout />
             <p className="text-white/60 leading-relaxed">
               UnleakTrade is opening up to an exclusive early community.
               Request access to join the members who test the beta, compete
@@ -217,6 +216,7 @@ export function WaitlistPage() {
               intelligence, our private competition dashboard, and
               performance-based rewards for sponsoring select participants.
             </p>
+            <BetaLiveCallout />
             <a
               href={WAITLIST_INFO_URL}
               target="_blank"

@@ -1,7 +1,6 @@
 import { motion } from "motion/react";
 import { Rocket } from "lucide-react";
 import logoImage from "../assets/fdbafc2f1e7edb4d213deafbca8c80c666dccbae.png";
-import { BETA_APP_URL } from "./utils/links";
 
 interface HeroProps {
   onOpenWaitlist?: () => void;
@@ -52,23 +51,13 @@ export function Hero({ onOpenWaitlist }: HeroProps) {
             transition={{ delay: 0.3, duration: 0.8 }}
             className="space-y-4"
           >
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <a
-                href={BETA_APP_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-purple-600 to-cyan-400 text-white rounded-lg hover:opacity-90 transition-opacity"
-              >
-                <Rocket className="w-4 h-4" />
-                Try the Beta
-              </a>
-              <button
-                onClick={onOpenWaitlist}
-                className="inline-flex items-center gap-2 px-8 py-4 bg-transparent border border-white/20 text-white rounded-lg hover:bg-white/10 transition-colors"
-              >
-                Request Access
-              </button>
-            </div>
+            <button
+              onClick={onOpenWaitlist}
+              className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-purple-600 to-cyan-400 text-white rounded-lg hover:opacity-90 transition-opacity"
+            >
+              <Rocket className="w-4 h-4" />
+              Request Access
+            </button>
             <p className="text-white/40 text-sm">
               Live in beta on Solana Devnet — no real funds or tokens involved
             </p>

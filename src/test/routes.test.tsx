@@ -19,12 +19,7 @@ describe('App routing', () => {
   it('renders the home page with Hero CTA', () => {
     renderAt('/');
     expect(screen.getAllByRole('button', { name: /request access/i }).length).toBeGreaterThan(0);
-    // The beta is public: direct links must exist without requesting access
-    const betaLinks = screen.getAllByRole('link', { name: /try the beta/i });
-    expect(betaLinks.length).toBeGreaterThanOrEqual(2);
-    betaLinks.forEach((l) =>
-      expect(l).toHaveAttribute('href', 'https://app.unleak.trade')
-    );
+    expect(screen.getByText(/live in beta on solana devnet/i)).toBeInTheDocument();
   });
 
   it('renders the roadmap page', () => {
