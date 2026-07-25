@@ -324,10 +324,12 @@ describe('WaitlistDialog form submission', () => {
 
   it('blocks submit while the form is invalid', async () => {
     render(<Harness />);
+    // The pre-submit view must already advertise the live Devnet beta
+    expect(screen.getByText(/beta live on solana devnet/i)).toBeInTheDocument();
     fillInput(/your solana wallet address/i, 'bad');
     fillInput(/email address/i, 'not-an-email');
     await act(async () => { await Promise.resolve(); });
-    const submit = screen.getByRole('button', { name: /join waitlist/i });
+    const submit = screen.getByRole('button', { name: /request access/i });
     expect(submit).toBeDisabled();
   });
 
@@ -339,13 +341,20 @@ describe('WaitlistDialog form submission', () => {
     vi.stubGlobal('fetch', fetchMock);
     render(<Harness />);
     await fillValidForm();
-    const submit = screen.getByRole('button', { name: /join waitlist/i });
+    const submit = screen.getByRole('button', { name: /request access/i });
     await waitFor(() => expect(submit).not.toBeDisabled(), { timeout: 2000 });
     fireEvent.click(submit);
     await waitFor(() => expect(fetchMock).toHaveBeenCalled());
     await waitFor(() =>
       expect(localStorage.getItem('waitlist_registration_hash')).toBe('abc123')
     );
+    // Dialog stays open and shows the success view with the beta invitation
+    expect(
+      await screen.findByText(/check your email to confirm/i)
+    ).toBeInTheDocument();
+    const betaLink = screen.getByRole('link', { name: /launch the beta/i });
+    expect(betaLink).toHaveAttribute('href', 'https://app.unleak.trade');
+    expect(screen.getByRole('link', { name: /discord/i })).toBeInTheDocument();
   });
 
   it('shows an error toast path on non-202 response', async () => {
@@ -356,7 +365,7 @@ describe('WaitlistDialog form submission', () => {
     vi.stubGlobal('fetch', fetchMock);
     render(<Harness />);
     await fillValidForm();
-    const submit = screen.getByRole('button', { name: /join waitlist/i });
+    const submit = screen.getByRole('button', { name: /request access/i });
     await waitFor(() => expect(submit).not.toBeDisabled(), { timeout: 2000 });
     fireEvent.click(submit);
     await waitFor(() => expect(fetchMock).toHaveBeenCalled());
@@ -370,7 +379,7 @@ describe('WaitlistDialog form submission', () => {
     vi.stubGlobal('fetch', fetchMock);
     render(<Harness />);
     await fillValidForm();
-    const submit = screen.getByRole('button', { name: /join waitlist/i });
+    const submit = screen.getByRole('button', { name: /request access/i });
     await waitFor(() => expect(submit).not.toBeDisabled(), { timeout: 2000 });
     fireEvent.click(submit);
     await waitFor(() => expect(fetchMock).toHaveBeenCalled());
@@ -381,7 +390,7 @@ describe('WaitlistDialog form submission', () => {
     vi.stubGlobal('fetch', fetchMock);
     render(<Harness />);
     await fillValidForm();
-    const submit = screen.getByRole('button', { name: /join waitlist/i });
+    const submit = screen.getByRole('button', { name: /request access/i });
     await waitFor(() => expect(submit).not.toBeDisabled(), { timeout: 2000 });
     fireEvent.click(submit);
     await waitFor(() => expect(fetchMock).toHaveBeenCalled());
@@ -416,13 +425,17 @@ describe('WaitlistPage form submission', () => {
     vi.stubGlobal('fetch', fetchMock);
     renderPage('/waitlist');
     await fillValidForm();
-    const submit = screen.getByRole('button', { name: /join waitlist/i });
+    const submit = screen.getByRole('button', { name: /request access/i });
     await waitFor(() => expect(submit).not.toBeDisabled(), { timeout: 2000 });
     fireEvent.click(submit);
     await waitFor(() =>
       expect(screen.getByRole('heading', { name: /check your email/i })).toBeInTheDocument()
     );
     expect(localStorage.getItem('waitlist_registration_hash')).toBe('page-hash');
+    expect(screen.getByRole('link', { name: /launch the beta/i })).toHaveAttribute(
+      'href',
+      'https://app.unleak.trade'
+    );
     const user = setup();
     await user.click(screen.getByRole('button', { name: /go home/i }));
   });
@@ -435,7 +448,7 @@ describe('WaitlistPage form submission', () => {
     vi.stubGlobal('fetch', fetchMock);
     renderPage('/waitlist');
     await fillValidForm();
-    const submit = screen.getByRole('button', { name: /join waitlist/i });
+    const submit = screen.getByRole('button', { name: /request access/i });
     await waitFor(() => expect(submit).not.toBeDisabled(), { timeout: 2000 });
     fireEvent.click(submit);
     await waitFor(() => expect(fetchMock).toHaveBeenCalled());
@@ -446,7 +459,7 @@ describe('WaitlistPage form submission', () => {
     vi.stubGlobal('fetch', fetchMock);
     renderPage('/waitlist');
     await fillValidForm();
-    const submit = screen.getByRole('button', { name: /join waitlist/i });
+    const submit = screen.getByRole('button', { name: /request access/i });
     await waitFor(() => expect(submit).not.toBeDisabled(), { timeout: 2000 });
     fireEvent.click(submit);
     await waitFor(() => expect(fetchMock).toHaveBeenCalled());
@@ -562,7 +575,11 @@ describe('ActivateWaitlist state machine', () => {
     // Hash is pre-filled from localStorage; submit should appear
     const submit = await screen.findByRole('button', { name: /activate waitlist spot/i });
     fireEvent.click(submit);
-    await screen.findByRole('heading', { name: /welcome to the waitlist/i });
+    await screen.findByRole('heading', { name: /welcome to the early community/i });
+    expect(screen.getByRole('link', { name: /launch the beta/i })).toHaveAttribute(
+      'href',
+      'https://app.unleak.trade'
+    );
     const user = setup();
     await user.click(screen.getByRole('button', { name: /my referral qr/i }));
     expect(screen.getByText(/share your referral/i)).toBeInTheDocument();

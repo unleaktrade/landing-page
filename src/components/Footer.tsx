@@ -1,5 +1,6 @@
 import logoImage from "../assets/fdbafc2f1e7edb4d213deafbca8c80c666dccbae.png";
 import { Link } from "react-router-dom";
+import { DISCORD_URL } from "./utils/links";
 
 export function Footer() {
   return (
@@ -35,7 +36,7 @@ export function Footer() {
             <a href="https://t.me/+dwi3eXR9Q1Q4NjE0" target="_blank" rel="noopener noreferrer" className="text-sm text-white/40 hover:text-white/60 transition-colors">
               Telegram
             </a>
-            <a href="https://discord.gg/h9Qb9S7Qjx" target="_blank" rel="noopener noreferrer" className="text-sm text-white/40 hover:text-white/60 transition-colors">
+            <a href={DISCORD_URL} target="_blank" rel="noopener noreferrer" className="text-sm text-white/40 hover:text-white/60 transition-colors">
               Discord
             </a>
           </div>

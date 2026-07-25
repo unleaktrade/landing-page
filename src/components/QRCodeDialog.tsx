@@ -46,8 +46,8 @@ export function QRCodeDialog({ open, onOpenChange }: QRCodeDialogProps) {
     if (navigator.share) {
       try {
         await navigator.share({
-          title: "Join UnleakTrade Waitlist",
-          text: "Get exclusive early access to UnleakTrade - Confidential OTC Trading on Solana",
+          title: "Join UnleakTrade's Early Community",
+          text: "Request access to UnleakTrade — try the beta and help shape confidential OTC trading on Solana",
           url: referralLink,
         });
       } catch (error) {
@@ -133,7 +133,7 @@ export function QRCodeDialog({ open, onOpenChange }: QRCodeDialogProps) {
               Share Your Referral
             </DialogTitle>
             <p className="text-white/60 text-center text-xs sm:text-sm mt-2">
-              Sponsor others to climb the waitlist and earn priority access
+              Sponsor others to grow the early community and earn priority perks
             </p>
           </DialogHeader>
 
@@ -238,7 +238,7 @@ export function QRCodeDialog({ open, onOpenChange }: QRCodeDialogProps) {
           <div className="p-3 bg-gradient-to-r from-purple-500/10 to-cyan-400/10 border border-purple-500/20 rounded-lg space-y-2">
             <p className="text-xs text-white/60 text-center leading-relaxed">
               Share this QR code or link with others. When they join using your referral,
-              you'll both move up the waitlist and earn priority access to UnleakTrade.
+              you both earn priority perks in the early community.
             </p>
             <a
               href="https://x.com/unleaktrade/status/1981010618070307290"

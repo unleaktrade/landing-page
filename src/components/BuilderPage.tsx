@@ -1,6 +1,7 @@
 import { motion } from "motion/react";
 import { Linkedin, Twitter, Github, ArrowUpRight, Send } from "lucide-react";
 import julienImage from "../assets/524423e86081819620c9996fd40046b079ec4ba8.png";
+import { DISCORD_URL } from "./utils/links";
 
 const julienData = {
   name: "Julien SIE",
@@ -288,7 +289,7 @@ export function BuilderPage() {
                 Whether you're interested in contributing to the protocol, partnering, or just want to learn more — feel free to reach out.
               </p>
               <a
-                href="https://discord.gg/h9Qb9S7Qjx"
+                href={DISCORD_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-purple-500 to-cyan-500 text-white rounded-full hover:shadow-lg hover:shadow-purple-500/25 transition-all duration-300"

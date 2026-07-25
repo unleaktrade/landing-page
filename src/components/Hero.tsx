@@ -1,4 +1,5 @@
 import { motion } from "motion/react";
+import { Rocket } from "lucide-react";
 import logoImage from "../assets/fdbafc2f1e7edb4d213deafbca8c80c666dccbae.png";
 
 interface HeroProps {
@@ -48,13 +49,18 @@ export function Hero({ onOpenWaitlist }: HeroProps) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3, duration: 0.8 }}
+            className="space-y-4"
           >
             <button
               onClick={onOpenWaitlist}
               className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-purple-600 to-cyan-400 text-white rounded-lg hover:opacity-90 transition-opacity"
             >
-              Join the Waitlist
+              <Rocket className="w-4 h-4" />
+              Request Access
             </button>
+            <p className="text-white/40 text-sm">
+              Live in beta on Solana Devnet — no real funds or tokens involved
+            </p>
           </motion.div>
         </motion.div>
       </div>
