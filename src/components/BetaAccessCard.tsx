@@ -1,8 +1,8 @@
-import { Rocket } from "lucide-react";
+import { ExternalLink, Rocket } from "lucide-react";
 import { BETA_APP_URL, DISCORD_URL } from "./utils/links";
 
-// Compact banner for pre-submit views: tells visitors the beta is already
-// live and testable before they fill the Request Access form.
+// Compact banner for pre-submit views: the beta is open to everyone, no
+// access request required — link it directly.
 export function BetaLiveCallout() {
   return (
     <div className="p-3 bg-gradient-to-r from-purple-500/10 to-cyan-400/10 border border-purple-500/20 rounded-lg text-left">
@@ -10,11 +10,20 @@ export function BetaLiveCallout() {
         <Rocket className="w-4 h-4" />
         <span>Beta live on Solana Devnet</span>
       </div>
-      <p className="text-white/60 text-xs leading-relaxed">
-        UnleakTrade is already up and running. You can explore the app and
-        test the experience today — no real funds or tokens involved.
-        Request access to get started.
+      <p className="text-white/60 text-xs leading-relaxed mb-2">
+        UnleakTrade is already up and running. Explore the app and test the
+        experience today — no real funds or tokens involved, no access
+        request required.
       </p>
+      <a
+        href={BETA_APP_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="inline-flex items-center gap-1 text-sm text-cyan-400 hover:opacity-90 transition-opacity"
+      >
+        Launch the Beta
+        <ExternalLink className="w-3 h-3" />
+      </a>
     </div>
   );
 }

@@ -2,7 +2,8 @@ import { useState } from "react";
 import { motion } from "motion/react";
 import solanaLogo from "../assets/af0a6579392a99988c0ab693570446ed86a64fec.png";
 import { WaitlistDialog } from "./WaitlistDialog";
-import { DISCORD_URL } from "./utils/links";
+import { Rocket } from "lucide-react";
+import { BETA_APP_URL, DISCORD_URL } from "./utils/links";
 
 export function DiscordCTA() {
   const [isWaitlistOpen, setIsWaitlistOpen] = useState(false);
@@ -32,9 +33,18 @@ export function DiscordCTA() {
               </div>
 
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a
+                  href={BETA_APP_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-purple-600 to-cyan-400 text-white rounded-lg hover:opacity-90 transition-opacity text-lg h-[58px]"
+                >
+                  <Rocket className="w-4 h-4" />
+                  Try the Beta
+                </a>
                 <button
                   onClick={() => setIsWaitlistOpen(true)}
-                  className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-purple-600 to-cyan-400 text-white rounded-lg hover:opacity-90 transition-opacity text-lg h-[58px]"
+                  className="inline-flex items-center gap-2 px-8 py-4 bg-transparent border border-white/20 text-white rounded-lg hover:bg-white/10 transition-colors text-lg h-[58px]"
                 >
                   Request Access
                 </button>
