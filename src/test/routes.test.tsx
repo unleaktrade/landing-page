@@ -46,6 +46,7 @@ describe('App routing', () => {
   it('renders the waitlist page', () => {
     renderAt('/waitlist');
     expect(screen.getByLabelText(/your solana wallet address/i)).toBeInTheDocument();
+    expect(screen.getByText(/beta live on solana devnet/i)).toBeInTheDocument();
   });
 
   it('renders the waitlist page with a valid sponsor locked', () => {

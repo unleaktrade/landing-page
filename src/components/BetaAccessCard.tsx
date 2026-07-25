@@ -1,6 +1,24 @@
 import { Rocket } from "lucide-react";
 import { BETA_APP_URL, DISCORD_URL } from "./utils/links";
 
+// Compact banner for pre-submit views: tells visitors the beta is already
+// live and testable before they fill the Request Access form.
+export function BetaLiveCallout() {
+  return (
+    <div className="p-3 bg-gradient-to-r from-purple-500/10 to-cyan-400/10 border border-purple-500/20 rounded-lg text-left">
+      <div className="flex items-center gap-2 text-sm text-cyan-400 mb-1">
+        <Rocket className="w-4 h-4" />
+        <span>Beta live on Solana Devnet</span>
+      </div>
+      <p className="text-white/60 text-xs leading-relaxed">
+        UnleakTrade is already up and running. You can explore the app and
+        test the experience today — no real funds or tokens involved.
+        Request access to get started.
+      </p>
+    </div>
+  );
+}
+
 export function BetaAccessCard() {
   return (
     <div className="p-4 bg-gradient-to-r from-purple-500/10 to-cyan-400/10 border border-purple-500/20 rounded-lg space-y-3 text-left">

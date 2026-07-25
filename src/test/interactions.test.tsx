@@ -324,6 +324,8 @@ describe('WaitlistDialog form submission', () => {
 
   it('blocks submit while the form is invalid', async () => {
     render(<Harness />);
+    // The pre-submit view must already advertise the live Devnet beta
+    expect(screen.getByText(/beta live on solana devnet/i)).toBeInTheDocument();
     fillInput(/your solana wallet address/i, 'bad');
     fillInput(/email address/i, 'not-an-email');
     await act(async () => { await Promise.resolve(); });

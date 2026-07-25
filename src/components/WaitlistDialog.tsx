@@ -17,7 +17,7 @@ import {
   isValidEmail,
 } from "./utils/validation";
 import { WAITLIST_INFO_URL } from "./utils/links";
-import { BetaAccessCard } from "./BetaAccessCard";
+import { BetaAccessCard, BetaLiveCallout } from "./BetaAccessCard";
 
 interface WaitlistDialogProps {
   open: boolean;
@@ -182,6 +182,7 @@ export function WaitlistDialog({
               Request access. Try the beta. Help shape what we
               build next.
             </DialogDescription>
+            <BetaLiveCallout />
             <DialogDescription className="text-white/60 text-xs sm:text-sm leading-relaxed">
               UnleakTrade is opening up to an exclusive early
               community. Request access to join the members who

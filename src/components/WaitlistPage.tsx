@@ -12,7 +12,7 @@ import {
   isValidEmail,
 } from "./utils/validation";
 import { WAITLIST_INFO_URL } from "./utils/links";
-import { BetaAccessCard } from "./BetaAccessCard";
+import { BetaAccessCard, BetaLiveCallout } from "./BetaAccessCard";
 
 interface FormData {
   address: string;
@@ -206,6 +206,7 @@ export function WaitlistPage() {
             <p className="text-white/80 leading-relaxed">
               Request access. Try the beta. Help shape what we build next.
             </p>
+            <BetaLiveCallout />
             <p className="text-white/60 leading-relaxed">
               UnleakTrade is opening up to an exclusive early community.
               Request access to join the members who test the beta, compete
