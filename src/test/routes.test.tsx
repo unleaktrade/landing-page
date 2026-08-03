@@ -44,6 +44,14 @@ describe('App routing', () => {
     expect(screen.getByPlaceholderText(/search questions/i)).toBeInTheDocument();
   });
 
+  it('deep-links to a FAQ entry via hash', async () => {
+    renderAt('/faq#devnet-usdc');
+    expect(
+      await screen.findByText(/testing allowance, not a trade-size guideline/i)
+    ).toBeInTheDocument();
+    expect(document.getElementById('devnet-usdc')).not.toBeNull();
+  });
+
   it('renders the waitlist page', () => {
     renderAt('/waitlist');
     expect(screen.getByLabelText(/your solana wallet address/i)).toBeInTheDocument();

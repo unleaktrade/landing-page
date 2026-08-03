@@ -26,6 +26,10 @@ if (!window.scrollTo) {
   window.scrollTo = vi.fn() as typeof window.scrollTo;
 }
 
+if (!Element.prototype.scrollIntoView) {
+  Element.prototype.scrollIntoView = vi.fn() as typeof Element.prototype.scrollIntoView;
+}
+
 if (!window.IntersectionObserver) {
   class IO {
     observe() {}

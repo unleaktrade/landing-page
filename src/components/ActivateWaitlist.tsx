@@ -14,8 +14,12 @@ import { Progress } from "./ui/progress";
 import { toast } from "sonner";
 import { isValidSHA3Hash } from "./utils/validation";
 import { QRCodeDialog } from "./QRCodeDialog";
-import { WAITLIST_INFO_URL } from "./utils/links";
+import { WAITLIST_INFO_URL, API_BASE_URL } from "./utils/links";
 import { BetaAccessCard } from "./BetaAccessCard";
+import {
+  AirdropStatusCard,
+  type AirdropInfo,
+} from "./AirdropStatusCard";
 
 type ActivationStatus =
   | "idle"
@@ -33,6 +37,7 @@ export function ActivateWaitlist() {
   const [errorMessage, setErrorMessage] = useState("");
   const [errorHash, setErrorHash] = useState<string | null>(null);
   const [isQROpen, setIsQROpen] = useState(false);
+  const [airdrop, setAirdrop] = useState<AirdropInfo | null>(null);
 
   useEffect(() => {
     // Retrieve hash from localStorage if it exists
@@ -88,7 +93,7 @@ export function ActivateWaitlist() {
 
     try {
       const response = await fetch(
-        `https://unleaktrade-waitlist-028080d4039f.herokuapp.com/activate/${token}/${hash.trim()}`,
+        `${API_BASE_URL}/activate/${token}/${hash.trim()}`,
         {
           method: "POST",
           headers: {
@@ -103,7 +108,18 @@ export function ActivateWaitlist() {
         if (data.address) {
           localStorage.setItem("waitlist_wallet_address", data.address);
         }
-        
+
+        // Airdrop details are optional (older backends omit them); only
+        // surface the card when the payload looks well-formed.
+        if (
+          data.airdrop &&
+          typeof data.airdrop === "object" &&
+          typeof data.airdrop.status === "string"
+        ) {
+          setAirdrop(data.airdrop as AirdropInfo);
+        }
+
+
         setStatus("success");
         toast.success(
           "Activation successful! Check your email for confirmation.",
@@ -238,11 +254,23 @@ export function ActivateWaitlist() {
             <BetaAccessCard />
           </motion.div>
 
+          {/* Airdrop status */}
+          {airdrop && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 }}
+              className="mb-8"
+            >
+              <AirdropStatusCard airdrop={airdrop} />
+            </motion.div>
+          )}
+
           {/* Sponsor invitation */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
+            transition={{ delay: 0.6 }}
             className="relative p-8 rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-sm overflow-hidden"
           >
             <div className="relative">

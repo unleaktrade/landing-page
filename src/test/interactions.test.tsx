@@ -31,8 +31,16 @@ function fillInput(label: RegExp, value: string) {
 }
 
 describe('FAQ interactions', () => {
+  function renderFAQ(initialEntries: string[] = ['/faq']) {
+    return render(
+      <MemoryRouter initialEntries={initialEntries}>
+        <FAQ />
+      </MemoryRouter>
+    );
+  }
+
   it('expands an accordion item', async () => {
-    render(<FAQ />);
+    renderFAQ();
     const user = setup();
     const firstQuestion = screen.getAllByRole('button', { name: /what is unleaktrade\?/i })[0];
     await user.click(firstQuestion);
@@ -41,7 +49,7 @@ describe('FAQ interactions', () => {
   });
 
   it('filters via search and shows no-results state', async () => {
-    render(<FAQ />);
+    renderFAQ();
     const user = setup();
     const search = screen.getByPlaceholderText(/search questions/i);
     fireEvent.change(search, { target: { value: 'zzzzz-no-match-zzzzz' } });
@@ -51,7 +59,7 @@ describe('FAQ interactions', () => {
   });
 
   it('toggles a category filter and the All filter', async () => {
-    render(<FAQ />);
+    renderFAQ();
     const user = setup();
     // Category buttons live in the filter row; the first category button matching is the pill
     const categoryButtons = screen.getAllByRole('button').filter((b) =>
@@ -61,6 +69,38 @@ describe('FAQ interactions', () => {
     await user.click(categoryButtons[0]);
     await user.click(categoryButtons[0]); // toggle off
     await user.click(screen.getByRole('button', { name: /^all$/i }));
+  });
+
+  it('auto-opens and scrolls to an entry deep-linked via hash', async () => {
+    renderFAQ(['/faq#devnet-usdc']);
+    // Entry is auto-opened: its answer body is visible
+    await waitFor(() =>
+      expect(
+        screen.getByText(/testing allowance, not a trade-size guideline/i)
+      ).toBeInTheDocument()
+    );
+    // Item wrapper carries the DOM id used for scrolling
+    expect(document.getElementById('devnet-usdc')).not.toBeNull();
+  });
+
+  it('ignores an unknown hash without crashing', () => {
+    renderFAQ(['/faq#not-a-real-entry']);
+    expect(screen.getByPlaceholderText(/search questions/i)).toBeInTheDocument();
+    // Nothing auto-opened
+    expect(
+      screen.queryByText(/testing allowance, not a trade-size guideline/i)
+    ).not.toBeInTheDocument();
+  });
+
+  it('shows the revised minimum trade size answer', async () => {
+    renderFAQ(['/faq#minimum-trade-size']);
+    await waitFor(() =>
+      expect(
+        screen.getByText(/no protocol-enforced minimum trade size/i)
+      ).toBeInTheDocument()
+    );
+    expect(screen.getByText(/guidance, not a gate or requirement/i)).toBeInTheDocument();
+    expect(screen.getByText(/production on mainnet/i)).toBeInTheDocument();
   });
 });
 
@@ -326,6 +366,10 @@ describe('WaitlistDialog form submission', () => {
     render(<Harness />);
     // The pre-submit view must already advertise the live Devnet beta
     expect(screen.getByText(/beta live on solana devnet/i)).toBeInTheDocument();
+    // The wallet field explains the devnet USDC airdrop
+    expect(
+      screen.getByText(/we'll send this wallet custom devnet usdc/i)
+    ).toBeInTheDocument();
     fillInput(/your solana wallet address/i, 'bad');
     fillInput(/email address/i, 'not-an-email');
     await act(async () => { await Promise.resolve(); });
@@ -472,6 +516,13 @@ describe('WaitlistPage form submission', () => {
     expect(screen.getByTestId('home')).toBeInTheDocument();
   });
 
+  it('explains the devnet USDC airdrop under the wallet field', () => {
+    renderPage('/waitlist');
+    expect(
+      screen.getByText(/we'll send this wallet custom devnet usdc/i)
+    ).toBeInTheDocument();
+  });
+
   it('short-circuits render when sponsor param is invalid', async () => {
     renderPage('/waitlist/not-a-real-sponsor');
     expect(screen.queryByLabelText(/your solana wallet address/i)).not.toBeInTheDocument();
@@ -562,6 +613,90 @@ describe('ActivateWaitlist state machine', () => {
     const user = setup();
     await user.click(screen.getByRole('button', { name: /back to home/i }));
     expect(screen.getByTestId('home')).toBeInTheDocument();
+  });
+
+  const SIGNATURE = '5AirdropSig111111111111111111111111111111111111111111111111111';
+
+  function airdropPayload(overrides: Record<string, unknown> = {}) {
+    return {
+      cluster: 'devnet',
+      status: 'pending',
+      mint: 'M1nt1111111111111111111111111111111111111111',
+      amount: 1000,
+      rawAmount: '1000000000',
+      retryable: false,
+      ...overrides,
+    };
+  }
+
+  async function activateWith(json: Record<string, unknown>) {
+    const fetchMock = vi.fn().mockResolvedValue({
+      status: 201,
+      json: async () => json,
+    });
+    vi.stubGlobal('fetch', fetchMock);
+    renderActivate();
+    fireEvent.change(screen.getByLabelText(/verification code/i), { target: { value: hex64 } });
+    const submit = await screen.findByRole('button', { name: /activate waitlist spot/i });
+    fireEvent.click(submit);
+    await screen.findByRole('heading', { name: /welcome to the early community/i });
+  }
+
+  it('shows the airdrop pending card on 201 with a pending airdrop', async () => {
+    await activateWith({ address: VALID_SOLANA, airdrop: airdropPayload() });
+    expect(
+      screen.getByText(/your devnet usdc airdrop is on the way/i)
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(/custom test token on solana devnet — no real-world monetary value/i)
+    ).toBeInTheDocument();
+  });
+
+  it('shows the explorer link on 201 with a confirmed airdrop and signature', async () => {
+    await activateWith({
+      address: VALID_SOLANA,
+      airdrop: airdropPayload({ status: 'confirmed', signature: SIGNATURE }),
+    });
+    expect(screen.getByText(/devnet usdc delivered to your wallet/i)).toBeInTheDocument();
+    expect(
+      screen.getByRole('link', { name: /view transaction on solana explorer/i })
+    ).toHaveAttribute(
+      'href',
+      `https://explorer.solana.com/tx/${SIGNATURE}?cluster=devnet`
+    );
+  });
+
+  it('shows the reassurance copy on 201 with a retryable failure', async () => {
+    await activateWith({
+      address: VALID_SOLANA,
+      airdrop: airdropPayload({ status: 'failed_retryable', retryable: true }),
+    });
+    expect(
+      screen.getByText(/temporary snag.*retried automatically/i)
+    ).toBeInTheDocument();
+  });
+
+  it('renders no airdrop card on 201 without an airdrop payload', async () => {
+    await activateWith({ address: VALID_SOLANA });
+    expect(
+      screen.queryByText(/your devnet usdc airdrop is on the way/i)
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByText(/custom test token on solana devnet/i)
+    ).not.toBeInTheDocument();
+    // Existing success layout untouched
+    expect(screen.getByText(/share the alpha/i)).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /launch the beta/i })).toHaveAttribute(
+      'href',
+      'https://app.unleak.trade'
+    );
+  });
+
+  it('renders no airdrop card on 201 with a malformed airdrop payload', async () => {
+    await activateWith({ address: VALID_SOLANA, airdrop: { cluster: 'devnet' } });
+    expect(
+      screen.queryByText(/custom test token on solana devnet/i)
+    ).not.toBeInTheDocument();
   });
 
   it('opens the QR dialog from the success view and returns home', async () => {

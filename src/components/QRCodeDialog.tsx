@@ -133,7 +133,8 @@ export function QRCodeDialog({ open, onOpenChange }: QRCodeDialogProps) {
               Share Your Referral
             </DialogTitle>
             <p className="text-white/60 text-center text-xs sm:text-sm mt-2">
-              Sponsor others to grow the early community and earn priority perks
+              This is the wallet that receives your devnet USDC and identifies
+              you in the beta. Share it as a sponsor address to invite others.
             </p>
           </DialogHeader>
 

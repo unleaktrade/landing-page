@@ -16,8 +16,12 @@ import {
   isOnCurveAddress,
   isValidEmail,
 } from "./utils/validation";
-import { WAITLIST_INFO_URL } from "./utils/links";
-import { BetaAccessCard, BetaLiveCallout } from "./BetaAccessCard";
+import { WAITLIST_INFO_URL, API_BASE_URL } from "./utils/links";
+import {
+  BetaAccessCard,
+  BetaLiveCallout,
+  WalletFieldHint,
+} from "./BetaAccessCard";
 
 interface WaitlistDialogProps {
   open: boolean;
@@ -82,7 +86,7 @@ export function WaitlistDialog({
       }, 100);
 
       const response = await fetch(
-        "https://unleaktrade-waitlist-028080d4039f.herokuapp.com/register",
+        `${API_BASE_URL}/register`,
         {
           method: "POST",
           headers: {
@@ -244,6 +248,7 @@ export function WaitlistDialog({
                     {errors.address.message}
                   </p>
                 )}
+                <WalletFieldHint />
               </div>
 
               <div className="space-y-1.5 sm:space-y-2">

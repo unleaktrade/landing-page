@@ -1,8 +1,10 @@
 import { motion, AnimatePresence } from "motion/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { ChevronDown, Search } from "lucide-react";
 
 interface FAQItem {
+  id: string;
   question: string;
   answer: string;
   category: string;
@@ -10,25 +12,43 @@ interface FAQItem {
 
 const faqData: FAQItem[] = [
   {
+    id: "what-is-unleaktrade",
     category: "Platform Basics",
     question: "What is UnleakTrade?",
     answer:
       "UnleakTrade is a private **OTC (Over-The-Counter)** auction platform on **Solana** for trading any **SPL (Solana Program Library) token** (listed or unlisted) via private auctions, with **attestation-verified liquidity** and trustless, fully on-chain settlement.",
   },
   {
+    id: "try-unleaktrade-now",
     category: "Platform Basics",
     question: "Can I try UnleakTrade now?",
     answer:
-      "Yes. UnleakTrade is live in **beta** on **Solana Devnet** at **app.unleak.trade** — you can explore the app and test the experience with **no real funds or tokens** involved.\n\n" +
+      "Yes. UnleakTrade is live in **beta** on **Solana Devnet** at **app.unleak.trade** — you can open the app and explore it today.\n\n" +
+      "To actually test the trading flows, though, you need the **custom devnet USDC** test token: request access and activate your waitlist spot, and **1,000 custom devnet USDC** are airdropped to your registered wallet. Everything runs on Devnet only — **no real funds are at risk**.\n\n" +
       "Request access to join the early community and share feedback on Discord.",
   },
   {
+    id: "devnet-usdc",
+    category: "Platform Basics",
+    question: "What do I get for joining the waitlist?",
+    answer:
+      "After you activate your waitlist spot, **1,000 custom devnet USDC** are airdropped to the wallet you registered. This is the test token the beta runs on, and it's what lets you do real end-to-end testing — create RFQs, post bonds, commit and reveal quotes, and settle trades — rather than just browsing the app.\n\n" +
+      "At today's default devnet parameters (which may change), 1,000 devnet USDC is enough for roughly **~96 full RFQ cycles**. The 1,000 figure is a **testing allowance, not a trade-size guideline**.\n\n" +
+      "A few things to know:\n" +
+      "• The token is **devnet-only** and has **no real-world monetary value** — it cannot be bought, sold, or bridged\n" +
+      "• Connect the **same wallet you registered** when using the beta\n" +
+      "• Distribution may show as **pending** briefly after activation — an empty balance right after activating is not a failure\n" +
+      "• There is **no faucet** for this mint — if you run out, ask on Discord",
+  },
+  {
+    id: "why-request-access",
     category: "Platform Basics",
     question: "Why request access, and why might my signup not work?",
     answer:
       "Requesting access makes you part of UnleakTrade's **early community** — the members who try the beta first and help shape what we build next. Controlled onboarding keeps the early network composed of serious makers, takers, and liquidity providers, and — since UnleakTrade relies on economic incentives, bonding, and private RFQ flows — helps prevent spam and ensures healthy early liquidity.\n\n" +
       "Requesting access also lets you:\n" +
       "• Try the **beta today** on **Solana Devnet** (no real funds or tokens involved)\n" +
+      "• Receive **1,000 custom devnet USDC** airdropped to your wallet after activation — the test token required to trade in the beta\n" +
       "• Secure early access to the app\n" +
       "• Signal interest to potential counterparties\n" +
       "• Become eligible to sponsor others\n\n" +
@@ -40,6 +60,7 @@ const faqData: FAQItem[] = [
       "**GhTppHPoSppnBurco1sPuYWyn3mejhsaRdRbt3dHtFyc**",
   },
   {
+    id: "why-this-otc",
     category: "Platform Basics",
     question:
       "Why use this OTC instead of another OTC venue or an AMM?",
@@ -47,25 +68,31 @@ const faqData: FAQItem[] = [
       "Most venues either execute in public (so size, timing, and intent leak) or rely on trust-heavy coordination. UnleakTrade's core differentiator is that it encodes the entire **RFQ (Request For Quote)** lifecycle into a verifiable on-chain state machine, and uses bonds + timeouts to enforce completion and penalize griefing. This matters for whales because the cost of \"leakage\" is usually not the fee: it's adverse price movement and being gamed.",
   },
   {
+    id: "minimum-trade-size",
     category: "Economics & Incentives",
     question: "What's the minimum trade size?",
     answer:
-      "There is **no enforced minimum trade size** on UnleakTrade: you can create an **RFQ (Request For Quote)** for any amount, including smaller tickets like **$2,000**. The protocol fee is **set per-RFQ by the maker** (a `taker_fee_bps` rate in basis points) and is paid by the **selected taker** in the **RFQ's quote token**, **on top of** the quoted amount and **only on successful settlement** — so the maker always receives the full quote.\n\nThat said, OTC auctions are generally **most efficient above ~$10,000**, where avoiding slippage and information leakage meaningfully outweighs on-chain AMM execution. Below that range, AMMs may offer simpler or cheaper execution, but UnleakTrade intentionally keeps the fee model simple and lets participants choose the execution venue that best fits their trade.",
+      "There is **no protocol-enforced minimum trade size** anywhere on UnleakTrade — and none is planned. Both the taker fee (`taker_fee_bps`) and the bond are **set per-RFQ by the maker**, with **no protocol floor** on either.\n\n" +
+      "The **~$10,000** figure you may have seen is **guidance, not a gate or requirement**: it's advice about when an OTC auction is worth it versus an AMM — and it applies to **production on mainnet**, where amounts represent real value. Above that range, avoiding slippage and information leakage typically outweighs on-chain AMM execution; the exact break-even varies per RFQ, since each maker sets their own fee and bond.\n\n" +
+      "On **devnet**, tokens have no monetary value, so no sizing guidance applies — test any size you like.",
   },
   {
     category: "Platform Basics",
+    id: "why-not-amm",
     question: "Why not an AMM?",
     answer:
       "An AMM (**Automated Market Maker)** prices against a public pool and your trade is executed against a curve; large trades tend to pay explicit slippage and also reveal execution to the market. UnleakTrade instead runs a private auction where takers compete to fill a maker's request, and only the final settlement needs to hit the chain. That's typically better for large size because you're seeking a negotiated/competitive fill rather than pushing a pool price.",
   },
   {
     category: "Platform Basics",
+    id: "what-is-a-dex",
     question: "What's a DEX?",
     answer:
       'A DEX (**Decentralized Exchange)** is an on-chain exchange - often an AMM or an order book - where orders/swaps are executed via smart contracts. UnleakTrade is still on-chain for settlement, but it\'s not a "public order book DEX" pattern, it is an OTC/RFQ auction flow with commit/reveal and bonding to minimize information leakage and enforce fair behavior.',
   },
   {
     category: "Core Concepts",
+    id: "what-is-an-rfq",
     question:
       "What's an RFQ (Request For Quote) on UnleakTrade?",
     answer:
@@ -73,24 +100,28 @@ const faqData: FAQItem[] = [
   },
   {
     category: "Roles & Participants",
+    id: "who-is-the-maker",
     question: "Who is the maker on UnleakTrade?",
     answer:
       "On UnleakTrade, the maker is the party who **initiates** the RFQ and later **selects** the winning taker. The maker creates the RFQ draft, publishes it, and after the auction they must fund their side of the settlement within the funding time window.",
   },
   {
     category: "Roles & Participants",
+    id: "who-is-the-taker",
     question: "Who is the taker on UnleakTrade?",
     answer:
       "On UnleakTrade, takers are bidders: they respond to a maker's RFQ by submitting bids/quotes during the commit/reveal auction. If a taker is selected, they must fund their side of the settlement (and pay the protocol fee, in the RFQ's quote token) within the funding time window.",
   },
   {
     category: "Roles & Participants",
+    id: "who-is-the-facilitator",
     question: "Who is the facilitator on UnleakTrade?",
     answer:
       "A facilitator is an **optional** participant who helps connect makers and takers (for example by sourcing liquidity or coordinating off-chain relationships around an RFQ). They do not submit quotes, select winners, or settle trades. They can be designated at the RFQ level by the maker and at the quote level by the taker.",
   },
   {
     category: "Roles & Participants",
+    id: "facilitator-authority",
     question:
       "Can a facilitator change RFQ state, deadlines, or outcomes?",
     answer:
@@ -98,6 +129,7 @@ const faqData: FAQItem[] = [
   },
   {
     category: "Roles & Participants",
+    id: "facilitator-updates",
     question: "When can facilitator addresses be set or updated?",
     answer:
       "Facilitator updates are state-gated:\n\n" +
@@ -107,30 +139,35 @@ const faqData: FAQItem[] = [
   },
   {
     category: "Core Concepts",
+    id: "quote-bid-auction",
     question: "What's a Quote vs a Bid vs an Auction?",
     answer:
       "A quote (or bid) is the taker's proposed execution terms for the maker's RFQ (the price they're willing to trade at for the specified pair/size). The auction is the competitive process where multiple takers submit quotes and the maker selects the winning one. UnleakTrade implements this with a commit/reveal flow: takers first commit a hash of their quote, then later reveal the details for validation.",
   },
   {
     category: "Technical Mechanics",
+    id: "commit-reveal",
     question: "What is commit/reveal and why does it matter?",
     answer:
       "Commit/reveal is a two-step auction design used to reduce copying and information leakage. In the **commit** phase, takers submit a hashed commitment (so the content isn't revealed). In the **reveal** phase, takers reveal the actual bid details and the program validates that the revealed quote matches the prior commitment. This protects bidders from having their quote instantly mirrored and helps keep the process fair for size.",
   },
   {
     category: "Technical Mechanics",
+    id: "fully-on-chain",
     question: "Is it fully on-chain?",
     answer:
       'The settlement engine is an on-chain Solana program that enforces the RFQ lifecycle, bond accounting, state transitions, and atomic settlement. There is also an off-chain component ("Liquidity Guard") that performs validation and generates signed attestations used during the process, but the final enforcement and settlement happen on-chain.',
   },
   {
     category: "Technical Mechanics",
+    id: "liquidity-verification",
     question: "How is liquidity verified before a quote is committed?",
     answer:
       "Before a taker commits a quote, the **Liquidity Guard** runs an automatic **liquidity check** that verifies the taker's balances cover the bond and the potential settlement. It then issues a **signed attestation** (an ed25519 signature) that rides in the same transaction as the on-chain commit; the program verifies this attestation, and commits without a valid one are rejected.",
   },
   {
     category: "Technical Mechanics",
+    id: "ed25519-first",
     question:
       "Why start with ed25519 signatures instead of zero-knowledge proofs?",
     answer:
@@ -140,6 +177,7 @@ const faqData: FAQItem[] = [
   },
   {
     category: "Technical Mechanics",
+    id: "liquidity-guard",
     question:
       'What is the "Liquidity Guard"? (and what does "REST API" mean?)',
     answer:
@@ -147,12 +185,14 @@ const faqData: FAQItem[] = [
   },
   {
     category: "Economics & Incentives",
+    id: "fees",
     question: 'What are "fees" on UnleakTrade?',
     answer:
       "A protocol fee is paid during funding/settlement: the selected taker deposits their settlement asset and pays a fee in the **RFQ's quote token**, which is transferred to the UnleakTrade treasury (minus any facilitator share). The rate is set per-RFQ by the maker as a `taker_fee_bps` value and is charged **on top of** the quoted amount, so the maker receives the full quote.",
   },
   {
     category: "Economics & Incentives",
+    id: "facilitator-reward",
     question: "How does the facilitator reward work?",
     answer:
       "Facilitator rewards are **optional** and only exist on successful settlement.\n\n" +
@@ -164,36 +204,42 @@ const faqData: FAQItem[] = [
   },
   {
     category: "Economics & Incentives",
+    id: "bonds",
     question: 'What are "bonds" and why do they exist?',
     answer:
-      "A bond is a USDC amount posted by *each participant* to make griefing expensive and force timely completion. Bonds are held in an RFQ-owned USDC token account (an **ATA = Associated Token Account**) and are returned on successful settlement. If someone fails to do their required step in time, their bond can be slashed (routed entirely to the protocol treasury, never to the counterparty). Counterparties **have skin-in-the-game**.",
+      "A bond is a USDC amount posted by *each participant* to make griefing expensive and force timely completion. Bonds are held in an RFQ-owned USDC token account (an **ATA = Associated Token Account**) and are returned on successful settlement. If someone fails to do their required step in time, their bond can be slashed (routed entirely to the protocol treasury, never to the counterparty). Counterparties **have skin-in-the-game**.\n\nIn the devnet beta, the bond is denominated in the **same custom devnet USDC test mint** you receive from the waitlist airdrop.",
   },
   {
     category: "Economics & Incentives",
+    id: "bond-slashing",
     question: "How exactly does bond slashing work?",
     answer:
       "If one party fails to act (for example, not funding or not revealing), they lose their bond. Bonds are **never paid to the counterparty**. Each participant posts their own bond, and on a normal successful settlement each participant simply gets **their own bond back**. If a participant fails to complete a required action within the protocol's deadlines (for example, missing a funding or reveal deadline), their bond can be **slashed** according to the program rules. When slashing happens, the slashed bond is **not redistributed to the other trading party**; it is handled by the protocol (for example routed to the protocol treasury / fee destination) rather than being shared with the counterparty.",
   },
   {
     category: "Economics & Incentives",
+    id: "ttls",
     question: "What are TTLs?",
     answer:
       "TTLs **(TTL = Time To Live)** are deadlines that define the allowed time window for each phase of the RFQ lifecycle. In the Settlement Engine, TTLs include `commit_ttl`, `reveal_ttl`, `selection_ttl`, and `fund_ttl`. If a TTL expires, the RFQ can be marked expired/aborted/ignored, and bonds are distributed according to the rules.",
   },
   {
     category: "Settlement & Security",
+    id: "settlement",
     question: "How does settlement work?",
     answer:
       "After the maker selects a winning taker quote, both sides deposit the required assets during the funding phase. Once funded, the program executes the swap atomically: it transfers the quote asset to the maker, the base asset to the taker, transfers the fee to the treasury (minus any facilitator share), and returns both bonds (unless a timeout rule triggered slashing).",
   },
   {
     category: "Settlement & Security",
+    id: "custody-risk",
     question: "Is there custody risk?",
     answer:
       'The design is escrow-style and program-enforced: assets are deposited into program-controlled accounts for the purpose of atomic settlement, then released according to the RFQ state machine. This is not "custody" in the traditional centralized sense, but it is still smart-contract escrow: the trust assumption is the correctness/security of the on-chain program.',
   },
   {
     category: "Settlement & Security",
+    id: "zk-migration",
     question: "Will UnleakTrade migrate to zero-knowledge, and when?",
     answer:
       "Yes. Zero-knowledge is UnleakTrade's committed direction, and the roadmap is deliberately sequenced: **build the market first, then deepen trust-minimization.**\n\n" +
@@ -202,6 +248,7 @@ const faqData: FAQItem[] = [
   },
   {
     category: "Platform Basics",
+    id: "why-solana",
     question: "Why Solana?",
     answer:
       "UnleakTrade is built on **Solana** because it uniquely aligns with where crypto liquidity, real-world adoption, and performant blockchain technology are converging: \n\n" +
@@ -241,13 +288,28 @@ const renderText = (text: string) => {
 };
 
 export function FAQ() {
-  const [openIndex, setOpenIndex] = useState<number | null>(
-    null,
-  );
+  const [openId, setOpenId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<
     string | null
   >(null);
+  const location = useLocation();
+
+  // Deep-link support: /faq#<entry-id> opens and scrolls to that entry.
+  useEffect(() => {
+    const slug = location.hash.slice(1);
+    if (!slug) return;
+    if (!faqData.some((item) => item.id === slug)) return;
+    setSearchQuery("");
+    setSelectedCategory(null);
+    setOpenId(slug);
+    requestAnimationFrame(() => {
+      document.getElementById(slug)?.scrollIntoView?.({
+        behavior: "smooth",
+        block: "start",
+      });
+    });
+  }, [location.hash]);
 
   // Get unique categories
   const categories = Array.from(
@@ -349,11 +411,13 @@ export function FAQ() {
         {/* FAQ Items */}
         <div className="space-y-3">
           {filteredFAQ.map((item, index) => {
-            const isOpen = openIndex === index;
+            const isOpen = openId === item.id;
 
             return (
               <motion.div
-                key={index}
+                key={item.id}
+                id={item.id}
+                className="scroll-mt-24"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -380,7 +444,7 @@ export function FAQ() {
                     {/* Question button */}
                     <button
                       onClick={() =>
-                        setOpenIndex(isOpen ? null : index)
+                        setOpenId(isOpen ? null : item.id)
                       }
                       className="w-full px-6 py-4 flex items-center justify-between gap-4 text-left"
                     >
