@@ -23,10 +23,14 @@ export interface AirdropInfo {
   rawAmount: string | number;
   signature?: string;
   retryable: boolean;
+  /** Token symbol sent by the backend (e.g. "uUSDC"). Optional for older payloads. */
+  symbol?: string;
 }
 
+const DEFAULT_SYMBOL = "uUSDC";
+
 const DISCLAIMER =
-  "Custom test token on Solana Devnet — no real-world monetary value.";
+  "uUSDC is a devnet-only test token — not real USDC, no real-world monetary value.";
 
 function formatAmount(amount: string | number | undefined): string {
   if (amount === undefined || amount === null) return "1,000";
@@ -67,6 +71,10 @@ export function AirdropStatusCard({
   }
 
   const amountLabel = formatAmount(airdrop.amount);
+  const symbol =
+    typeof airdrop.symbol === "string" && airdrop.symbol.trim()
+      ? airdrop.symbol.trim()
+      : DEFAULT_SYMBOL;
   const status = airdrop.status;
 
   let icon: React.ReactNode;
@@ -76,11 +84,11 @@ export function AirdropStatusCard({
   switch (status) {
     case "confirmed":
       icon = <CheckCircle2 className="w-5 h-5 text-white" />;
-      title = "Devnet USDC delivered";
+      title = "Unleak USDC delivered";
       body = (
         <>
           <p className="text-white/60 mb-4">
-            {amountLabel} devnet USDC delivered to your wallet.
+            {amountLabel} {symbol} delivered to your wallet.
           </p>
           {airdrop.signature && (
             <div className="mb-4">
@@ -99,7 +107,7 @@ export function AirdropStatusCard({
       body = (
         <>
           <p className="text-white/60 mb-4">
-            This wallet has already received its devnet USDC airdrop.
+            This wallet has already received its {symbol} airdrop.
           </p>
           {airdrop.signature && (
             <div className="mb-4">
@@ -144,10 +152,10 @@ export function AirdropStatusCard({
     case "pending":
     case "processing":
       icon = <Loader2 className="w-5 h-5 text-white animate-spin" />;
-      title = "Your devnet USDC airdrop is on the way";
+      title = `Your ${symbol} airdrop is on the way`;
       body = (
         <p className="text-white/60 mb-4">
-          We're sending {amountLabel} custom devnet USDC to your registered
+          We're sending {amountLabel} {symbol} (Unleak USDC) to your registered
           wallet so you can test the beta. This usually completes within a few
           minutes — no action needed.
         </p>
@@ -156,10 +164,10 @@ export function AirdropStatusCard({
     default:
       // Unknown status strings degrade to the neutral in-progress variant.
       icon = <Coins className="w-5 h-5 text-white" />;
-      title = "Your devnet USDC airdrop is on the way";
+      title = `Your ${symbol} airdrop is on the way`;
       body = (
         <p className="text-white/60 mb-4">
-          We're sending {amountLabel} custom devnet USDC to your registered
+          We're sending {amountLabel} {symbol} (Unleak USDC) to your registered
           wallet so you can test the beta. This usually completes within a few
           minutes — no action needed.
         </p>

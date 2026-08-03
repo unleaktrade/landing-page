@@ -133,7 +133,8 @@ export function QRCodeDialog({ open, onOpenChange }: QRCodeDialogProps) {
               Share Your Referral
             </DialogTitle>
             <p className="text-white/60 text-center text-xs sm:text-sm mt-2">
-              This is the wallet that receives your devnet USDC and identifies
+              This is the wallet that receives your Unleak USDC (uUSDC) — a
+              devnet-only test token with no real-world value — and identifies
               you in the beta. Share it as a sponsor address to invite others.
             </p>
           </DialogHeader>

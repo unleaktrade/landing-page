@@ -22,10 +22,10 @@ function makeAirdrop(overrides: Partial<AirdropInfo> = {}): AirdropInfo {
 
 describe('AirdropStatusCard', () => {
   it.each<[AirdropStatus, RegExp]>([
-    ['pending', /your devnet usdc airdrop is on the way/i],
-    ['processing', /your devnet usdc airdrop is on the way/i],
-    ['confirmed', /devnet usdc delivered to your wallet/i],
-    ['already_distributed', /already received its devnet usdc airdrop/i],
+    ['pending', /your uusdc airdrop is on the way/i],
+    ['processing', /your uusdc airdrop is on the way/i],
+    ['confirmed', /uusdc delivered to your wallet/i],
+    ['already_distributed', /already received its uusdc airdrop/i],
     ['failed_retryable', /temporary snag.*retried automatically/i],
     ['failed_terminal', /couldn't complete the airdrop/i],
   ])('renders distinguishing copy for status %s', (status, copy) => {
@@ -36,8 +36,24 @@ describe('AirdropStatusCard', () => {
   it('always renders the devnet disclaimer', () => {
     render(<AirdropStatusCard airdrop={makeAirdrop({ status: 'confirmed' })} />);
     expect(
-      screen.getByText(/custom test token on solana devnet — no real-world monetary value/i)
+      screen.getByText(
+        /uusdc is a devnet-only test token — not real usdc, no real-world monetary value/i
+      )
     ).toBeInTheDocument();
+  });
+
+  it('uses the symbol from the payload when present', () => {
+    render(
+      <AirdropStatusCard
+        airdrop={makeAirdrop({ status: 'confirmed', symbol: 'tUSDC' })}
+      />
+    );
+    expect(screen.getByText(/1,000 tusdc delivered to your wallet/i)).toBeInTheDocument();
+  });
+
+  it('falls back to uUSDC when the payload has no symbol', () => {
+    render(<AirdropStatusCard airdrop={makeAirdrop({ status: 'confirmed' })} />);
+    expect(screen.getByText(/1,000 uusdc delivered to your wallet/i)).toBeInTheDocument();
   });
 
   it.each<AirdropStatus>(['confirmed', 'already_distributed'])(
@@ -95,7 +111,7 @@ describe('AirdropStatusCard', () => {
       />
     );
     expect(
-      screen.getByText(/your devnet usdc airdrop is on the way/i)
+      screen.getByText(/your uusdc airdrop is on the way/i)
     ).toBeInTheDocument();
   });
 
@@ -105,7 +121,7 @@ describe('AirdropStatusCard', () => {
         airdrop={makeAirdrop({ status: 'confirmed', amount: '2500' })}
       />
     );
-    expect(screen.getByText(/2,500 devnet usdc delivered/i)).toBeInTheDocument();
+    expect(screen.getByText(/2,500 uusdc delivered/i)).toBeInTheDocument();
   });
 
   it('falls back to the default amount when the payload amount is unusable', () => {
@@ -115,7 +131,7 @@ describe('AirdropStatusCard', () => {
       />
     );
     expect(
-      screen.getByText(/we're sending 1,000 custom devnet usdc/i)
+      screen.getByText(/we're sending 1,000 uusdc/i)
     ).toBeInTheDocument();
   });
 });

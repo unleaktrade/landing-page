@@ -366,9 +366,9 @@ describe('WaitlistDialog form submission', () => {
     render(<Harness />);
     // The pre-submit view must already advertise the live Devnet beta
     expect(screen.getByText(/beta live on solana devnet/i)).toBeInTheDocument();
-    // The wallet field explains the devnet USDC airdrop
+    // The wallet field explains the Unleak USDC (uUSDC) airdrop
     expect(
-      screen.getByText(/we'll send this wallet custom devnet usdc/i)
+      screen.getByText(/we'll send this wallet unleak usdc \(uusdc\)/i)
     ).toBeInTheDocument();
     fillInput(/your solana wallet address/i, 'bad');
     fillInput(/email address/i, 'not-an-email');
@@ -516,10 +516,10 @@ describe('WaitlistPage form submission', () => {
     expect(screen.getByTestId('home')).toBeInTheDocument();
   });
 
-  it('explains the devnet USDC airdrop under the wallet field', () => {
+  it('explains the Unleak USDC (uUSDC) airdrop under the wallet field', () => {
     renderPage('/waitlist');
     expect(
-      screen.getByText(/we'll send this wallet custom devnet usdc/i)
+      screen.getByText(/we'll send this wallet unleak usdc \(uusdc\)/i)
     ).toBeInTheDocument();
   });
 
@@ -645,10 +645,10 @@ describe('ActivateWaitlist state machine', () => {
   it('shows the airdrop pending card on 201 with a pending airdrop', async () => {
     await activateWith({ address: VALID_SOLANA, airdrop: airdropPayload() });
     expect(
-      screen.getByText(/your devnet usdc airdrop is on the way/i)
+      screen.getByText(/your uusdc airdrop is on the way/i)
     ).toBeInTheDocument();
     expect(
-      screen.getByText(/custom test token on solana devnet — no real-world monetary value/i)
+      screen.getByText(/uusdc is a devnet-only test token — not real usdc, no real-world monetary value/i)
     ).toBeInTheDocument();
   });
 
@@ -657,7 +657,7 @@ describe('ActivateWaitlist state machine', () => {
       address: VALID_SOLANA,
       airdrop: airdropPayload({ status: 'confirmed', signature: SIGNATURE }),
     });
-    expect(screen.getByText(/devnet usdc delivered to your wallet/i)).toBeInTheDocument();
+    expect(screen.getByText(/uusdc delivered to your wallet/i)).toBeInTheDocument();
     expect(
       screen.getByRole('link', { name: /view transaction on solana explorer/i })
     ).toHaveAttribute(
@@ -679,10 +679,10 @@ describe('ActivateWaitlist state machine', () => {
   it('renders no airdrop card on 201 without an airdrop payload', async () => {
     await activateWith({ address: VALID_SOLANA });
     expect(
-      screen.queryByText(/your devnet usdc airdrop is on the way/i)
+      screen.queryByText(/your uusdc airdrop is on the way/i)
     ).not.toBeInTheDocument();
     expect(
-      screen.queryByText(/custom test token on solana devnet/i)
+      screen.queryByText(/uusdc is a devnet-only test token/i)
     ).not.toBeInTheDocument();
     // Existing success layout untouched
     expect(screen.getByText(/share the alpha/i)).toBeInTheDocument();
@@ -695,7 +695,7 @@ describe('ActivateWaitlist state machine', () => {
   it('renders no airdrop card on 201 with a malformed airdrop payload', async () => {
     await activateWith({ address: VALID_SOLANA, airdrop: { cluster: 'devnet' } });
     expect(
-      screen.queryByText(/custom test token on solana devnet/i)
+      screen.queryByText(/uusdc is a devnet-only test token/i)
     ).not.toBeInTheDocument();
   });
 

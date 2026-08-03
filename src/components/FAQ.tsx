@@ -24,18 +24,18 @@ const faqData: FAQItem[] = [
     question: "Can I try UnleakTrade now?",
     answer:
       "Yes. UnleakTrade is live in **beta** on **Solana Devnet** at **app.unleak.trade** — you can open the app and explore it today.\n\n" +
-      "To actually test the trading flows, though, you need the **custom devnet USDC** test token: request access and activate your waitlist spot, and **1,000 custom devnet USDC** are airdropped to your registered wallet. Everything runs on Devnet only — **no real funds are at risk**.\n\n" +
+      "To actually test the trading flows, though, you need **Unleak USDC (uUSDC)** — a devnet-only test token that mimics USDC (not real USDC, no real-world value): request access and activate your waitlist spot, and **1,000 uUSDC** are airdropped to your registered wallet. Everything runs on Devnet only — **no real funds are at risk**.\n\n" +
       "Request access to join the early community and share feedback on Discord.",
   },
   {
     id: "devnet-usdc",
     category: "Platform Basics",
-    question: "What do I get for joining the waitlist?",
+    question: "What is Unleak USDC and what do I get for joining the waitlist?",
     answer:
-      "After you activate your waitlist spot, **1,000 custom devnet USDC** are airdropped to the wallet you registered. This is the test token the beta runs on, and it's what lets you do real end-to-end testing — create RFQs, post bonds, commit and reveal quotes, and settle trades — rather than just browsing the app.\n\n" +
-      "At today's default devnet parameters (which may change), 1,000 devnet USDC is enough for roughly **~96 full RFQ cycles**. The 1,000 figure is a **testing allowance, not a trade-size guideline**.\n\n" +
+      "**Unleak USDC (uUSDC)** is UnleakTrade's test version of USDC on Solana devnet: same 6 decimals, used everywhere the beta says USDC, and worth nothing outside it — it is not real USDC and cannot be bought, sold, or bridged.\n\n" +
+      "After you activate your waitlist spot, **1,000 uUSDC** are airdropped to the wallet you registered. This is the test token the beta runs on, and it's what lets you do real end-to-end testing — create RFQs, post bonds, commit and reveal quotes, and settle trades — rather than just browsing the app.\n\n" +
+      "At today's default devnet parameters (which may change), 1,000 uUSDC is enough for roughly **~96 full RFQ cycles**. The 1,000 figure is a **testing allowance, not a trade-size guideline**.\n\n" +
       "A few things to know:\n" +
-      "• The token is **devnet-only** and has **no real-world monetary value** — it cannot be bought, sold, or bridged\n" +
       "• Connect the **same wallet you registered** when using the beta\n" +
       "• Distribution may show as **pending** briefly after activation — an empty balance right after activating is not a failure\n" +
       "• There is **no faucet** for this mint — if you run out, ask on Discord",
@@ -48,7 +48,7 @@ const faqData: FAQItem[] = [
       "Requesting access makes you part of UnleakTrade's **early community** — the members who try the beta first and help shape what we build next. Controlled onboarding keeps the early network composed of serious makers, takers, and liquidity providers, and — since UnleakTrade relies on economic incentives, bonding, and private RFQ flows — helps prevent spam and ensures healthy early liquidity.\n\n" +
       "Requesting access also lets you:\n" +
       "• Try the **beta today** on **Solana Devnet** (no real funds or tokens involved)\n" +
-      "• Receive **1,000 custom devnet USDC** airdropped to your wallet after activation — the test token required to trade in the beta\n" +
+      "• Receive **1,000 Unleak USDC (uUSDC)** airdropped to your wallet after activation — the devnet-only test token required to trade in the beta (not real USDC, no real-world value)\n" +
       "• Secure early access to the app\n" +
       "• Signal interest to potential counterparties\n" +
       "• Become eligible to sponsor others\n\n" +
@@ -74,7 +74,7 @@ const faqData: FAQItem[] = [
     answer:
       "There is **no protocol-enforced minimum trade size** anywhere on UnleakTrade — and none is planned. Both the taker fee (`taker_fee_bps`) and the bond are **set per-RFQ by the maker**, with **no protocol floor** on either.\n\n" +
       "The **~$10,000** figure you may have seen is **guidance, not a gate or requirement**: it's advice about when an OTC auction is worth it versus an AMM — and it applies to **production on mainnet**, where amounts represent real value. Above that range, avoiding slippage and information leakage typically outweighs on-chain AMM execution; the exact break-even varies per RFQ, since each maker sets their own fee and bond.\n\n" +
-      "On **devnet**, tokens have no monetary value, so no sizing guidance applies — test any size you like.",
+      "On **devnet**, trades run on Unleak USDC (uUSDC), a test token with no monetary value, so no sizing guidance applies — test any size you like.",
   },
   {
     category: "Platform Basics",
@@ -207,7 +207,7 @@ const faqData: FAQItem[] = [
     id: "bonds",
     question: 'What are "bonds" and why do they exist?',
     answer:
-      "A bond is a USDC amount posted by *each participant* to make griefing expensive and force timely completion. Bonds are held in an RFQ-owned USDC token account (an **ATA = Associated Token Account**) and are returned on successful settlement. If someone fails to do their required step in time, their bond can be slashed (routed entirely to the protocol treasury, never to the counterparty). Counterparties **have skin-in-the-game**.\n\nIn the devnet beta, the bond is denominated in the **same custom devnet USDC test mint** you receive from the waitlist airdrop.",
+      "A bond is a USDC amount posted by *each participant* to make griefing expensive and force timely completion. Bonds are held in an RFQ-owned USDC token account (an **ATA = Associated Token Account**) and are returned on successful settlement. If someone fails to do their required step in time, their bond can be slashed (routed entirely to the protocol treasury, never to the counterparty). Counterparties **have skin-in-the-game**.\n\nIn the devnet beta, the bond is denominated in **Unleak USDC (uUSDC)** — the same devnet-only test mint you receive from the waitlist airdrop, which is not real USDC and has no real-world value.",
   },
   {
     category: "Economics & Incentives",

@@ -7,15 +7,16 @@ export function WalletFieldHint() {
   return (
     <p className="text-white/40 text-xs leading-relaxed">
       Connect the Solana wallet you plan to use for the UnleakTrade beta.
-      After your waitlist spot is verified, we'll send this wallet custom
-      devnet USDC required to test the app. This is a test token with no
-      real-world monetary value. Use this same wallet in the beta.
+      After your waitlist spot is verified, we'll send this wallet Unleak USDC
+      (uUSDC), the devnet-only test token that mimics USDC and is required to
+      test the app. uUSDC is not real USDC and has no real-world monetary
+      value. Use this same wallet in the beta.
     </p>
   );
 }
 
 // Compact banner for pre-submit views: the beta is live and the registered
-// wallet receives the devnet USDC test token after activation.
+// wallet receives the Unleak USDC (uUSDC) test token after activation.
 export function BetaLiveCallout() {
   return (
     <div className="p-3 bg-gradient-to-r from-purple-500/10 to-cyan-400/10 border border-purple-500/20 rounded-lg text-left">
@@ -26,8 +27,9 @@ export function BetaLiveCallout() {
       <p className="text-white/60 text-xs leading-relaxed mb-2">
         UnleakTrade is already up and running on Solana Devnet. Your wallet
         identifies you as a beta participant: once your waitlist spot is
-        activated, we airdrop it 1,000 custom devnet USDC — the test token
-        required to try the beta flows. Devnet-only, no real-world value.
+        activated, we airdrop it 1,000 Unleak USDC (uUSDC) — the devnet-only
+        test token that mimics USDC, required to try the beta flows. Not real
+        USDC, no real-world value.
       </p>
       <a
         href={BETA_APP_URL}
@@ -53,7 +55,8 @@ export function BetaAccessCard() {
         <span className="text-white/80">Solana Devnet</span>. You can already
         explore the app, test the experience, and see how it works — no real
         funds or tokens are involved. After you activate your spot, the wallet
-        you registered receives 1,000 custom devnet USDC — you'll need it (and
+        you registered receives 1,000 Unleak USDC (uUSDC) — a devnet-only test
+        token that mimics USDC, with no real-world value. You'll need it (and
         that same wallet) to test the beta.
       </p>
       <a
