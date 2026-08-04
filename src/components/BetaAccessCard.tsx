@@ -1,5 +1,5 @@
 import { ExternalLink, Rocket } from "lucide-react";
-import { BETA_APP_URL, DISCORD_URL } from "./utils/links";
+import { BETA_APP_URL, TELEGRAM_URL } from "./utils/links";
 
 // Small hint rendered under the wallet address input in signup forms:
 // explains why we ask for the wallet and what it will receive.
@@ -72,12 +72,12 @@ export function BetaAccessCard() {
         Found something we could improve? Have an idea for a feature? We'd love
         to hear from you on{" "}
         <a
-          href={DISCORD_URL}
+          href={TELEGRAM_URL}
           target="_blank"
           rel="noopener noreferrer"
           className="text-cyan-400 hover:opacity-90 transition-opacity"
         >
-          Discord
+          Telegram
         </a>
         .
       </p>

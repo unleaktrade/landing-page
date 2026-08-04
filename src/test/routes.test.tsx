@@ -93,11 +93,11 @@ describe('App routing', () => {
     expect(screen.getAllByText(/request access/i).length).toBeGreaterThanOrEqual(3);
   });
 
-  it('opens the DiscordCTA-triggered waitlist dialog too', async () => {
+  it('opens the CommunityCTA-triggered waitlist dialog too', async () => {
     renderAt('/');
     const user = userEvent.setup();
     const buttons = screen.getAllByRole('button', { name: /request access/i });
-    // last one is DiscordCTA's
+    // last one is CommunityCTA's
     await user.click(buttons[buttons.length - 1]);
     expect(screen.getAllByText(/request access/i).length).toBeGreaterThanOrEqual(3);
   });

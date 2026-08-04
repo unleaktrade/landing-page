@@ -1,6 +1,7 @@
 import { motion } from "motion/react";
-import { useNavigate } from "react-router-dom";
-import { Linkedin, Twitter, Github, Send, Hash } from "lucide-react";
+import { useNavigate } from "react-router";
+import { Send } from "lucide-react";
+import { Linkedin, Twitter, Github } from "./BrandIcons";
 import julienImage from "../assets/524423e86081819620c9996fd40046b079ec4ba8.png";
 
 interface TeamMember {
@@ -16,7 +17,6 @@ interface TeamMember {
     twitter?: string;
     github?: string;
     telegram?: string;
-    discord?: string;
   };
   image?: string;
 }
@@ -181,18 +181,6 @@ export function TeamSection() {
                           aria-label="Telegram"
                         >
                           <Send className="w-4 h-4" />
-                        </a>
-                      )}
-                      {member.links.discord && (
-                        <a
-                          href={member.links.discord}
-                          onClick={(e) => { e.stopPropagation(); }}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-white/30 hover:text-white/60 transition-colors"
-                          aria-label="Discord"
-                        >
-                          <Hash className="w-4 h-4" />
                         </a>
                       )}
                     </div>

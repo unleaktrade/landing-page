@@ -1,7 +1,7 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
 import { render, screen, waitFor, fireEvent, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { MemoryRouter, Routes, Route } from 'react-router-dom';
+import { MemoryRouter, Routes, Route } from 'react-router';
 import { useState } from 'react';
 import App from '../App';
 import { FAQ } from '../components/FAQ';
@@ -398,7 +398,7 @@ describe('WaitlistDialog form submission', () => {
     ).toBeInTheDocument();
     const betaLink = screen.getByRole('link', { name: /launch the beta/i });
     expect(betaLink).toHaveAttribute('href', 'https://app.unleak.trade');
-    expect(screen.getByRole('link', { name: /discord/i })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /telegram/i })).toBeInTheDocument();
   });
 
   it('shows an error toast path on non-202 response', async () => {
