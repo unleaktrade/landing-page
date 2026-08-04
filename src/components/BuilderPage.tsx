@@ -1,5 +1,6 @@
 import { motion } from "motion/react";
-import { Linkedin, Twitter, Github, ArrowUpRight, Send } from "lucide-react";
+import { ArrowUpRight, Send } from "lucide-react";
+import { Linkedin, Twitter, Github } from "./BrandIcons";
 import julienImage from "../assets/524423e86081819620c9996fd40046b079ec4ba8.png";
 import { TELEGRAM_URL } from "./utils/links";
 
