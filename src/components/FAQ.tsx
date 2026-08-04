@@ -25,7 +25,7 @@ const faqData: FAQItem[] = [
     answer:
       "Yes. UnleakTrade is live in **beta** on **Solana Devnet** at **app.unleak.trade** — you can open the app and explore it today.\n\n" +
       "To actually test the trading flows, though, you need **Unleak USDC (uUSDC)** — a devnet-only test token that mimics USDC (not real USDC, no real-world value): request access and activate your waitlist spot, and **1,000 uUSDC** are airdropped to your registered wallet. Everything runs on Devnet only — **no real funds are at risk**.\n\n" +
-      "Request access to join the early community and share feedback on Discord.",
+      "Request access to join the early community and share feedback on Telegram.",
   },
   {
     id: "devnet-usdc",
@@ -38,7 +38,7 @@ const faqData: FAQItem[] = [
       "A few things to know:\n" +
       "• Connect the **same wallet you registered** when using the beta\n" +
       "• Distribution may show as **pending** briefly after activation — an empty balance right after activating is not a failure\n" +
-      "• There is **no faucet** for this mint — if you run out, ask on Discord",
+      "• There is **no faucet** for this mint — if you run out, ask on Telegram",
   },
   {
     id: "why-request-access",

@@ -5,6 +5,7 @@ import {
   type AirdropInfo,
   type AirdropStatus,
 } from '../components/AirdropStatusCard';
+import { TELEGRAM_URL } from '../components/utils/links';
 
 const SIGNATURE = '5Sig111111111111111111111111111111111111111111111111111111111111';
 
@@ -82,11 +83,11 @@ describe('AirdropStatusCard', () => {
     }
   );
 
-  it('links to Discord on terminal failure', () => {
+  it('links to Telegram on terminal failure', () => {
     render(<AirdropStatusCard airdrop={makeAirdrop({ status: 'failed_terminal' })} />);
-    expect(screen.getByRole('link', { name: /discord/i })).toHaveAttribute(
+    expect(screen.getByRole('link', { name: /telegram/i })).toHaveAttribute(
       'href',
-      'https://discord.gg/h9Qb9S7Qjx'
+      TELEGRAM_URL
     );
   });
 

@@ -12,7 +12,7 @@ import { TeamPage } from "./components/TeamPage";
 import { BuilderPage } from "./components/BuilderPage";
 import { Roadmap } from "./components/Roadmap";
 import { FAQ } from "./components/FAQ";
-import { DiscordCTA } from "./components/DiscordCTA";
+import { CommunityCTA } from "./components/CommunityCTA";
 import { Footer } from "./components/Footer";
 import { WorkInProgress } from "./components/WorkInProgress";
 import { WaitlistDialog } from "./components/WaitlistDialog";
@@ -50,7 +50,7 @@ function HomePage({ onOpenWaitlist }: { onOpenWaitlist: () => void }) {
       <SettlementProcess />
       <Economics />
       {/* <TeamSection /> */}
-      <DiscordCTA />
+      <CommunityCTA />
       <Footer />
     </div>
   );

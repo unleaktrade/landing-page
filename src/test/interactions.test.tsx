@@ -398,7 +398,7 @@ describe('WaitlistDialog form submission', () => {
     ).toBeInTheDocument();
     const betaLink = screen.getByRole('link', { name: /launch the beta/i });
     expect(betaLink).toHaveAttribute('href', 'https://app.unleak.trade');
-    expect(screen.getByRole('link', { name: /discord/i })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /telegram/i })).toBeInTheDocument();
   });
 
   it('shows an error toast path on non-202 response', async () => {

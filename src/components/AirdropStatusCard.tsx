@@ -5,7 +5,7 @@ import {
   AlertCircle,
   ExternalLink,
 } from "lucide-react";
-import { DISCORD_URL, explorerTxUrl } from "./utils/links";
+import { TELEGRAM_URL, explorerTxUrl } from "./utils/links";
 
 export type AirdropStatus =
   | "pending"
@@ -138,12 +138,12 @@ export function AirdropStatusCard({
           We couldn't complete the airdrop for this wallet. Your activation is
           still valid — reach out on{" "}
           <a
-            href={DISCORD_URL}
+            href={TELEGRAM_URL}
             target="_blank"
             rel="noopener noreferrer"
             className="text-cyan-400 hover:opacity-90 transition-opacity"
           >
-            Discord
+            Telegram
           </a>{" "}
           and we'll sort it out.
         </p>

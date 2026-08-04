@@ -2,10 +2,10 @@ import { useState } from "react";
 import { motion } from "motion/react";
 import solanaLogo from "../assets/af0a6579392a99988c0ab693570446ed86a64fec.png";
 import { WaitlistDialog } from "./WaitlistDialog";
-import { Rocket } from "lucide-react";
-import { DISCORD_URL } from "./utils/links";
+import { Rocket, Send } from "lucide-react";
+import { TELEGRAM_URL } from "./utils/links";
 
-export function DiscordCTA() {
+export function CommunityCTA() {
   const [isWaitlistOpen, setIsWaitlistOpen] = useState(false);
 
   return (
@@ -41,14 +41,19 @@ export function DiscordCTA() {
                   Request Access
                 </button>
                 <a
-                  href={DISCORD_URL}
+                  href={TELEGRAM_URL}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-purple-600 to-cyan-400 text-white rounded-lg hover:opacity-90 transition-opacity text-lg h-[58px]"
                 >
-                  Join the Discord
+                  <Send className="w-4 h-4" />
+                  Join us on Telegram
                 </a>
               </div>
+
+              <p className="text-white/40 text-sm max-w-xl mx-auto">
+                We never DM first, and we never quote off-platform. Anyone who does is not us.
+              </p>
 
             <div className="pt-8 flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-12 text-sm text-white/40">
               <div className="text-center">
