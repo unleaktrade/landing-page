@@ -1,5 +1,5 @@
 import logoImage from "../assets/fdbafc2f1e7edb4d213deafbca8c80c666dccbae.png";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import { TELEGRAM_URL } from "./utils/links";
 
 export function Footer() {

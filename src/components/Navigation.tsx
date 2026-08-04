@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import { Menu, X, QrCode } from "lucide-react";
 import logoImage from "../assets/fdbafc2f1e7edb4d213deafbca8c80c666dccbae.png";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router";
 import { Navigation } from "./components/Navigation";
 import { WarpField } from "./components/WarpField";
 import { Hero } from "./components/Hero";

@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import { useParams } from "react-router-dom";
+import { useParams } from "react-router";
 import { Linkedin, Twitter, Github, ArrowUpRight, Send } from "lucide-react";
 import { useEffect } from "react";
 import julienImage from "../assets/524423e86081819620c9996fd40046b079ec4ba8.png";
