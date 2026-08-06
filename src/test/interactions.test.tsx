@@ -83,6 +83,22 @@ describe('FAQ interactions', () => {
     expect(document.getElementById('devnet-usdc')).not.toBeNull();
   });
 
+  it('answers the Zama competitor question via its deep link', async () => {
+    renderFAQ(['/faq#zama-comparison']);
+    await waitFor(() =>
+      expect(screen.getByText(/complementary, not competing/i)).toBeInTheDocument()
+    );
+    expect(document.getElementById('zama-comparison')).not.toBeNull();
+  });
+
+  it('explains commit/reveal versus FHE via its deep link', async () => {
+    renderFAQ(['/faq#why-not-fhe']);
+    await waitFor(() =>
+      expect(screen.getByText(/leakage during price discovery/i)).toBeInTheDocument()
+    );
+    expect(document.getElementById('why-not-fhe')).not.toBeNull();
+  });
+
   it('ignores an unknown hash without crashing', () => {
     renderFAQ(['/faq#not-a-real-entry']);
     expect(screen.getByPlaceholderText(/search questions/i)).toBeInTheDocument();

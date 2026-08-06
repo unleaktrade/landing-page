@@ -68,6 +68,19 @@ const faqData: FAQItem[] = [
       "Most venues either execute in public (so size, timing, and intent leak) or rely on trust-heavy coordination. UnleakTrade's core differentiator is that it encodes the entire **RFQ (Request For Quote)** lifecycle into a verifiable on-chain state machine, and uses bonds + timeouts to enforce completion and penalize griefing. This matters for whales because the cost of \"leakage\" is usually not the fee: it's adverse price movement and being gamed.",
   },
   {
+    category: "Platform Basics",
+    id: "zama-comparison",
+    question: "Is UnleakTrade a competitor of Zama?",
+    answer:
+      "No — we work on different layers of the same problem. **Zama** builds general-purpose confidentiality infrastructure based on **FHE (Fully Homomorphic Encryption)**: a technology that lets smart contracts compute directly on encrypted data, across many applications and chains. UnleakTrade is not infrastructure — it's a **purpose-built OTC/RFQ venue on Solana** for executing block trades in any SPL token.\n\n" +
+      "The practical differences follow from that:\n" +
+      "• **Scope** — FHE is a platform many confidential applications can be built on; UnleakTrade is one venue with one job: private price discovery and guaranteed settlement for large or illiquid trades\n" +
+      "• **Privacy model** — FHE keeps state encrypted end-to-end, even during computation; UnleakTrade uses **commit/reveal** to keep quotes hidden while takers compete, then settles deterministically on-chain\n" +
+      "• **Assets** — trades run on **any SPL token**, listed or unlisted, with no wrapping into a confidential token standard first\n" +
+      "• **Enforcement** — solvency is attested before a quote is accepted, and **bonds** put economic skin in the game on both sides, so no-shows and griefing are punished by the protocol rather than by reputation\n\n" +
+      "So the honest answer is that the two are **complementary, not competing**. If you need end-to-end encrypted state and composable confidential DeFi primitives, that's the FHE thesis. If you need competitive, leak-resistant execution for size on Solana today, that's UnleakTrade.",
+  },
+  {
     id: "minimum-trade-size",
     category: "Economics & Incentives",
     question: "What's the minimum trade size?",
@@ -174,6 +187,15 @@ const faqData: FAQItem[] = [
       "Zero-knowledge is UnleakTrade's long-term privacy model, but our first job is to bootstrap a real two-sided market — makers and takers with genuine volume — on security that is proven, cheap, and fast *today*. That's why liquidity is currently verified with **ed25519 signatures** rather than zero-knowledge proofs.\n\n" +
       "Before a taker commits a quote, the **Liquidity Guard** checks that their balances cover the bond and the potential settlement, then issues an **ed25519 signed attestation** that rides in the same transaction as the on-chain commit. Solana verifies this signature natively (via its built-in ed25519 program), and any commit without a valid attestation is rejected on-chain.\n\n" +
       "ed25519 is a battle-tested, widely audited signature scheme: extremely cheap and fast to verify, and it gives us tamper-proof, verifiable liquidity guarantees without the added latency, cost, and engineering surface of a full zero-knowledge system. In short, **zero-knowledge is the destination, not the starting line** — ed25519 lets us ship a secure market now.",
+  },
+  {
+    category: "Technical Mechanics",
+    id: "why-not-fhe",
+    question: "Why commit/reveal instead of FHE?",
+    answer:
+      "**FHE (Fully Homomorphic Encryption)** lets a program compute on data that is never decrypted — the strongest form of on-chain confidentiality, and genuinely impressive technology. It also carries real cost: computational overhead, added latency, and a dependency on a confidential token standard that assets have to be wrapped into first.\n\n" +
+      "An OTC auction doesn't need permanently encrypted state. It needs quotes to stay hidden **while takers are competing**, so nobody can mirror a bid or trade ahead of size. **Commit/reveal** delivers exactly that: a hashed commitment locks the quote, the reveal proves it wasn't changed, and settlement is deterministic and auditable on-chain.\n\n" +
+      "The trade-off is explicit: once a trade settles, it is a normal on-chain transaction — the protection is against **leakage during price discovery**, not permanent encryption of the record. For block trades, price discovery is where the money is lost. We picked the mechanism that fits the problem and ships fast on Solana, and we keep deepening trust-minimization from there — see **Will UnleakTrade migrate to zero-knowledge, and when?**",
   },
   {
     category: "Technical Mechanics",
