@@ -23,8 +23,8 @@ const faqData: FAQItem[] = [
     category: "Platform Basics",
     question: "Can I try UnleakTrade now?",
     answer:
-      "Yes. UnleakTrade is live in **beta** on **Solana Devnet** at **app.unleak.trade** — you can open the app and explore it today.\n\n" +
-      "To actually test the trading flows, though, you need **Unleak USDC (uUSDC)** — a devnet-only test token that mimics USDC (not real USDC, no real-world value): request access and activate your waitlist spot, and **1,000 uUSDC** are airdropped to your registered wallet. Everything runs on Devnet only — **no real funds are at risk**.\n\n" +
+      "Yes. UnleakTrade is live in **beta** on **Solana Devnet** at **app.unleak.trade**. You can open the app and explore it today.\n\n" +
+      "To actually test the trading flows, though, you need **Unleak USDC (uUSDC)**, a devnet-only test token that mimics USDC (not real USDC, no real-world value): request access and activate your waitlist spot, and **1,000 uUSDC** are airdropped to your registered wallet. Everything runs on Devnet only, so **no real funds are at risk**.\n\n" +
       "Request access to join the early community and share feedback on Telegram.",
   },
   {
@@ -32,23 +32,23 @@ const faqData: FAQItem[] = [
     category: "Platform Basics",
     question: "What is Unleak USDC and what do I get for joining the waitlist?",
     answer:
-      "**Unleak USDC (uUSDC)** is UnleakTrade's test version of USDC on Solana devnet: same 6 decimals, used everywhere the beta says USDC, and worth nothing outside it — it is not real USDC and cannot be bought, sold, or bridged.\n\n" +
-      "After you activate your waitlist spot, **1,000 uUSDC** are airdropped to the wallet you registered. This is the test token the beta runs on, and it's what lets you do real end-to-end testing — create RFQs, post bonds, commit and reveal quotes, and settle trades — rather than just browsing the app.\n\n" +
+      "**Unleak USDC (uUSDC)** is UnleakTrade's test version of USDC on Solana devnet: same 6 decimals, used everywhere the beta says USDC, and worth nothing outside it. It is not real USDC and cannot be bought, sold, or bridged.\n\n" +
+      "After you activate your waitlist spot, **1,000 uUSDC** are airdropped to the wallet you registered. This is the test token the beta runs on, and it's what lets you do real end-to-end testing (create RFQs, post bonds, commit and reveal quotes, and settle trades) rather than just browsing the app.\n\n" +
       "At today's default devnet parameters (which may change), 1,000 uUSDC is enough for roughly **~96 full RFQ cycles**. The 1,000 figure is a **testing allowance, not a trade-size guideline**.\n\n" +
       "A few things to know:\n" +
       "• Connect the **same wallet you registered** when using the beta\n" +
-      "• Distribution may show as **pending** briefly after activation — an empty balance right after activating is not a failure\n" +
-      "• There is **no faucet** for this mint — if you run out, ask on Telegram",
+      "• Distribution may show as **pending** briefly after activation; an empty balance right after activating is not a failure\n" +
+      "• There is **no faucet** for this mint; if you run out, ask on Telegram",
   },
   {
     id: "why-request-access",
     category: "Platform Basics",
     question: "Why request access, and why might my signup not work?",
     answer:
-      "Requesting access makes you part of UnleakTrade's **early community** — the members who try the beta first and help shape what we build next. Controlled onboarding keeps the early network composed of serious makers, takers, and liquidity providers, and — since UnleakTrade relies on economic incentives, bonding, and private RFQ flows — helps prevent spam and ensures healthy early liquidity.\n\n" +
+      "Requesting access makes you part of UnleakTrade's **early community**, the members who try the beta first and help shape what we build next. Controlled onboarding keeps the early network composed of serious makers, takers, and liquidity providers, and, since UnleakTrade relies on economic incentives, bonding, and private RFQ flows, helps prevent spam and ensures healthy early liquidity.\n\n" +
       "Requesting access also lets you:\n" +
       "• Try the **beta today** on **Solana Devnet** (no real funds or tokens involved)\n" +
-      "• Receive **1,000 Unleak USDC (uUSDC)** airdropped to your wallet after activation — the devnet-only test token required to trade in the beta (not real USDC, no real-world value)\n" +
+      "• Receive **1,000 Unleak USDC (uUSDC)** airdropped to your wallet after activation: the devnet-only test token required to trade in the beta (not real USDC, no real-world value)\n" +
       "• Secure early access to the app\n" +
       "• Signal interest to potential counterparties\n" +
       "• Become eligible to sponsor others\n\n" +
@@ -72,12 +72,12 @@ const faqData: FAQItem[] = [
     id: "zama-comparison",
     question: "Is UnleakTrade a competitor of Zama?",
     answer:
-      "No — we work on different layers of the same problem. **Zama** builds general-purpose confidentiality infrastructure based on **FHE (Fully Homomorphic Encryption)**: a technology that lets smart contracts compute directly on encrypted data, across many applications and chains. UnleakTrade is not infrastructure — it's a **purpose-built OTC/RFQ venue on Solana** for executing block trades in any SPL token.\n\n" +
+      "No. We work on different layers of the same problem. **Zama** builds general-purpose confidentiality infrastructure based on **FHE (Fully Homomorphic Encryption)**: a technology that lets smart contracts compute directly on encrypted data, across many applications and chains. UnleakTrade is not infrastructure; it's a **purpose-built OTC/RFQ venue on Solana** for executing block trades in any SPL token.\n\n" +
       "The practical differences follow from that:\n" +
-      "• **Scope** — FHE is a platform many confidential applications can be built on; UnleakTrade is one venue with one job: private price discovery and guaranteed settlement for large or illiquid trades\n" +
-      "• **Privacy model** — FHE keeps state encrypted end-to-end, even during computation; UnleakTrade uses **commit/reveal** to keep quotes hidden while takers compete, then settles deterministically on-chain\n" +
-      "• **Assets** — trades run on **any SPL token**, listed or unlisted, with no wrapping into a confidential token standard first\n" +
-      "• **Enforcement** — solvency is attested before a quote is accepted, and **bonds** put economic skin in the game on both sides, so no-shows and griefing are punished by the protocol rather than by reputation\n\n" +
+      "• **Scope:** FHE is a platform many confidential applications can be built on; UnleakTrade is one venue with one job: private price discovery and guaranteed settlement for large or illiquid trades\n" +
+      "• **Privacy model:** FHE keeps state encrypted end-to-end, even during computation; UnleakTrade uses **commit/reveal** to keep quotes hidden while takers compete, then settles deterministically on-chain\n" +
+      "• **Assets:** trades run on **any SPL token**, listed or unlisted, with no wrapping into a confidential token standard first\n" +
+      "• **Enforcement:** solvency is attested before a quote is accepted, and **bonds** put economic skin in the game on both sides, so no-shows and griefing are punished by the protocol rather than by reputation\n\n" +
       "So the honest answer is that the two are **complementary, not competing**. If you need end-to-end encrypted state and composable confidential DeFi primitives, that's the FHE thesis. If you need competitive, leak-resistant execution for size on Solana today, that's UnleakTrade.",
   },
   {
@@ -85,9 +85,9 @@ const faqData: FAQItem[] = [
     category: "Economics & Incentives",
     question: "What's the minimum trade size?",
     answer:
-      "There is **no protocol-enforced minimum trade size** anywhere on UnleakTrade — and none is planned. Both the taker fee (`taker_fee_bps`) and the bond are **set per-RFQ by the maker**, with **no protocol floor** on either.\n\n" +
-      "The **~$10,000** figure you may have seen is **guidance, not a gate or requirement**: it's advice about when an OTC auction is worth it versus an AMM — and it applies to **production on mainnet**, where amounts represent real value. Above that range, avoiding slippage and information leakage typically outweighs on-chain AMM execution; the exact break-even varies per RFQ, since each maker sets their own fee and bond.\n\n" +
-      "On **devnet**, trades run on Unleak USDC (uUSDC), a test token with no monetary value, so no sizing guidance applies — test any size you like.",
+      "There is **no protocol-enforced minimum trade size** anywhere on UnleakTrade, and none is planned. Both the taker fee (`taker_fee_bps`) and the bond are **set per-RFQ by the maker**, with **no protocol floor** on either.\n\n" +
+      "The **~$10,000** figure you may have seen is **guidance, not a gate or requirement**: it's advice about when an OTC auction is worth it versus an AMM, and it applies to **production on mainnet**, where amounts represent real value. Above that range, avoiding slippage and information leakage typically outweighs on-chain AMM execution; the exact break-even varies per RFQ, since each maker sets their own fee and bond.\n\n" +
+      "On **devnet**, trades run on Unleak USDC (uUSDC), a test token with no monetary value, so no sizing guidance applies. Test any size you like.",
   },
   {
     category: "Platform Basics",
@@ -184,18 +184,18 @@ const faqData: FAQItem[] = [
     question:
       "Why start with ed25519 signatures instead of zero-knowledge proofs?",
     answer:
-      "Zero-knowledge is UnleakTrade's long-term privacy model, but our first job is to bootstrap a real two-sided market — makers and takers with genuine volume — on security that is proven, cheap, and fast *today*. That's why liquidity is currently verified with **ed25519 signatures** rather than zero-knowledge proofs.\n\n" +
+      "Zero-knowledge is UnleakTrade's long-term privacy model, but our first job is to bootstrap a real two-sided market (makers and takers with genuine volume) on security that is proven, cheap, and fast *today*. That's why liquidity is currently verified with **ed25519 signatures** rather than zero-knowledge proofs.\n\n" +
       "Before a taker commits a quote, the **Liquidity Guard** checks that their balances cover the bond and the potential settlement, then issues an **ed25519 signed attestation** that rides in the same transaction as the on-chain commit. Solana verifies this signature natively (via its built-in ed25519 program), and any commit without a valid attestation is rejected on-chain.\n\n" +
-      "ed25519 is a battle-tested, widely audited signature scheme: extremely cheap and fast to verify, and it gives us tamper-proof, verifiable liquidity guarantees without the added latency, cost, and engineering surface of a full zero-knowledge system. In short, **zero-knowledge is the destination, not the starting line** — ed25519 lets us ship a secure market now.",
+      "ed25519 is a battle-tested, widely audited signature scheme: extremely cheap and fast to verify, and it gives us tamper-proof, verifiable liquidity guarantees without the added latency, cost, and engineering surface of a full zero-knowledge system. In short, **zero-knowledge is the destination, not the starting line**: ed25519 lets us ship a secure market now.",
   },
   {
     category: "Technical Mechanics",
     id: "why-not-fhe",
     question: "Why commit/reveal instead of FHE?",
     answer:
-      "**FHE (Fully Homomorphic Encryption)** lets a program compute on data that is never decrypted — the strongest form of on-chain confidentiality, and genuinely impressive technology. It also carries real cost: computational overhead, added latency, and a dependency on a confidential token standard that assets have to be wrapped into first.\n\n" +
+      "**FHE (Fully Homomorphic Encryption)** lets a program compute on data that is never decrypted. That is the strongest form of on-chain confidentiality, and genuinely impressive technology. It also carries real cost: computational overhead, added latency, and a dependency on a confidential token standard that assets have to be wrapped into first.\n\n" +
       "An OTC auction doesn't need permanently encrypted state. It needs quotes to stay hidden **while takers are competing**, so nobody can mirror a bid or trade ahead of size. **Commit/reveal** delivers exactly that: a hashed commitment locks the quote, the reveal proves it wasn't changed, and settlement is deterministic and auditable on-chain.\n\n" +
-      "The trade-off is explicit: once a trade settles, it is a normal on-chain transaction — the protection is against **leakage during price discovery**, not permanent encryption of the record. For block trades, price discovery is where the money is lost. We picked the mechanism that fits the problem and ships fast on Solana, and we keep deepening trust-minimization from there — see **Will UnleakTrade migrate to zero-knowledge, and when?**",
+      "The trade-off is explicit: once a trade settles, it is a normal on-chain transaction. The protection is against **leakage during price discovery**, not permanent encryption of the record. For block trades, price discovery is where the money is lost. We picked the mechanism that fits the problem and ships fast on Solana, and we keep deepening trust-minimization from there. See **Will UnleakTrade migrate to zero-knowledge, and when?**",
   },
   {
     category: "Technical Mechanics",
@@ -229,7 +229,7 @@ const faqData: FAQItem[] = [
     id: "bonds",
     question: 'What are "bonds" and why do they exist?',
     answer:
-      "A bond is a USDC amount posted by *each participant* to make griefing expensive and force timely completion. Bonds are held in an RFQ-owned USDC token account (an **ATA = Associated Token Account**) and are returned on successful settlement. If someone fails to do their required step in time, their bond can be slashed (routed entirely to the protocol treasury, never to the counterparty). Counterparties **have skin-in-the-game**.\n\nIn the devnet beta, the bond is denominated in **Unleak USDC (uUSDC)** — the same devnet-only test mint you receive from the waitlist airdrop, which is not real USDC and has no real-world value.",
+      "A bond is a USDC amount posted by *each participant* to make griefing expensive and force timely completion. Bonds are held in an RFQ-owned USDC token account (an **ATA = Associated Token Account**) and are returned on successful settlement. If someone fails to do their required step in time, their bond can be slashed (routed entirely to the protocol treasury, never to the counterparty). Counterparties **have skin-in-the-game**.\n\nIn the devnet beta, the bond is denominated in **Unleak USDC (uUSDC)**, the same devnet-only test mint you receive from the waitlist airdrop, which is not real USDC and has no real-world value.",
   },
   {
     category: "Economics & Incentives",
@@ -265,8 +265,8 @@ const faqData: FAQItem[] = [
     question: "Will UnleakTrade migrate to zero-knowledge, and when?",
     answer:
       "Yes. Zero-knowledge is UnleakTrade's committed direction, and the roadmap is deliberately sequenced: **build the market first, then deepen trust-minimization.**\n\n" +
-      "Today's **ed25519** attestations rely on the **Liquidity Guard** as an off-chain attester — the guarantees are enforced on-chain, but the solvency check itself is trusted to that service. The zero-knowledge migration replaces that model: participants will be able to **prove solvency without revealing balances or trading strategy, and without a trusted off-chain attester.**\n\n" +
-      "From a user's perspective the experience stays the same — verified liquidity, private auctions, atomic settlement — while the underlying trust assumptions get progressively stronger. We move to zero-knowledge once the market and its participants are established, so the upgrade lands on a live, liquid venue rather than an empty one.",
+      "Today's **ed25519** attestations rely on the **Liquidity Guard** as an off-chain attester. The guarantees are enforced on-chain, but the solvency check itself is trusted to that service. The zero-knowledge migration replaces that model: participants will be able to **prove solvency without revealing balances or trading strategy, and without a trusted off-chain attester.**\n\n" +
+      "From a user's perspective the experience stays the same (verified liquidity, private auctions, atomic settlement) while the underlying trust assumptions get progressively stronger. We move to zero-knowledge once the market and its participants are established, so the upgrade lands on a live, liquid venue rather than an empty one.",
   },
   {
     category: "Platform Basics",
@@ -274,11 +274,11 @@ const faqData: FAQItem[] = [
     question: "Why Solana?",
     answer:
       "UnleakTrade is built on **Solana** because it uniquely aligns with where crypto liquidity, real-world adoption, and performant blockchain technology are converging: \n\n" +
-      "• **Liquidity is actively growing on Solana** — Solana has seen extraordinary on-chain usage and economic value, consistently leading in daily transactions and decentralized exchange activity compared to other blockchains, evidencing deep and active markets that matter for OTC flows.\n\n" +
-      "• **Favourable macro & institutional context** — Solana has attracted major partners (e.g., payments and stablecoin infrastructure integrations like Visa, Western Union, Circle) and increasing institutional interest, which supports larger capital flows and real financial market use cases.\n\n" +
+      "• **Liquidity is actively growing on Solana:** Solana has seen extraordinary on-chain usage and economic value, consistently leading in daily transactions and decentralized exchange activity compared to other blockchains, evidencing deep and active markets that matter for OTC flows.\n\n" +
+      "• **Favourable macro & institutional context:** Solana has attracted major partners (e.g., payments and stablecoin infrastructure integrations like Visa, Western Union, Circle) and increasing institutional interest, which supports larger capital flows and real financial market use cases.\n\n" +
       "• **High performance with very low fees:** Solana’s technology delivers high throughput (thousands of TPS and sub-second finality) and transaction costs that are fractions of a cent, enabling fast, predictable execution without the congestion or gas spikes common on older networks.\n\n" +
       "• **Modern consensus & architecture:** Solana’s hybrid Proof-of-History (PoH) plus Proof-of-Stake (PoS) design is optimized for parallel processing and low latency, making it ideal for high-frequency or large-scale financial applications like OTC auctions.\n\n" +
-      "• **Native support for zero-knowledge innovations:** Solana is pioneering *ZK Compression* and other zero-knowledge extensions at the base layer, enabling dramatically lower state costs, privacy primitives, and scalable proofs without relying on external rollups or secondary chains — a strong technical fit for UnleakTrade’s ZK-assisted liquidity model.\n\n" +
+      "• **Native support for zero-knowledge innovations:** Solana is pioneering *ZK Compression* and other zero-knowledge extensions at the base layer, enabling dramatically lower state costs, privacy primitives, and scalable proofs without relying on external rollups or secondary chains, a strong technical fit for UnleakTrade’s ZK-assisted liquidity model.\n\n" +
       "Together, these factors make Solana a strong foundation for UnleakTrade: it offers deep liquidity, real adoption signals from both retail and institutional players, extremely efficient execution, and evolving zero-knowledge capabilities that align with our privacy and performance goals.",
   },
 
