@@ -30,7 +30,7 @@ export interface AirdropInfo {
 const DEFAULT_SYMBOL = "uUSDC";
 
 const DISCLAIMER =
-  "uUSDC is a devnet-only test token — not real USDC, no real-world monetary value.";
+  "uUSDC is a devnet-only test token: not real USDC, no real-world monetary value.";
 
 function formatAmount(amount: string | number | undefined): string {
   if (amount === undefined || amount === null) return "1,000";
@@ -125,7 +125,7 @@ export function AirdropStatusCard({
       title = "Airdrop delayed";
       body = (
         <p className="text-amber-200/80 mb-4">
-          The airdrop hit a temporary snag. Your spot is safe — distribution
+          The airdrop hit a temporary snag. Your spot is safe, distribution
           will be retried automatically. No action needed.
         </p>
       );
@@ -136,7 +136,7 @@ export function AirdropStatusCard({
       body = (
         <p className="text-red-200/80 mb-4">
           We couldn't complete the airdrop for this wallet. Your activation is
-          still valid — reach out on{" "}
+          still valid. Reach out on{" "}
           <a
             href={TELEGRAM_URL}
             target="_blank"
@@ -157,7 +157,7 @@ export function AirdropStatusCard({
         <p className="text-white/60 mb-4">
           We're sending {amountLabel} {symbol} (Unleak USDC) to your registered
           wallet so you can test the beta. This usually completes within a few
-          minutes — no action needed.
+          minutes. No action needed.
         </p>
       );
       break;
@@ -169,7 +169,7 @@ export function AirdropStatusCard({
         <p className="text-white/60 mb-4">
           We're sending {amountLabel} {symbol} (Unleak USDC) to your registered
           wallet so you can test the beta. This usually completes within a few
-          minutes — no action needed.
+          minutes. No action needed.
         </p>
       );
       break;

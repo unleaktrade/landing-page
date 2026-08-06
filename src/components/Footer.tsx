@@ -13,7 +13,7 @@ export function Footer() {
               <img src={logoImage} alt="UnleakTrade" className="h-6 w-6" />
               <span className="text-sm text-white/60">© 2026 UnleakTrade</span>
             </div>
-            <span className="hidden sm:inline text-white/60">—</span>
+            <span className="hidden sm:inline text-white/60">·</span>
             <span className="text-sm text-white/60">
               An independent project built by{" "}
               <Link

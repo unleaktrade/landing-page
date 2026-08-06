@@ -1,6 +1,6 @@
 # 🛡️ UnleakTrade Landing Page
 
-The official **UnleakTrade** landing page — a fast, modern web experience introducing the UnleakTrade ecosystem: confidential OTC trading, RFQs, and trustless settlement on Solana.
+The official **UnleakTrade** landing page: a fast, modern web experience introducing the UnleakTrade ecosystem: confidential OTC trading, RFQs, and trustless settlement on Solana.
 
 ---
 
@@ -60,7 +60,7 @@ Vitest runs in a jsdom environment with Testing Library and a shared setup file 
 
 Coverage thresholds are enforced at **80%** (lines / branches / functions / statements). The following paths are excluded as vendored or non-business code:
 
-- `src/components/ui/**` — shadcn/ui primitives
+- `src/components/ui/**`: shadcn/ui primitives
 - `src/assets/**`, `src/styles/**`, `src/guidelines/**`
 - `src/main.tsx`
 
@@ -92,10 +92,10 @@ src/
 
 Two GitHub Actions workflows:
 
-- **`ci.yml`** — on push (non-main) and pull requests: installs deps, builds, runs tests with coverage. Coverage dropping below 80% fails the run.
-- **`deploy.yml`** — on push to `main`: builds and publishes to GitHub Pages (`unleak.trade`).
+- **`ci.yml`**: on push (non-main) and pull requests: installs deps, builds, runs tests with coverage. Coverage dropping below 80% fails the run.
+- **`deploy.yml`**: on push to `main`: builds and publishes to GitHub Pages (`unleak.trade`).
 
-No manual deployment — merging to `main` is the release.
+No manual deployment; merging to `main` is the release.
 
 ---
 
@@ -124,8 +124,8 @@ Pull requests are welcome. Please:
 
 ## 📜 License
 
-MIT — see the `LICENSE` file.
+MIT. See the `LICENSE` file.
 
 ---
 
-© UnleakTrade — All rights reserved.
+© UnleakTrade. All rights reserved.

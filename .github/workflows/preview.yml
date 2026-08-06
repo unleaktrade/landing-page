@@ -1,5 +1,5 @@
 # .github/workflows/preview.yml
-name: Deploy – Vercel Preview (PR)
+name: Deploy to Vercel Preview (PR)
 
 on:
   pull_request:

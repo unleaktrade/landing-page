@@ -21,7 +21,7 @@ export function Economics() {
             Skin in the game ensures fair execution
           </h2>
           <p className="text-white/60 max-w-3xl mx-auto leading-relaxed">
-            Our bond-based system aligns incentives and protects all participants. Whether you're a wealthy individual or a whale, defaulters lose their bonds—creating natural enforcement without intermediaries.
+            Our bond-based system aligns incentives and protects all participants. Whether you're a wealthy individual or a whale, defaulters lose their bonds, creating natural enforcement without intermediaries.
           </p>
         </motion.div>
 
@@ -95,8 +95,8 @@ export function Economics() {
                 </div>
                 <h3 className="text-white mb-2">Bonds (both sides)</h3>
                 <div className="space-y-1 text-sm mb-2">
-                  <div className="text-white/60">$10k – &lt;$500k → 100 bps</div>
-                  <div className="text-white/60">$500k – &lt;$5M → 50 bps</div>
+                  <div className="text-white/60">$10k to &lt;$500k → 100 bps</div>
+                  <div className="text-white/60">$500k to &lt;$5M → 50 bps</div>
                   <div className="text-white/60">$5M+ → 25 bps</div>
                 </div>
                 <p className="text-white/40 text-sm">

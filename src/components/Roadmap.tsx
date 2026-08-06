@@ -23,19 +23,19 @@ const roadmapPhases: RoadmapPhase[] = [
     letter: "A",
     name: "Arturo Fuente",
     subtitle: "The Founders' Cut",
-    core: "The OTC foundation — from single-asset swaps to multi-asset RFQs.",
+    core: "The OTC foundation: from single-asset swaps to multi-asset RFQs.",
     focus: {
       steps: [
         {
-          title: "Step 1 — MVP",
+          title: "Step 1: MVP",
           items: [
-            "Core commit–reveal OTC engine enabling private 1:1 fungible token swaps.",
+            "Core commit-reveal OTC engine enabling private 1:1 fungible token swaps.",
             "Trustless escrow (self-verifying) and atomic settlement with zk-verified confidentiality.",
             "Initial rollout focused on SPL ↔ SPL pairs to validate throughput and cryptographic stability."
           ]
         },
         {
-          title: "Step 2 — Expansion",
+          title: "Step 2: Expansion",
           items: [
             "Extend the RFQ layer to support multi-asset trading structures, where a single maker offers one token against several different tokens, including NFTs.",
             "Unified settlement and pricing model for heterogeneous assets (SPL + NFT + synthetic).",
@@ -45,7 +45,7 @@ const roadmapPhases: RoadmapPhase[] = [
       ],
       items: []
     },
-    outcome: "UnleakTrade's universal OTC core — private, multi-asset, and verifiably secure.",
+    outcome: "UnleakTrade's universal OTC core: private, multi-asset, and verifiably secure.",
     status: "in-progress"
   },
   {
@@ -58,7 +58,7 @@ const roadmapPhases: RoadmapPhase[] = [
       items: [
         "Launch of Prestige Levels dynamically adjusting bond and fee requirements by trading history and dispute record.",
         "RFQ fragmentation: a single maker's order can be partially filled by multiple takers, unlocking distributed, retail-level liquidity.",
-        "Expanded multi-asset RFQ support for makers — enabling n → m structures, where multiple input tokens can be exchanged for multiple outputs in one OTC deal.",
+        "Expanded multi-asset RFQ support for makers, enabling n → m structures, where multiple input tokens can be exchanged for multiple outputs in one OTC deal.",
         "Adaptive pricing and incentives weighted by reputation, trade size, and fill rate.",
         "Optional zk-KYC and decentralized identity attestations for higher-tier access."
       ]
@@ -71,19 +71,19 @@ const roadmapPhases: RoadmapPhase[] = [
     letter: "C",
     name: "Cohiba",
     subtitle: "Tokenization & Liquidity Fabric",
-    core: "Introduction of the UnleakTrade's Token — the internal coordination, bonding, and fee unit of UnleakTrade.",
+    core: "Introduction of the UnleakTrade's Token: the internal coordination, bonding, and fee unit of UnleakTrade.",
     focus: {
-      title: "The escrow is the verifier — every trade self-verifies via commit–reveal logic, releasing or reclaiming bonds automatically.",
+      title: "The escrow is the verifier: every trade self-verifies via commit-reveal logic, releasing or reclaiming bonds automatically.",
       items: [
         "Fees: paid for RFQ submission, reveal execution, and settlement.",
         "Bonds: staked by makers (and later relayers) to guarantee honest behavior; dynamically sized by Prestige Level and trade volume.",
         "Incentives: distributed to relayers for uptime and accurate routing.",
         "Governance: granting participation in protocol-level parameter decisions.",
-        "No tokenized receipts or synthetic liquidity — escrows self-destruct post-settlement.",
+        "No tokenized receipts or synthetic liquidity: escrows self-destruct post-settlement.",
         "Establish protocol treasury and initial staking mechanics for sustainability."
       ]
     },
-    outcome: "UnleakTrade becomes a self-sustaining, economically secure network — all trust, cost, and incentive flows unified under one verifiable token logic.",
+    outcome: "UnleakTrade becomes a self-sustaining, economically secure network: all trust, cost, and incentive flows unified under one verifiable token logic.",
     status: "upcoming"
   },
   {
@@ -100,7 +100,7 @@ const roadmapPhases: RoadmapPhase[] = [
         "Settlement extensions for derivatives, credit instruments, and RWA-backed trades."
       ]
     },
-    outcome: "UnleakTrade evolves into Solana's market infrastructure layer — liquidity, routing, and data fused through cryptographic trust.",
+    outcome: "UnleakTrade evolves into Solana's market infrastructure layer: liquidity, routing, and data fused through cryptographic trust.",
     status: "upcoming"
   },
   {
@@ -117,7 +117,7 @@ const roadmapPhases: RoadmapPhase[] = [
         "Sandbox environment for third-party builders extending UnleakTrade's rails."
       ]
     },
-    outcome: "UnleakTrade becomes a programmable infrastructure layer — powering automated, composable OTC markets on Solana.",
+    outcome: "UnleakTrade becomes a programmable infrastructure layer, powering automated, composable OTC markets on Solana.",
     status: "upcoming"
   },
   {
@@ -134,7 +134,7 @@ const roadmapPhases: RoadmapPhase[] = [
         "Institutional onboarding stack with configurable privacy levels and audit access."
       ]
     },
-    outcome: "Institutional-scale privacy and compliance — regulated liquidity on private, cryptographically verifiable rails.",
+    outcome: "Institutional-scale privacy and compliance: regulated liquidity on private, cryptographically verifiable rails.",
     status: "upcoming"
   }
 ];
@@ -173,7 +173,7 @@ export function Roadmap() {
             <p className="text-white/40 mb-4">The journey ahead</p>
             <h1 className="text-white mb-6">Building Solana's Private Market Infrastructure</h1>
             <p className="text-white/60 max-w-2xl mx-auto leading-relaxed">
-              Each phase brings us closer to trustless, private, and permissionless OTC markets—where cryptographic guarantees replace institutional gatekeepers.
+              Each phase brings us closer to trustless, private, and permissionless OTC markets, where cryptographic guarantees replace institutional gatekeepers.
             </p>
           </motion.div>
         </div>
@@ -322,7 +322,7 @@ export function Roadmap() {
             className="mt-20 text-center"
           >
             <p className="text-white/40 italic max-w-2xl mx-auto">
-              From zero-knowledge to tokenized coordination — UnleakTrade is Solana's invisible backbone for private, programmable OTC markets.
+              From zero-knowledge to tokenized coordination, UnleakTrade is Solana's invisible backbone for private, programmable OTC markets.
             </p>
           </motion.div>
         </div>

@@ -59,7 +59,7 @@ export function Hero({ onOpenWaitlist }: HeroProps) {
               Request Access
             </button>
             <p className="text-white/40 text-sm">
-              Live in beta on Solana Devnet — no real funds or tokens involved
+              Live in beta on Solana Devnet, no real funds or tokens involved
             </p>
           </motion.div>
         </motion.div>

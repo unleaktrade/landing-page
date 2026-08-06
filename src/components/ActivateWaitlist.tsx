@@ -238,7 +238,7 @@ export function ActivateWaitlist() {
             </h1>
             <p className="text-white/60 mb-6">
               You'll receive a confirmation email shortly.
-              You're now an early member of UnleakTrade — the
+              You're now an early member of UnleakTrade, the
               community that gets first access and helps shape
               what we build next.
             </p>

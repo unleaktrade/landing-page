@@ -38,7 +38,7 @@ describe('AirdropStatusCard', () => {
     render(<AirdropStatusCard airdrop={makeAirdrop({ status: 'confirmed' })} />);
     expect(
       screen.getByText(
-        /uusdc is a devnet-only test token — not real usdc, no real-world monetary value/i
+        /uusdc is a devnet-only test token: not real usdc, no real-world monetary value/i
       )
     ).toBeInTheDocument();
   });

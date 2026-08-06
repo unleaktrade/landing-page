@@ -116,7 +116,7 @@ export function WaitlistDialog({
 
         toast.success("Verification email sent!", {
           description:
-            "Confirm your email to secure your spot — then try the beta at app.unleak.trade (Solana Devnet, no real funds).",
+            "Confirm your email to secure your spot, then try the beta at app.unleak.trade (Solana Devnet, no real funds).",
           duration: 6000,
         });
       } else {

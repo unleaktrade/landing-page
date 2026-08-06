@@ -1,17 +1,17 @@
 import { useEffect, useRef } from "react";
 
 /**
- * WarpField — a true 3D, crypto-themed animated background (WebGL).
+ * WarpField: a true 3D, crypto-themed animated background (WebGL).
  *
  * A structured 3D lattice of nodes (a settlement / liquidity network) wired by
- * crisp edges, with bright "packets" — transactions settling — streaming along
+ * crisp edges, with bright "packets" (transactions settling) streaming along
  * the edges. The whole volume slowly auto-orbits so depth and parallax read as
  * genuinely three-dimensional. Rendered as a fixed, full-viewport,
  * pointer-events-none backdrop behind the page content.
  *
  * Why WebGL / why this shape:
  *  - The scene lives in a resolution-independent 3D volume. A viewport resize
- *    only updates the GL viewport + projection aspect — geometry is NEVER
+ *    only updates the GL viewport + projection aspect; geometry is NEVER
  *    regenerated. This structurally eliminates the previous mobile bug where
  *    scrolling (which fires `resize` as the URL bar collapses) re-seeded the
  *    mesh and made it flicker/redraw.
@@ -33,19 +33,19 @@ const CYAN: [number, number, number] = [14 / 255, 165 / 255, 233 / 255]; // #0EA
 const CFG = {
   // lattice (resolution-independent 3D volume, centered on the origin)
   // Sized to over-fill the viewport AND the orbit envelope so the mesh always
-  // reaches past the screen edges — no empty/black bands in the corners.
+  // reaches past the screen edges, so no empty/black bands in the corners.
   nx: 15,
   ny: 11,
   nz: 5,
   spacing: 0.42,
-  jitter: 0.07, // small, so the lattice reads as intentional — not random
+  jitter: 0.07, // small, so the lattice reads as intentional, not random
   maxLink: 1.6, // connect nodes within maxLink * spacing (axis + face diagonals)
-  // messages — packets travel edge-to-edge as colored comet streaks
-  packetRatio: 0.2, // messages per edge — sparse & intentional, not a swarm
+  // messages: packets travel edge-to-edge as colored comet streaks
+  packetRatio: 0.2, // messages per edge; sparse & intentional, not a swarm
   packetMinSpeed: 0.05, // t units / second
   packetMaxSpeed: 0.14,
   packetTrail: 0.12, // comet tail length, as a fraction of an edge
-  // look — kept dim/restrained so it reads as a serious backdrop, not "arcade"
+  // look, kept dim/restrained so it reads as a serious backdrop, not "arcade"
   edgeBright: 0.32,
   nodeBright: 0.6,
   messageBright: 1.3, // moving messages are brighter so they "pop"
@@ -56,7 +56,7 @@ const CFG = {
   fov: (55 * Math.PI) / 180,
   camZ: 3.4, // camera distance from the origin
   tilt: 0.4, // constant pitch (rad)
-  orbitSpeed: 0.07, // yaw angular speed (rad/s) — slow + calm
+  orbitSpeed: 0.07, // yaw angular speed (rad/s), slow + calm
   // perf
   dprCap: 2,
   fps: 30,
@@ -168,7 +168,7 @@ const LINE_FS = `
 
 // Message comet streaks: each packet is a 2-vertex line (tail a_end=0 → head
 // a_end=1) that slides along its edge over time, fading from a bright head to a
-// transparent tail — a colored signal travelling from one node to another.
+// transparent tail: a colored signal travelling from one node to another.
 const STREAK_VS = `
   precision mediump float;
   attribute vec3 a_a; attribute float a_pa;
@@ -506,7 +506,7 @@ export function WarpField() {
       gl.drawArrays(gl.LINES, 0, geo.lineCount * 2);
       disableAttribs(lLoc);
 
-      // messages — comet streaks travelling along edges (bright head → faded tail)
+      // messages: comet streaks travelling along edges (bright head → faded tail)
       if (geo.streakCount > 0) {
         gl.useProgram(streakProg);
         gl.uniformMatrix4fv(sUni.u_mvp, false, mvp);
