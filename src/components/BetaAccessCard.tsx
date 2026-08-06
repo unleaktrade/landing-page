@@ -27,7 +27,7 @@ export function BetaLiveCallout() {
       <p className="text-white/60 text-xs leading-relaxed mb-2">
         UnleakTrade is already up and running on Solana Devnet. Your wallet
         identifies you as a beta participant: once your waitlist spot is
-        activated, we airdrop it 1,000 Unleak USDC (uUSDC) — the devnet-only
+        activated, we airdrop it 1,000 Unleak USDC (uUSDC), the devnet-only
         test token that mimics USDC, required to try the beta flows. Not real
         USDC, no real-world value.
       </p>
@@ -53,9 +53,9 @@ export function BetaAccessCard() {
       <p className="text-white/60 text-sm leading-relaxed">
         UnleakTrade is currently live in beta on{" "}
         <span className="text-white/80">Solana Devnet</span>. You can already
-        explore the app, test the experience, and see how it works — no real
+        explore the app, test the experience, and see how it works. No real
         funds or tokens are involved. After you activate your spot, the wallet
-        you registered receives 1,000 Unleak USDC (uUSDC) — a devnet-only test
+        you registered receives 1,000 Unleak USDC (uUSDC), a devnet-only test
         token that mimics USDC, with no real-world value. You'll need it (and
         that same wallet) to test the beta.
       </p>

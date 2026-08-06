@@ -19,27 +19,38 @@ ESLint or Prettier config, so nothing auto-formats. Match surrounding style by h
 
 ## Writing style
 
-**Never use em dashes (`—`) or en dashes (`–`) in site copy.** Not in FAQ answers, not in
-roadmap text, not in headings, not anywhere a visitor can read. Use a comma, a colon, a
-semicolon, parentheses, or just split the sentence. Pick whichever actually fits the
-clause rather than swapping in a hyphen everywhere.
+**Never use em dashes (U+2014), en dashes (U+2013), horizontal bars (U+2015), or figure
+dashes (U+2012) anywhere in this repo.** Not in site copy, not in headings, not in code
+comments, not in the README, not in workflow files, not in commit messages. Only the
+plain ASCII hyphen is allowed.
+
+This file deliberately names those characters by code point rather than printing them,
+so that the check below can cover the whole repo with no exceptions to remember.
+
+Instead of a dash, use a comma, a colon, a semicolon, parentheses, or a full stop. Pick
+whichever actually fits the clause rather than swapping in a hyphen everywhere:
 
 ```
-bad:   The escrow is the verifier — every trade self-verifies.
+bad:   The escrow is the verifier <dash> every trade self-verifies.
 good:  The escrow is the verifier: every trade self-verifies.
 
-bad:   ...bootstrap a real market — makers and takers with volume — on proven security.
-good:  ...bootstrap a real market (makers and takers with volume) on proven security.
+bad:   ...a real market <dash> makers and takers with volume <dash> on proven security.
+good:  ...a real market (makers and takers with volume) on proven security.
 
-bad:   No — we work on different layers.
+bad:   No <dash> we work on different layers.
 good:  No. We work on different layers.
 ```
 
-Check before committing copy changes:
+The repo is currently at zero occurrences. Check before committing:
 
 ```bash
-grep -rn "—\|–" src/
+grep -rnP '[\x{2012}-\x{2015}]' . \
+  --exclude-dir=node_modules --exclude-dir=.git --exclude-dir=build   # must return nothing
 ```
+
+Two non-prose cases already have a settled answer, so do not relitigate them: the footer
+separator between the copyright and the byline is a middle dot (`·`), and numeric ranges
+spell out `to` (`$10k to <$500k`).
 
 Other copy conventions, observed across the site:
 

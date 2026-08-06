@@ -4,7 +4,7 @@ const steps = [
   {
     number: "01",
     title: "Maker creates RFQ",
-    description: "Initialize a Request for Quote as a draft, define parameters, then open it to the market with bond deposit—inviting multiple takers to compete."
+    description: "Initialize a Request for Quote as a draft, define parameters, then open it to the market with bond deposit, inviting multiple takers to compete."
   },
   {
     number: "02",

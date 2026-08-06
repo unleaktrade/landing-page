@@ -31,7 +31,7 @@ const teamMembers: TeamMember[] = [
     location: "France",
     tagline: "Engineering trust at scale.",
     summary: "Visionary tech entrepreneur with deep expertise in blockchain and token engineering, leading high-performing teams to design scalable architectures and transform complex systems into secure, value-driven solutions.",
-    biography: "As Founder and CTO of UnleakTrade, Julien drives the strategic and technical vision behind a next-generation crypto trading platform that blends transparency, scalability, and intelligent automation. His leadership focuses on building a secure, high-performance ecosystem for digital asset trading, leveraging cutting-edge blockchain, AI, and token engineering principles. With deep expertise in decentralized finance, scalable architectures, and smart contract design, he oversees the full lifecycle of product innovation — from infrastructure and data systems to user experience and market strategy. His work ensures reliability, efficiency, and long-term value creation across all aspects of the platform. His pragmatic, innovation-driven approach continues to propel UnleakTrade's mission to redefine the future of crypto trading through engineering excellence and strategic vision.",
+    biography: "As Founder and CTO of UnleakTrade, Julien drives the strategic and technical vision behind a next-generation crypto trading platform that blends transparency, scalability, and intelligent automation. His leadership focuses on building a secure, high-performance ecosystem for digital asset trading, leveraging cutting-edge blockchain, AI, and token engineering principles. With deep expertise in decentralized finance, scalable architectures, and smart contract design, he oversees the full lifecycle of product innovation, from infrastructure and data systems to user experience and market strategy. His work ensures reliability, efficiency, and long-term value creation across all aspects of the platform. His pragmatic, innovation-driven approach continues to propel UnleakTrade's mission to redefine the future of crypto trading through engineering excellence and strategic vision.",
     expertise: ["Blockchain", "TokenEngineering", "DevOps", "DeFi", "ScalableArchitecture", "SmartContracts", "Fundraising", "Investment", "Leadership", "ProductStrategy"],
     handle: "@_whyvrafvr",
     links: {
@@ -82,7 +82,7 @@ export function TeamPage() {
             <p className="text-white/40 mb-4">Meet the builder</p>
             <h1 className="text-white mb-6">Building institutional-grade privacy from first principles.</h1>
             <p className="text-white/60 max-w-2xl mx-auto">
-              An independent project by Julien SIE — combining deep protocol design with strategic vision to redefine crypto OTC trading.
+              An independent project by Julien SIE, combining deep protocol design with strategic vision to redefine crypto OTC trading.
             </p>
           </motion.div>
         </div>

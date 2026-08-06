@@ -619,7 +619,7 @@ describe('ActivateWaitlist state machine', () => {
     const submit = await screen.findByRole('button', { name: /activate waitlist spot/i });
     fireEvent.click(submit);
     await waitFor(() => expect(fetchMock).toHaveBeenCalled());
-    // Now type a different valid hash — button should re-appear
+    // Now type a different valid hash; button should re-appear
     fireEvent.change(input, { target: { value: 'b'.repeat(64) } });
     await screen.findByRole('button', { name: /activate waitlist spot/i });
   });
@@ -664,7 +664,7 @@ describe('ActivateWaitlist state machine', () => {
       screen.getByText(/your uusdc airdrop is on the way/i)
     ).toBeInTheDocument();
     expect(
-      screen.getByText(/uusdc is a devnet-only test token — not real usdc, no real-world monetary value/i)
+      screen.getByText(/uusdc is a devnet-only test token: not real usdc, no real-world monetary value/i)
     ).toBeInTheDocument();
   });
 

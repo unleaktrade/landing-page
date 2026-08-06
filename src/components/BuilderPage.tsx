@@ -10,7 +10,7 @@ const julienData = {
   location: "France",
   tagline: "Engineering trust at scale.",
   summary: "Visionary tech entrepreneur with deep expertise in blockchain and token engineering, leading high-performing teams to design scalable architectures and transform complex systems into secure, value-driven solutions.",
-  biography: "As Founder and CTO of UnleakTrade, Julien drives the strategic and technical vision behind a next-generation crypto trading platform that blends transparency, scalability, and intelligent automation. His leadership focuses on building a secure, high-performance ecosystem for digital asset trading, leveraging cutting-edge blockchain, AI, and token engineering principles. With deep expertise in decentralized finance, scalable architectures, and smart contract design, he oversees the full lifecycle of product innovation — from infrastructure and data systems to user experience and market strategy. His work ensures reliability, efficiency, and long-term value creation across all aspects of the platform. His pragmatic, innovation-driven approach continues to propel UnleakTrade's mission to redefine the future of crypto trading through engineering excellence and strategic vision.",
+  biography: "As Founder and CTO of UnleakTrade, Julien drives the strategic and technical vision behind a next-generation crypto trading platform that blends transparency, scalability, and intelligent automation. His leadership focuses on building a secure, high-performance ecosystem for digital asset trading, leveraging cutting-edge blockchain, AI, and token engineering principles. With deep expertise in decentralized finance, scalable architectures, and smart contract design, he oversees the full lifecycle of product innovation, from infrastructure and data systems to user experience and market strategy. His work ensures reliability, efficiency, and long-term value creation across all aspects of the platform. His pragmatic, innovation-driven approach continues to propel UnleakTrade's mission to redefine the future of crypto trading through engineering excellence and strategic vision.",
   expertise: ["Blockchain", "TokenEngineering", "DevOps", "DeFi", "ScalableArchitecture", "SmartContracts", "Fundraising", "Investment", "Leadership", "ProductStrategy"],
   handle: "@_whyvrafvr",
   links: {
@@ -71,7 +71,7 @@ export function BuilderPage() {
                   opaque OTC desks that require blind trust in counterparties and intermediaries.
                 </p>
                 <p className="text-white/60 leading-relaxed">
-                  The cost isn't just the fee — it's the leaked intent, front-running, and being gamed by market makers who see your size before execution. 
+                  The cost isn't just the fee. It's the leaked intent, front-running, and being gamed by market makers who see your size before execution. 
                   For serious participants, this is unacceptable.
                 </p>
               </div>
@@ -85,7 +85,7 @@ export function BuilderPage() {
                   and trustless OTC auctions where confidentiality meets competitive price discovery.
                 </p>
                 <p className="text-white/60 leading-relaxed">
-                  No information leakage. No custody risk. No trusted intermediaries. Just cryptographic guarantees, economic bonds, and atomic settlement — 
+                  No information leakage. No custody risk. No trusted intermediaries. Just cryptographic guarantees, economic bonds, and atomic settlement: 
                   bringing institutional-grade privacy and fairness to everyone.
                 </p>
               </div>
@@ -97,25 +97,25 @@ export function BuilderPage() {
                   <div className="flex gap-3">
                     <span className="text-purple-400 flex-shrink-0 leading-relaxed">•</span>
                     <p className="text-white/60 leading-relaxed">
-                      <span className="text-white">Private auction infrastructure</span> — A commit/reveal auction system that prevents bid copying and information leakage during price discovery
+                      <span className="text-white">Private auction infrastructure</span>: a commit/reveal auction system that prevents bid copying and information leakage during price discovery
                     </p>
                   </div>
                   <div className="flex gap-3">
                     <span className="text-cyan-400 flex-shrink-0 leading-relaxed">•</span>
                     <p className="text-white/60 leading-relaxed">
-                      <span className="text-white">ZK-verified liquidity</span> — Participants prove solvency without revealing wallet balances or trading strategies
+                      <span className="text-white">ZK-verified liquidity</span>: participants prove solvency without revealing wallet balances or trading strategies
                     </p>
                   </div>
                   <div className="flex gap-3">
                     <span className="text-purple-400 flex-shrink-0 leading-relaxed">•</span>
                     <p className="text-white/60 leading-relaxed">
-                      <span className="text-white">Trustless settlement engine</span> — Bonding mechanisms and automatic slashing make griefing expensive and force timely completion
+                      <span className="text-white">Trustless settlement engine</span>: bonding mechanisms and automatic slashing make griefing expensive and force timely completion
                     </p>
                   </div>
                   <div className="flex gap-3">
                     <span className="text-cyan-400 flex-shrink-0 leading-relaxed">•</span>
                     <p className="text-white/60 leading-relaxed">
-                      <span className="text-white">Universal asset support</span> — Trade any SPL token (listed or unlisted), with future support for NFTs, derivatives, and real-world assets
+                      <span className="text-white">Universal asset support</span>: trade any SPL token (listed or unlisted), with future support for NFTs, derivatives, and real-world assets
                     </p>
                   </div>
                 </div>
@@ -130,7 +130,7 @@ export function BuilderPage() {
                   it's the only blockchain that can deliver the performance, privacy primitives, and capital flows needed for serious OTC markets.
                 </p>
                 <p className="text-white/60 leading-relaxed">
-                  UnleakTrade isn't just another DEX — it's a new market primitive. From zero-knowledge proofs to programmable composability, 
+                  UnleakTrade isn't just another DEX; it's a new market primitive. From zero-knowledge proofs to programmable composability, 
                   we're building Solana's invisible backbone for private, institutional-grade trading.
                 </p>
               </div>
@@ -139,10 +139,10 @@ export function BuilderPage() {
               <div className="relative bg-white/[0.03] backdrop-blur-sm border border-white/10 rounded-xl p-6 mt-6">
                 <p className="text-white/70 leading-relaxed italic">
                   "This is a solo journey driven by conviction: that crypto markets deserve the same privacy guarantees that institutions take for granted, 
-                  and that Zero-Knowledge technology can finally make this a reality. UnleakTrade started as a technical challenge and evolved into a mission — 
+                  and that Zero-Knowledge technology can finally make this a reality. UnleakTrade started as a technical challenge and evolved into a mission: 
                   to eliminate information asymmetry and bring fairness to OTC trading through cryptographic guarantees."
                 </p>
-                <p className="text-white/50 text-sm mt-4">— Julien SIE, Founder</p>
+                <p className="text-white/50 text-sm mt-4">Julien SIE, Founder</p>
               </div>
             </div>
           </motion.div>
@@ -287,7 +287,7 @@ export function BuilderPage() {
               <p className="text-white/40 mb-3">Get involved</p>
               <h2 className="text-white mb-4">Want to contribute or collaborate?</h2>
               <p className="text-white/60 mb-8 max-w-xl mx-auto">
-                Whether you're interested in contributing to the protocol, partnering, or just want to learn more — feel free to reach out.
+                Whether you're interested in contributing to the protocol, partnering, or just want to learn more, feel free to reach out.
               </p>
               <a
                 href={TELEGRAM_URL}

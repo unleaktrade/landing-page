@@ -47,7 +47,7 @@ export function QRCodeDialog({ open, onOpenChange }: QRCodeDialogProps) {
       try {
         await navigator.share({
           title: "Join UnleakTrade's Early Community",
-          text: "Request access to UnleakTrade — try the beta and help shape confidential OTC trading on Solana",
+          text: "Request access to UnleakTrade: try the beta and help shape confidential OTC trading on Solana",
           url: referralLink,
         });
       } catch (error) {
@@ -133,8 +133,8 @@ export function QRCodeDialog({ open, onOpenChange }: QRCodeDialogProps) {
               Share Your Referral
             </DialogTitle>
             <p className="text-white/60 text-center text-xs sm:text-sm mt-2">
-              This is the wallet that receives your Unleak USDC (uUSDC) — a
-              devnet-only test token with no real-world value — and identifies
+              This is the wallet that receives your Unleak USDC (uUSDC), a
+              devnet-only test token with no real-world value, and identifies
               you in the beta. Share it as a sponsor address to invite others.
             </p>
           </DialogHeader>

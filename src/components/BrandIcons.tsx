@@ -1,6 +1,6 @@
 import type { SVGProps } from "react";
 
-// Brand icons removed from lucide-react in 1.0 — path data preserved from
+// Brand icons removed from lucide-react in 1.0; path data preserved from
 // lucide 0.577 (ISC license) so they stay visually identical to the rest of
 // the icon set (same viewBox, stroke weight, and line caps).
 function BrandIcon({ children, ...props }: SVGProps<SVGSVGElement>) {

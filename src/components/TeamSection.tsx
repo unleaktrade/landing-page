@@ -60,7 +60,7 @@ export function TeamSection() {
           <p className="text-white/40 mb-4">The people behind UnleakTrade</p>
           <h2 className="text-white mb-6">Protocol architecture meets growth execution.</h2>
           <p className="text-white/60 max-w-2xl mx-auto">
-            A lean, technical team building institutional-grade privacy infrastructure from first principles — deep protocol design paired with signal-led community growth.
+            A lean, technical team building institutional-grade privacy infrastructure from first principles: deep protocol design paired with signal-led community growth.
           </p>
         </motion.div>
 
