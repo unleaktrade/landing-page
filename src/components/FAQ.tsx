@@ -229,7 +229,9 @@ const faqData: FAQItem[] = [
     id: "bonds",
     question: 'What are "bonds" and why do they exist?',
     answer:
-      "A bond is a USDC amount posted by *each participant* to make griefing expensive and force timely completion. Bonds are held in an RFQ-owned USDC token account (an **ATA = Associated Token Account**) and are returned on successful settlement. If someone fails to do their required step in time, their bond can be slashed (routed entirely to the protocol treasury, never to the counterparty). Counterparties **have skin-in-the-game**.\n\nIn the devnet beta, the bond is denominated in **Unleak USDC (uUSDC)**, the same devnet-only test mint you receive from the waitlist airdrop, which is not real USDC and has no real-world value.",
+      "A bond is a USDC amount posted by *each participant* to make griefing expensive and force timely completion. Bonds are held in an RFQ-owned USDC token account (an **ATA = Associated Token Account**) and are returned on successful settlement. If someone fails to do their required step in time, their bond can be slashed (routed entirely to the protocol treasury, never to the counterparty). Counterparties **have skin-in-the-game**.\n\n" +
+      "The amount is **set per-RFQ by the maker**, not by the protocol. Each RFQ carries a single `bond_amount`: the maker picks it when creating the RFQ, can still change it while the RFQ is a `Draft`, and it is locked when the RFQ is opened. The same value applies to both sides, so whatever the maker posts is what every committing taker must post too. There is **no protocol schedule indexed on trade size and no protocol floor**, which is also why the figures you see quoted are illustrations rather than a tariff. See **What's the minimum trade size?**\n\n" +
+      "In the devnet beta, the bond is denominated in **Unleak USDC (uUSDC)**, the same devnet-only test mint you receive from the waitlist airdrop, which is not real USDC and has no real-world value.",
   },
   {
     category: "Economics & Incentives",
