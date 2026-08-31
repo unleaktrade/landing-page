@@ -42,10 +42,10 @@ export function Economics() {
                 <div className="w-10 h-10 rounded-lg bg-purple-500/10 flex items-center justify-center mb-4">
                   <DollarSign className="w-5 h-5 text-purple-400" />
                 </div>
-                <h3 className="text-white mb-2">Minimum trade size</h3>
-                <div className="text-white/90 mb-1">≥ $10,000 notional</div>
+                <h3 className="text-white mb-2">Trade size guidance</h3>
+                <div className="text-white/90 mb-1">~$10,000 notional</div>
                 <p className="text-white/40 text-sm">
-                  Accessible to serious crypto traders with meaningful volume
+                  Guidance, not a gate: there is no protocol-enforced minimum. It is where an OTC auction typically starts to beat an AMM.
                 </p>
               </div>
             </div>
@@ -95,12 +95,13 @@ export function Economics() {
                 </div>
                 <h3 className="text-white mb-2">Bonds (both sides)</h3>
                 <div className="space-y-1 text-sm mb-2">
-                  <div className="text-white/60">$10k to &lt;$500k → 100 bps</div>
-                  <div className="text-white/60">$500k to &lt;$5M → 50 bps</div>
-                  <div className="text-white/60">$5M+ → 25 bps</div>
+                  <div className="text-white/90">Set per RFQ by the maker</div>
+                  <div className="text-white/60">
+                    One <code className="px-1.5 py-0.5 bg-white/5 text-purple-300 rounded text-sm font-mono">bond_amount</code>, posted by the maker and by every committing taker
+                  </div>
                 </div>
                 <p className="text-white/40 text-sm">
-                  Deposited in USDC. Returned after successful settlement or if a valid Quote is not selected.
+                  Deposited in USDC. Returned after successful settlement or if a valid Quote is not selected. There is no protocol schedule: makers commonly size it around 100 bps of notional on small tickets, down to around 25 bps on large ones.
                 </p>
               </div>
             </div>
@@ -149,12 +150,12 @@ export function Economics() {
             <div className="space-y-4">
               <div>
                 <h4 className="text-white mb-1">Example: $20k auction-based trade</h4>
-                <p className="text-white/40 text-sm">1 maker + 2 takers competing</p>
+                <p className="text-white/40 text-sm">1 maker + 2 takers competing, maker sets the bond at $200</p>
               </div>
               <div className="space-y-3 text-sm">
                 <div>
                   <span className="text-white/40">Bond per participant:</span>
-                  <div className="text-white/90 mt-1">$200 (100 bps)</div>
+                  <div className="text-white/90 mt-1">$200 (100 bps of notional here)</div>
                   <div className="text-white/50 text-xs mt-0.5">Total: $600 locked (1 maker + 2 takers)</div>
                 </div>
                 <div>
@@ -194,12 +195,12 @@ export function Economics() {
             <div className="space-y-4">
               <div>
                 <h4 className="text-white mb-1">Example: $5M auction-based trade</h4>
-                <p className="text-white/40 text-sm">1 maker + 10 takers competing</p>
+                <p className="text-white/40 text-sm">1 maker + 10 takers competing, maker sets the bond at $12,500</p>
               </div>
               <div className="space-y-3 text-sm">
                 <div>
                   <span className="text-white/40">Bond per participant:</span>
-                  <div className="text-white/90 mt-1">$12,500 (25 bps)</div>
+                  <div className="text-white/90 mt-1">$12,500 (25 bps of notional here)</div>
                   <div className="text-white/50 text-xs mt-0.5">Total: $137,500 locked (1 maker + 10 takers)</div>
                 </div>
                 <div>
