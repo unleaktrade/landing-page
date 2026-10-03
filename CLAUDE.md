@@ -105,16 +105,14 @@ Things that will bite you:
 ## YouTube Shorts section
 
 `src/components/Shorts.tsx` renders the "Learn UnleakTrade in 60 seconds" carousel on the
-home page. The video list is **not** hand-maintained: `scripts/fetch-shorts.mjs` reads the
-channel's public Atom feed, keeps only Shorts, and writes `src/data/shorts.json`. It runs as
-`prebuild` (so every CI, Pages and Vercel build refreshes it) and the Pages deploy also runs
-on a daily cron. Refresh locally with `npm run shorts:sync` and commit the JSON.
+home page. The list is static, deliberately: it is the `shortsData` array in
+`src/components/utils/shorts.ts`. To add a Short, append `{ id, title, published }` with the
+id from `youtube.com/shorts/<id>`; the poster image is fetched from YouTube by id.
 
-- The intro Short is pinned first via `PINNED_SHORT_ID` in `src/components/utils/shorts.ts`;
-  the other three slots are the most recent uploads.
-- The sync script never fails a build: on any error it keeps the committed JSON and warns.
-- Titles are copied from YouTube, with U+2012 to U+2015 flattened to `-` so the dash check
-  above stays green. Do not hand-edit `shorts.json`; fix the title on YouTube and re-sync.
+- The intro Short is pinned first via `PINNED_SHORT_ID`; the other three slots are the most
+  recent entries by `published`, whatever their order in the array.
+- A ` | ` in a title splits it into a headline and a series badge (`VS The Market #3`).
+- Phones play inline in the card; from the `lg` breakpoint the card opens a lightbox.
 
 ## Git
 

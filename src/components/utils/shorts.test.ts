@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import {
   PINNED_SHORT_ID,
+  shortsData,
   selectShorts,
   splitTitle,
   shortThumbnailUrl,
@@ -87,5 +88,28 @@ describe('url helpers', () => {
 
   it('builds the public watch url', () => {
     expect(shortWatchUrl('abc')).toBe('https://www.youtube.com/shorts/abc');
+  });
+});
+
+describe('shortsData', () => {
+  it('lists the five published Shorts with unique ids', () => {
+    const ids = shortsData.map((s) => s.id);
+    expect(ids).toEqual(['sCgjBjxvgQA', 'o9ikIrMt0Hw', 'dP0y_nO0bl8', 'q98il8RsMkI', PINNED_SHORT_ID]);
+    expect(new Set(ids).size).toBe(ids.length);
+  });
+
+  it('has a parseable publish date on every entry', () => {
+    for (const short of shortsData) {
+      expect(Number.isNaN(Date.parse(short.published))).toBe(false);
+    }
+  });
+
+  it('shows the intro, then episodes 3, 2 and 1', () => {
+    expect(selectShorts(shortsData).map((s) => s.id)).toEqual([
+      PINNED_SHORT_ID,
+      'sCgjBjxvgQA',
+      'o9ikIrMt0Hw',
+      'dP0y_nO0bl8',
+    ]);
   });
 });

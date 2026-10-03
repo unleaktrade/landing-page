@@ -19,12 +19,12 @@ import {
   shortFallbackThumbnailUrl,
   shortThumbnailUrl,
   shortWatchUrl,
+  shortsData,
   type ShortItem,
 } from "./utils/shorts";
-import shortsFeed from "../data/shorts.json";
 
 type ShortsProps = {
-  /** Feed items; defaults to the JSON synced at build time by scripts/fetch-shorts.mjs. */
+  /** Shorts to choose from; defaults to the static list in utils/shorts.ts. */
   items?: ShortItem[];
 };
 
@@ -45,7 +45,7 @@ function useIsWide() {
   return isWide;
 }
 
-export function Shorts({ items = shortsFeed.items }: ShortsProps) {
+export function Shorts({ items = shortsData }: ShortsProps) {
   const [activeId, setActiveId] = useState<string | null>(null);
   const isWide = useIsWide();
   const shorts = selectShorts(items);
