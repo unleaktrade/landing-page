@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import { render, screen, fireEvent, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router';
 import { Shorts } from '../components/Shorts';
@@ -18,7 +18,7 @@ const items: ShortItem[] = [
 const playButtons = () => screen.getAllByRole('button', { name: /^play:/i });
 const iframes = () => document.querySelectorAll('iframe');
 
-describe('Shorts section', () => {
+describe('Shorts section on phones (inline playback)', () => {
   it('renders the section heading and the channel link', () => {
     render(<Shorts items={items} />);
     expect(
@@ -100,6 +100,86 @@ describe('Shorts section', () => {
     render(<Shorts />);
     expect(playButtons().length).toBeGreaterThan(0);
     expect(document.querySelector(`img[src*="/vi/${PINNED_SHORT_ID}/"]`)).not.toBeNull();
+  });
+});
+
+function mockViewport(wide: boolean) {
+  window.matchMedia = vi.fn().mockImplementation((query: string) => ({
+    matches: wide && query.includes('min-width: 64rem'),
+    media: query,
+    onchange: null,
+    addListener: vi.fn(),
+    removeListener: vi.fn(),
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+    dispatchEvent: vi.fn(),
+  })) as unknown as typeof window.matchMedia;
+}
+
+describe('Shorts section on laptops (lightbox playback)', () => {
+  const original = window.matchMedia;
+  beforeEach(() => mockViewport(true));
+  afterEach(() => {
+    window.matchMedia = original;
+  });
+
+  it('opens the clicked Short in a large dialog instead of inside the card', async () => {
+    render(<Shorts items={items} />);
+    const user = userEvent.setup();
+    await user.click(playButtons()[1]);
+
+    const dialog = await screen.findByRole('dialog');
+    const frame = dialog.querySelector('iframe');
+    expect(frame?.getAttribute('src')).toMatch(/^https:\/\/www\.youtube-nocookie\.com\/embed\/ep2\?/);
+    expect(within(dialog).getByRole('heading', { name: 'Free quotes mean nothing | VS The Market #2' })).toBeInTheDocument();
+    // The card itself keeps its poster: no player in the carousel. The modal
+    // hides the page from assistive tech, hence `hidden: true`.
+    expect(screen.getAllByRole('button', { name: /^play:/i, hidden: true })).toHaveLength(4);
+    expect(iframes()).toHaveLength(1);
+  });
+
+  it('links to the Short on YouTube from the dialog', async () => {
+    render(<Shorts items={items} />);
+    const user = userEvent.setup();
+    await user.click(playButtons()[1]);
+    const link = within(await screen.findByRole('dialog')).getByRole('link', { name: /watch on youtube/i });
+    expect(link).toHaveAttribute('href', 'https://www.youtube.com/shorts/ep2');
+    expect(link).toHaveAttribute('target', '_blank');
+  });
+
+  it('steps to the next and previous Short, wrapping around', async () => {
+    render(<Shorts items={items} />);
+    const user = userEvent.setup();
+    await user.click(playButtons()[3]); // last card: bonds
+    const dialog = await screen.findByRole('dialog');
+    const src = () => dialog.querySelector('iframe')?.getAttribute('src') ?? '';
+
+    await user.click(within(dialog).getByRole('button', { name: /next short/i }));
+    expect(src()).toContain(`/embed/${PINNED_SHORT_ID}?`);
+
+    await user.click(within(dialog).getByRole('button', { name: /previous short/i }));
+    expect(src()).toContain('/embed/bonds?');
+  });
+
+  it('steps with the arrow keys', async () => {
+    render(<Shorts items={items} />);
+    const user = userEvent.setup();
+    await user.click(playButtons()[0]);
+    const dialog = await screen.findByRole('dialog');
+    await user.keyboard('{ArrowRight}');
+    expect(dialog.querySelector('iframe')?.getAttribute('src')).toContain('/embed/ep2?');
+    await user.keyboard('{ArrowLeft}');
+    expect(dialog.querySelector('iframe')?.getAttribute('src')).toContain(`/embed/${PINNED_SHORT_ID}?`);
+  });
+
+  it('closes with Escape and stops the player', async () => {
+    render(<Shorts items={items} />);
+    const user = userEvent.setup();
+    await user.click(playButtons()[0]);
+    await screen.findByRole('dialog');
+    await user.keyboard('{Escape}');
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    expect(iframes()).toHaveLength(0);
   });
 });
 

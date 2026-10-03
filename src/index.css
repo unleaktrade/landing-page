@@ -4075,3 +4075,67 @@ html {
     transform: none;
   }
 }
+
+/* Laptops and desktops: the Shorts are made for phones, so full-width 9:16
+   cards look oversized. Keep them as compact thumbnails, centred, and play
+   the clicked one in a large vertical lightbox (.shorts-lightbox). */
+@media (width >= 64rem) {
+  .shorts-track {
+    justify-content: center;
+  }
+
+  .shorts-slide {
+    flex-basis: 12.5rem;
+  }
+
+  .shorts-slide .shorts-headline {
+    font-size: 0.875rem;
+  }
+}
+
+/* Unlayered, so these win over the dialog's precompiled utility classes. */
+.shorts-lightbox {
+  width: auto;
+  max-width: calc(100vw - 2rem);
+  padding: 0;
+  gap: 1rem;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+
+.shorts-lightbox > button[data-slot="dialog-close"],
+.shorts-lightbox > button:last-child {
+  top: -2.25rem;
+  right: 3.5rem;
+  color: white;
+  opacity: 0.8;
+}
+
+.shorts-stage {
+  height: min(85vh, 780px);
+  aspect-ratio: 9 / 16;
+  background: black;
+}
+
+.shorts-step {
+  width: 2.5rem;
+  height: 2.5rem;
+  flex: none;
+}
+
+.shorts-step:focus-visible {
+  outline: 2px solid #c084fc;
+  outline-offset: 2px;
+}
+
+.shorts-lightbox-title {
+  line-height: 1.375;
+  font-weight: 400;
+  text-shadow: 0 1px 2px rgb(0 0 0 / 0.9);
+}
+
+[data-slot="dialog-overlay"]:has(+ .shorts-lightbox) {
+  background: rgb(0 0 0 / 0.85);
+  backdrop-filter: blur(4px);
+}

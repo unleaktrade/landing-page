@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "motion/react";
-import { Play } from "lucide-react";
+import { ChevronLeft, ChevronRight, ExternalLink, Play } from "lucide-react";
 import {
   Carousel,
   CarouselContent,
@@ -8,6 +8,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "./ui/carousel";
+import { Dialog, DialogContent, DialogTitle } from "./ui/dialog";
 import { Youtube } from "./BrandIcons";
 import { YOUTUBE_URL } from "./utils/links";
 import {
@@ -17,6 +18,7 @@ import {
   shortEmbedUrl,
   shortFallbackThumbnailUrl,
   shortThumbnailUrl,
+  shortWatchUrl,
   type ShortItem,
 } from "./utils/shorts";
 import shortsFeed from "../data/shorts.json";
@@ -26,11 +28,34 @@ type ShortsProps = {
   items?: ShortItem[];
 };
 
+// Matches the lg breakpoint in index.css, where all four cards fit in a row.
+const WIDE_QUERY = "(min-width: 64rem)";
+
+/** True on laptop and desktop widths, where Shorts open in a lightbox. */
+function useIsWide() {
+  const [isWide, setIsWide] = useState(() => window.matchMedia(WIDE_QUERY).matches);
+
+  useEffect(() => {
+    const mql = window.matchMedia(WIDE_QUERY);
+    const onChange = () => setIsWide(mql.matches);
+    mql.addEventListener("change", onChange);
+    return () => mql.removeEventListener("change", onChange);
+  }, []);
+
+  return isWide;
+}
+
 export function Shorts({ items = shortsFeed.items }: ShortsProps) {
   const [activeId, setActiveId] = useState<string | null>(null);
+  const isWide = useIsWide();
   const shorts = selectShorts(items);
 
   if (shorts.length === 0) return null;
+
+  // Phones play inside the card (the videos are made for that screen).
+  // Wider screens keep small cards and open a large vertical player.
+  const inlineId = isWide ? null : activeId;
+  const lightboxIndex = isWide ? shorts.findIndex((s) => s.id === activeId) : -1;
 
   return (
     <section className="py-20 lg:py-32 px-6 lg:px-8">
@@ -58,7 +83,7 @@ export function Shorts({ items = shortsFeed.items }: ShortsProps) {
                   short={short}
                   index={index}
                   pinned={short.id === PINNED_SHORT_ID}
-                  playing={activeId === short.id}
+                  playing={inlineId === short.id}
                   onPlay={() => setActiveId(short.id)}
                 />
               </CarouselItem>
@@ -82,7 +107,89 @@ export function Shorts({ items = shortsFeed.items }: ShortsProps) {
           </div>
         </Carousel>
       </div>
+
+      <ShortLightbox
+        shorts={shorts}
+        index={lightboxIndex}
+        onSelect={(index) => setActiveId(shorts[index].id)}
+        onClose={() => setActiveId(null)}
+      />
     </section>
+  );
+}
+
+type ShortLightboxProps = {
+  shorts: ShortItem[];
+  /** Index of the Short being played, or -1 when closed. */
+  index: number;
+  onSelect: (index: number) => void;
+  onClose: () => void;
+};
+
+function ShortLightbox({ shorts, index, onSelect, onClose }: ShortLightboxProps) {
+  const short = index >= 0 ? shorts[index] : undefined;
+  const step = (delta: number) => onSelect((index + delta + shorts.length) % shorts.length);
+
+  return (
+    <Dialog open={short !== undefined} onOpenChange={(open) => !open && onClose()}>
+      {short && (
+        <DialogContent
+          className="shorts-lightbox"
+          aria-describedby={undefined}
+          onKeyDown={(event) => {
+            if (event.key === "ArrowRight") step(1);
+            if (event.key === "ArrowLeft") step(-1);
+          }}
+        >
+          <div className="flex items-center gap-4">
+            <button
+              type="button"
+              onClick={() => step(-1)}
+              aria-label="Previous Short"
+              className="shorts-step flex items-center justify-center rounded-full border border-white/10 bg-black/50 text-white hover:border-white/20 transition-colors"
+            >
+              <ChevronLeft className="w-5 h-5" aria-hidden="true" />
+            </button>
+
+            <div className="shorts-stage rounded-2xl border border-white/10 overflow-hidden">
+              <iframe
+                key={short.id}
+                src={shortEmbedUrl(short.id)}
+                title={short.title}
+                allow="autoplay; encrypted-media; picture-in-picture"
+                allowFullScreen
+                referrerPolicy="strict-origin-when-cross-origin"
+                className="w-full h-full border-0"
+              />
+            </div>
+
+            <button
+              type="button"
+              onClick={() => step(1)}
+              aria-label="Next Short"
+              className="shorts-step flex items-center justify-center rounded-full border border-white/10 bg-black/50 text-white hover:border-white/20 transition-colors"
+            >
+              <ChevronRight className="w-5 h-5" aria-hidden="true" />
+            </button>
+          </div>
+
+          <div className="flex items-center justify-between gap-4 px-14">
+            <DialogTitle className="shorts-lightbox-title text-base text-white">
+              {short.title}
+            </DialogTitle>
+            <a
+              href={shortWatchUrl(short.id)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="shorts-link inline-flex items-center gap-2 text-sm text-purple-300 hover:text-purple-300 shrink-0"
+            >
+              Watch on YouTube
+              <ExternalLink className="w-4 h-4" aria-hidden="true" />
+            </a>
+          </div>
+        </DialogContent>
+      )}
+    </Dialog>
   );
 }
 
