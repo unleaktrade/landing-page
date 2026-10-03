@@ -17,6 +17,15 @@ npm run build      # what CI builds
 CI (`.github/workflows/ci.yml`) runs `npm run build` and `npm run coverage`. There is no
 ESLint or Prettier config, so nothing auto-formats. Match surrounding style by hand.
 
+**`src/index.css` is a precompiled Tailwind v4 build, not a build step.** Tailwind is not a
+dependency and nothing scans the JSX. A utility class only works if it is already in that
+file; anything else (arbitrary values like `aspect-[9/16]`, fractions like `basis-1/4`,
+most responsive variants) silently produces no CSS. Check with
+`grep -c '\.your-class' src/index.css` before using a class you have not seen elsewhere in
+the repo, and put genuinely new styles in a small scoped block at the end of `index.css`
+(see the `.shorts-*` rules). The shadcn `ui/carousel.tsx` layout classes are among the
+missing ones, so pass your own classes for slide sizing.
+
 ## Writing style
 
 **Never use em dashes (U+2014), en dashes (U+2013), horizontal bars (U+2015), or figure
@@ -92,6 +101,20 @@ Things that will bite you:
 - Categories are derived from the `category` strings via `new Set(...)`. A typo silently
   creates a new filter pill. Reuse an existing string verbatim.
 - Entries render in array order. There is no sort and no grouping by category.
+
+## YouTube Shorts section
+
+`src/components/Shorts.tsx` renders the "Learn UnleakTrade in 60 seconds" carousel on the
+home page. The video list is **not** hand-maintained: `scripts/fetch-shorts.mjs` reads the
+channel's public Atom feed, keeps only Shorts, and writes `src/data/shorts.json`. It runs as
+`prebuild` (so every CI, Pages and Vercel build refreshes it) and the Pages deploy also runs
+on a daily cron. Refresh locally with `npm run shorts:sync` and commit the JSON.
+
+- The intro Short is pinned first via `PINNED_SHORT_ID` in `src/components/utils/shorts.ts`;
+  the other three slots are the most recent uploads.
+- The sync script never fails a build: on any error it keeps the committed JSON and warns.
+- Titles are copied from YouTube, with U+2012 to U+2015 flattened to `-` so the dash check
+  above stays green. Do not hand-edit `shorts.json`; fix the title on YouTube and re-sync.
 
 ## Git
 
