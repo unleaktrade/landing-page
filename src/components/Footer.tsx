@@ -1,6 +1,6 @@
 import logoImage from "../assets/fdbafc2f1e7edb4d213deafbca8c80c666dccbae.png";
 import { Link } from "react-router";
-import { TELEGRAM_URL } from "./utils/links";
+import { TELEGRAM_URL, YOUTUBE_URL } from "./utils/links";
 
 export function Footer() {
   return (
@@ -35,6 +35,9 @@ export function Footer() {
             </a>
             <a href={TELEGRAM_URL} target="_blank" rel="noopener noreferrer" className="text-sm text-white/40 hover:text-white/60 transition-colors">
               Telegram
+            </a>
+            <a href={YOUTUBE_URL} target="_blank" rel="noopener noreferrer" className="text-sm text-white/40 hover:text-white/60 transition-colors">
+              YouTube
             </a>
           </div>
         </div>

@@ -20,6 +20,9 @@ describe('App routing', () => {
     renderAt('/');
     expect(screen.getAllByRole('button', { name: /request access/i }).length).toBeGreaterThan(0);
     expect(screen.getByText(/live in beta on solana devnet/i)).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: /learn unleaktrade in 60 seconds/i })
+    ).toBeInTheDocument();
   });
 
   it('renders the roadmap page', () => {

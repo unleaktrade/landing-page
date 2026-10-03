@@ -5,6 +5,7 @@ import { WarpField } from "./components/WarpField";
 import { Hero } from "./components/Hero";
 import { ValueProps } from "./components/ValueProps";
 import { HowItWorks } from "./components/HowItWorks";
+import { Shorts } from "./components/Shorts";
 import { SettlementProcess } from "./components/SettlementProcess";
 import { Economics } from "./components/Economics";
 import { TeamSection } from "./components/TeamSection";
@@ -47,6 +48,7 @@ function HomePage({ onOpenWaitlist }: { onOpenWaitlist: () => void }) {
       <Hero onOpenWaitlist={onOpenWaitlist} />
       <ValueProps />
       <HowItWorks />
+      <Shorts />
       <SettlementProcess />
       <Economics />
       {/* <TeamSection /> */}
