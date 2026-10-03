@@ -40,12 +40,12 @@ export function Shorts({ items = shortsFeed.items }: ShortsProps) {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center space-y-4 mb-12"
+          className="shorts-scrim text-center space-y-4 mb-12"
         >
-          <h2 className="text-3xl lg:text-4xl tracking-tight">
+          <h2 className="shorts-legible text-3xl lg:text-4xl tracking-tight">
             Learn UnleakTrade in 60 seconds
           </h2>
-          <p className="text-white/40 max-w-2xl mx-auto">
+          <p className="shorts-legible text-white/80 text-lg leading-relaxed max-w-2xl mx-auto">
             Short videos on what the protocol does and how the app works. Start with the intro, then catch up on the latest episodes.
           </p>
         </motion.div>
@@ -74,7 +74,7 @@ export function Shorts({ items = shortsFeed.items }: ShortsProps) {
               href={YOUTUBE_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 text-purple-400 hover:text-purple-300 transition-colors"
+              className="shorts-link inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/10 bg-black/50 backdrop-blur-sm text-purple-300 hover:border-white/20 transition-colors"
             >
               <Youtube className="w-5 h-5" />
               More on YouTube
@@ -137,13 +137,13 @@ function ShortCard({ short, index, pinned, playing, onPlay }: ShortCardProps) {
 
           <div className="absolute inset-0 flex items-center justify-center">
             <span className="shorts-play flex items-center justify-center rounded-full border border-white/20 backdrop-blur-sm">
-              <Play className="w-6 h-6" fill="currentColor" />
+              <Play className="w-6 h-6" fill="currentColor" aria-hidden="true" />
             </span>
           </div>
 
-          <div className="absolute inset-x-0 bottom-0 p-5 space-y-2">
+          <div className="shorts-legible absolute inset-x-0 bottom-0 p-5 space-y-2">
             {badge && (
-              <div className="text-xs uppercase tracking-wide text-purple-400">{badge}</div>
+              <div className="text-xs uppercase tracking-wide text-purple-300">{badge}</div>
             )}
             <div className="shorts-headline text-base tracking-tight">{headline}</div>
           </div>

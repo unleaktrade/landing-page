@@ -4030,3 +4030,48 @@ html {
   height: 2rem;
   translate: none;
 }
+
+/* Legibility over the animated WarpField background. Faint text alone
+   (text-white/40) fails contrast against the bright lines, so text in this
+   section sits on a soft dark scrim and carries a shadow. */
+.shorts-scrim {
+  position: relative;
+  isolation: isolate;
+}
+
+.shorts-scrim::before {
+  content: "";
+  position: absolute;
+  inset: -1.5rem -1rem;
+  z-index: -1;
+  border-radius: 2rem;
+  background: radial-gradient(ellipse at center, rgb(0 0 0 / 0.85) 0%, rgb(0 0 0 / 0.6) 55%, transparent 80%);
+  filter: blur(8px);
+}
+
+.shorts-legible {
+  text-shadow: 0 1px 2px rgb(0 0 0 / 0.9), 0 0 12px rgb(0 0 0 / 0.8);
+}
+
+/* Keyboard users need to see which card is focused. */
+.shorts-trigger:focus-visible {
+  outline: 2px solid #c084fc;
+  outline-offset: -4px;
+  border-radius: 1rem;
+}
+
+.shorts-link:focus-visible {
+  outline: 2px solid #c084fc;
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shorts-poster,
+  .shorts-play {
+    transition: none;
+  }
+
+  .shorts-trigger:hover .shorts-poster {
+    transform: none;
+  }
+}
