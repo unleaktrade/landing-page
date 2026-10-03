@@ -70,9 +70,7 @@
   },
   "scripts": {
     "dev": "vite",
-    "prebuild": "node scripts/fetch-shorts.mjs",
     "build": "vite build",
-    "shorts:sync": "node scripts/fetch-shorts.mjs",
     "test": "vitest run",
     "test:watch": "vitest",
     "coverage": "vitest run --coverage"

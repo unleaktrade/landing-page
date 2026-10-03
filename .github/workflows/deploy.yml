@@ -3,11 +3,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [ main ]
-  # Daily rebuild so the home page picks up new YouTube Shorts
-  # (src/data/shorts.json is refreshed by the prebuild script) without a commit.
-  schedule:
-    - cron: "0 6 * * *"
-  workflow_dispatch:
+  # workflow_dispatch:
 permissions:
   contents: read
   pages: write
