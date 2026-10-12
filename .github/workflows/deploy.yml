@@ -42,8 +42,11 @@ jobs:
       - name: Add CNAME
         run: echo "unleak.trade" > build/CNAME
 
-      - name: Add SPA fallback
-        run: cp build/index.html build/404.html
+      # No SPA fallback copy here: `npm run build` prerenders every public route
+      # to its own HTML file (served with a 200) and writes a noindex 404.html
+      # shell for dynamic routes. Copying index.html over it would break that.
+      - name: Check prerendered pages
+        run: test -f build/faq.html && test -f build/404.html && test -f build/sitemap.xml
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

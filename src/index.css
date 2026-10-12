@@ -4136,6 +4136,73 @@ html {
 }
 
 [data-slot="dialog-overlay"]:has(+ .shorts-lightbox) {
-  background: rgb(0 0 0 / 0.85);
-  backdrop-filter: blur(4px);
+  background: rgb(0 0 0 / 0.88);
+}
+
+/*
+ * Glass surfaces over the animated WarpField canvas.
+ *
+ * These used to be `bg-white/[0.03] backdrop-blur-sm`. A backdrop blur over a
+ * canvas that repaints ~30 times a second forces every visible panel to re-blur
+ * on every frame and during scroll, which was the main source of background lag.
+ * A near-opaque dark fill (plus the original 3% white tint) reads the same as
+ * the frosted panels did, because the blur only ever left a faint smudge of the
+ * mesh, at zero per-frame cost.
+ */
+@layer utilities {
+  .glass-card {
+    background-color: rgb(9 9 13 / 0.86);
+    background-image: linear-gradient(rgb(255 255 255 / 0.03), rgb(255 255 255 / 0.03));
+  }
+
+  .nav-bar {
+    background-color: rgb(0 0 0 / 0.88);
+  }
+}
+
+/*
+ * Above-the-fold entrances (hero, page headings). These are CSS rather than
+ * motion/react so they start with the first paint of the prerendered HTML:
+ * a JS-driven fade kept the headline (the LCP element) at opacity 0 until the
+ * bundle had downloaded and run. Same timings as the motion versions they
+ * replace (motion's default ease is ease-out-like).
+ */
+@keyframes enter-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes enter-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.enter-up {
+  animation: enter-up 0.6s cubic-bezier(0.25, 0.1, 0.25, 1) both;
+}
+
+.hero-enter {
+  animation: enter-up 0.8s cubic-bezier(0.25, 0.1, 0.25, 1) both;
+}
+
+.hero-enter-cta {
+  animation: enter-fade 0.8s cubic-bezier(0.25, 0.1, 0.25, 1) 0.3s both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .enter-up,
+  .hero-enter,
+  .hero-enter-cta {
+    animation: none;
+  }
 }

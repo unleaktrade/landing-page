@@ -17,6 +17,18 @@ npm run build      # what CI builds
 CI (`.github/workflows/ci.yml`) runs `npm run build` and `npm run coverage`. There is no
 ESLint or Prettier config, so nothing auto-formats. Match surrounding style by hand.
 
+**`npm run build` prerenders every public route** (client build, then an SSR build of
+`src/entry-server.tsx`, then `scripts/prerender.mjs` writes `build/<route>.html`, the
+sitemap and a `noindex` `404.html` shell). Consequences:
+
+- Per-route title / description / canonical / robots live in `src/seo/routes.ts`; a new
+  public page needs an entry there (and in `PRERENDERED_PAGES`) or it ships with no
+  metadata and keeps the old HTTP 404.
+- Nothing may touch `window`, `document` or `localStorage` during render (use effects or
+  `useSyncExternalStore` with a server snapshot, like `Shorts.tsx`). The prerender test
+  renders every page without a DOM and will fail.
+- Do not copy `index.html` to `404.html` in a workflow; the build writes that file.
+
 **`src/index.css` is a precompiled Tailwind v4 build, not a build step.** Tailwind is not a
 dependency and nothing scans the JSX. A utility class only works if it is already in that
 file; anything else (arbitrary values like `aspect-[9/16]`, fractions like `basis-1/4`,
@@ -73,6 +85,14 @@ Other copy conventions, observed across the site:
 - Do not make claims about third parties' product status, roadmaps, or benchmarks. That
   information goes stale on a static page and cannot be maintained.
 
+## Background performance
+
+`WarpField.tsx` is a fixed WebGL canvas that repaints about 30 times a second behind every
+page. Never put `backdrop-blur` / `backdrop-filter` on anything that sits over it (each
+such panel re-blurs on every frame and during scroll; that was the old background lag).
+Use the `glass-card` class for frosted panels and `nav-bar` for the navbar fill. Animate
+only `transform` and `opacity`.
+
 ## Positioning
 
 The Devnet beta at `app.unleak.trade` is **public**. Never describe it as gated behind
@@ -96,8 +116,11 @@ Things that will bite you:
   There is **no link support**. Single asterisks render as literal asterisks. Cross-
   reference other entries by naming them in bold, not by linking.
 - `\n\n` is a paragraph break, `\n` a line break, bullets are a literal `"• "` prefix.
-- `id` is the DOM id and the `/faq#<id>` deep-link anchor. Nothing validates ids, so a
-  duplicate or typo fails silently. Add a deep-link test for any new entry.
+- `id` is the DOM id and the `/faq#<id>` deep-link anchor (the answer panel is
+  `<id>-answer`). Nothing validates ids, so a duplicate or typo fails silently. Add a
+  deep-link test for any new entry.
+- Closed answers stay in the DOM with the `hidden` attribute so the prerendered page
+  carries every answer, and `faqData` also feeds the FAQPage JSON-LD. Keep both.
 - Categories are derived from the `category` strings via `new Set(...)`. A typo silently
   creates a new filter pill. Reuse an existing string verbatim.
 - Entries render in array order. There is no sort and no grouping by category.

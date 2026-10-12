@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion } from "motion/react";
-import solanaLogo from "../assets/af0a6579392a99988c0ab693570446ed86a64fec.png";
-import { WaitlistDialog } from "./WaitlistDialog";
+import solanaLogo from "../assets/solana-logo.webp";
+import { LazyWaitlistDialog } from "./LazyDialogs";
 import { Rocket, Send } from "lucide-react";
 import { TELEGRAM_URL } from "./utils/links";
 
@@ -17,7 +17,7 @@ export function CommunityCTA() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="relative p-12 lg:p-16 rounded-3xl border border-white/10 bg-white/[0.03] backdrop-blur-sm overflow-hidden"
+            className="relative p-12 lg:p-16 rounded-3xl border border-white/10 glass-card overflow-hidden"
           >
             {/* Background gradient effect */}
             <div className="absolute inset-0 bg-gradient-to-br from-purple-600/10 to-cyan-400/10 opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -85,6 +85,9 @@ export function CommunityCTA() {
                   <img 
                     src={solanaLogo} 
                     alt="Solana" 
+                    width={215}
+                    height={32}
+                    loading="lazy"
                     className="h-8 w-auto"
                   />
                 </a>
@@ -95,7 +98,7 @@ export function CommunityCTA() {
       </div>
       </section>
       
-      <WaitlistDialog open={isWaitlistOpen} onOpenChange={setIsWaitlistOpen} />
+      <LazyWaitlistDialog open={isWaitlistOpen} onOpenChange={setIsWaitlistOpen} />
     </>
   );
 }

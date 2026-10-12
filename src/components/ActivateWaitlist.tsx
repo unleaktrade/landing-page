@@ -13,7 +13,7 @@ import { Button } from "./ui/button";
 import { Progress } from "./ui/progress";
 import { toast } from "sonner";
 import { isValidSHA3Hash } from "./utils/validation";
-import { QRCodeDialog } from "./QRCodeDialog";
+import { LazyQRCodeDialog } from "./LazyDialogs";
 import { WAITLIST_INFO_URL, API_BASE_URL } from "./utils/links";
 import { BetaAccessCard } from "./BetaAccessCard";
 import {
@@ -271,7 +271,7 @@ export function ActivateWaitlist() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6 }}
-            className="relative p-8 rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-sm overflow-hidden"
+            className="relative p-8 rounded-2xl border border-white/10 glass-card overflow-hidden"
           >
             <div className="relative">
               <div className="flex items-center gap-3 mb-4">
@@ -307,7 +307,7 @@ export function ActivateWaitlist() {
           </motion.div>
           
           {/* QR Code Dialog */}
-          <QRCodeDialog open={isQROpen} onOpenChange={setIsQROpen} />
+          <LazyQRCodeDialog open={isQROpen} onOpenChange={setIsQROpen} />
         </motion.div>
       </div>
     );

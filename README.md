@@ -47,7 +47,7 @@ The dev server runs at [http://localhost:3000](http://localhost:3000).
 | Command             | Purpose                                                          |
 |---------------------|------------------------------------------------------------------|
 | `npm run dev`       | Vite dev server with HMR                                         |
-| `npm run build`     | Production build (output → `build/`)                             |
+| `npm run build`     | Production build + prerender of every public route (→ `build/`)  |
 | `npm test`          | Run the full test suite once                                     |
 | `npm run test:watch`| Watch mode for local TDD                                         |
 | `npm run coverage`  | Run tests with v8 coverage and enforce the 80% threshold         |
@@ -99,16 +99,28 @@ No manual deployment; merging to `main` is the release.
 
 ---
 
+## 🔎 SEO and prerendering
+
+`npm run build` runs three steps: the client build, an SSR build of `src/entry-server.tsx`, and `scripts/prerender.mjs`, which renders every public route to its own static file (`build/faq.html`, `build/roadmap.html`, ...). GitHub Pages serves `/faq` from `faq.html` with a 200, so crawlers get the real content, title and canonical for each page. The browser then hydrates that markup (`src/main.tsx`, `src/hydration.ts`).
+
+- **Per-page metadata** (title, description, canonical, robots, Open Graph / Twitter) lives in one table: `src/seo/routes.ts`. It drives the prerendered `<head>`, `build/sitemap.xml` and the client-side head updates on navigation (`src/seo/Seo.tsx`). Add a route there when you add a page.
+- **Structured data**: `src/seo/jsonld.ts` (Organization + WebSite on home, FAQPage on `/faq`, built from `faqData` in `FAQ.tsx`).
+- **Dynamic routes** (`/waitlist/<sponsor>`, `/team/<id>`, `/activate/<token>`) and unknown URLs fall back to `build/404.html`, a client-rendered `noindex` shell.
+- Code that runs during render must not touch `window` / `document` (do that in effects); `src/test/prerender.test.tsx` renders every page in a DOM-less Node environment to catch it.
+- Social share image: `public/og-image.png` (1200x630). Icons: `public/favicon.png`, `public/icon-192.png`, `public/apple-touch-icon.png`.
+
+---
+
 ## 🖼️ Branding
 
-The favicon and title are configured in `index.html`:
+The favicon is `public/favicon.png` (plus `icon-192.png` and `apple-touch-icon.png`), linked from `index.html`. Page titles and descriptions are per route in `src/seo/routes.ts`; the defaults inside the `seo:start` / `seo:end` block of `index.html` are only used by the dev server.
 
-```html
-<title>UnleakTrade | Confidential Solana OTC Trading & RFQs</title>
-<link rel="icon" type="image/png" href="/favicon.png" />
-```
+## ⚡ Background performance
 
-To change branding, replace `public/favicon.png` and update the `<title>` / meta tags in `index.html`.
+The animated mesh (`WarpField.tsx`) is a fixed WebGL canvas behind every page. Keep it cheap:
+
+- Never put `backdrop-blur` / `backdrop-filter` on elements that sit over it: a backdrop blur over a canvas that repaints ~30 times a second re-blurs every frame and during scroll. Use the `glass-card` class (near-opaque fill, defined at the end of `index.css`) for panels instead.
+- Animate only `transform` and `opacity`. Animating `background`, `filter` or layout properties repaints on the main thread.
 
 ---
 

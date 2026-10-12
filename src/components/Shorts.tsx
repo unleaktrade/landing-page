@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState, useSyncExternalStore } from "react";
 import { motion } from "motion/react";
 import { ChevronLeft, ChevronRight, ExternalLink, Play } from "lucide-react";
 import {
@@ -31,18 +31,19 @@ type ShortsProps = {
 // Matches the lg breakpoint in index.css, where all four cards fit in a row.
 const WIDE_QUERY = "(min-width: 64rem)";
 
+const subscribeWide = (onChange: () => void) => {
+  const mql = window.matchMedia(WIDE_QUERY);
+  mql.addEventListener("change", onChange);
+  return () => mql.removeEventListener("change", onChange);
+};
+const getWide = () => window.matchMedia(WIDE_QUERY).matches;
+// The prerendered HTML (and hydration) assume a phone; the real value is
+// applied right after hydration without a mismatch.
+const getWideOnServer = () => false;
+
 /** True on laptop and desktop widths, where Shorts open in a lightbox. */
 function useIsWide() {
-  const [isWide, setIsWide] = useState(() => window.matchMedia(WIDE_QUERY).matches);
-
-  useEffect(() => {
-    const mql = window.matchMedia(WIDE_QUERY);
-    const onChange = () => setIsWide(mql.matches);
-    mql.addEventListener("change", onChange);
-    return () => mql.removeEventListener("change", onChange);
-  }, []);
-
-  return isWide;
+  return useSyncExternalStore(subscribeWide, getWide, getWideOnServer);
 }
 
 export function Shorts({ items = shortsData }: ShortsProps) {
@@ -99,7 +100,7 @@ export function Shorts({ items = shortsData }: ShortsProps) {
               href={YOUTUBE_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="shorts-link inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/10 bg-black/50 backdrop-blur-sm text-purple-300 hover:border-white/20 transition-colors"
+              className="shorts-link inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/10 glass-card text-purple-300 hover:border-white/20 transition-colors"
             >
               <Youtube className="w-5 h-5" />
               More on YouTube

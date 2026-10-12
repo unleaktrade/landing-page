@@ -3,7 +3,7 @@ import { useParams } from "react-router";
 import { ArrowUpRight, Send } from "lucide-react";
 import { Linkedin, Twitter, Github } from "./BrandIcons";
 import { useEffect } from "react";
-import julienImage from "../assets/524423e86081819620c9996fd40046b079ec4ba8.png";
+import julienImage from "../assets/julien-sie.webp";
 import { TELEGRAM_URL } from "./utils/links";
 
 interface TeamMember {
@@ -74,17 +74,15 @@ export function TeamPage() {
         <div className="absolute inset-0 bg-gradient-to-b from-purple-500/[0.06] via-transparent to-transparent pointer-events-none" />
         
         <div className="relative max-w-4xl mx-auto text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
+          {/* CSS entrance, not motion: it plays from the prerendered HTML
+              without waiting for JS, so the heading is never invisible. */}
+          <div className="enter-up">
             <p className="text-white/40 mb-4">Meet the builder</p>
             <h1 className="text-white mb-6">Building institutional-grade privacy from first principles.</h1>
             <p className="text-white/60 max-w-2xl mx-auto">
               An independent project by Julien SIE, combining deep protocol design with strategic vision to redefine crypto OTC trading.
             </p>
-          </motion.div>
+          </div>
         </div>
       </section>
 
@@ -104,7 +102,7 @@ export function TeamPage() {
                 className="group scroll-mt-24"
               >
                 {/* Card */}
-                <div className="relative bg-white/[0.03] backdrop-blur-sm border border-white/10 rounded-3xl p-8 md:p-12 hover:border-white/20 transition-all duration-500">
+                <div className="relative glass-card border border-white/10 rounded-3xl p-8 md:p-12 hover:border-white/20 transition-all duration-500">
                   {/* Gradient glow on hover */}
                   <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-purple-500/5 via-cyan-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
                   
@@ -118,7 +116,7 @@ export function TeamPage() {
                           {/* Avatar */}
                           <div className="relative m-[3px] w-[calc(100%-6px)] h-[calc(100%-6px)] rounded-full bg-gradient-to-br from-purple-900/50 to-cyan-900/50 flex items-center justify-center overflow-hidden">
                             {member.image ? (
-                              <img src={member.image} alt={member.name} className="w-full h-full object-cover grayscale" />
+                              <img src={member.image} alt={member.name} width={122} height={122} loading="lazy" className="w-full h-full object-cover grayscale" />
                             ) : (
                               <span className="text-white/40 text-4xl">{member.name.split(' ').map(n => n[0]).join('')}</span>
                             )}
@@ -248,7 +246,7 @@ export function TeamPage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="relative bg-white/[0.03] backdrop-blur-sm border border-white/10 rounded-3xl p-12 text-center overflow-hidden"
+            className="relative glass-card border border-white/10 rounded-3xl p-12 text-center overflow-hidden"
           >
             <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 via-transparent to-cyan-500/10 pointer-events-none" />
             <div className="relative">

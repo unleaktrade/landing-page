@@ -1,4 +1,4 @@
-import logoImage from "../assets/fdbafc2f1e7edb4d213deafbca8c80c666dccbae.png";
+import logoImage from "../assets/logo-256.webp";
 import { Link } from "react-router";
 import { TELEGRAM_URL, YOUTUBE_URL } from "./utils/links";
 
@@ -10,7 +10,7 @@ export function Footer() {
           {/* Copyright - Better mobile layout */}
           <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-3 text-center sm:text-left">
             <div className="flex items-center gap-3">
-              <img src={logoImage} alt="UnleakTrade" className="h-6 w-6" />
+              <img src={logoImage} alt="UnleakTrade" width={24} height={24} loading="lazy" className="h-6 w-6" />
               <span className="text-sm text-white/60">© 2026 UnleakTrade</span>
             </div>
             <span className="hidden sm:inline text-white/60">·</span>

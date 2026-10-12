@@ -1,5 +1,5 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import App from '../App';
 
@@ -91,9 +91,13 @@ describe('App routing', () => {
     renderAt('/');
     const user = userEvent.setup();
     const buttons = screen.getAllByRole('button', { name: /request access/i });
+    const before = screen.getAllByText(/request access/i).length;
     await user.click(buttons[0]);
-    // Dialog title and submit add additional "Request Access" text
-    expect(screen.getAllByText(/request access/i).length).toBeGreaterThanOrEqual(3);
+    // The dialog is lazy-loaded on first open; its title and submit add more
+    // "Request Access" text inside a real dialog.
+    const dialog = await screen.findByRole('dialog');
+    expect(within(dialog).getAllByText(/request access/i).length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText(/request access/i).length).toBeGreaterThan(before);
   });
 
   it('opens the CommunityCTA-triggered waitlist dialog too', async () => {
@@ -102,7 +106,8 @@ describe('App routing', () => {
     const buttons = screen.getAllByRole('button', { name: /request access/i });
     // last one is CommunityCTA's
     await user.click(buttons[buttons.length - 1]);
-    expect(screen.getAllByText(/request access/i).length).toBeGreaterThanOrEqual(3);
+    const dialog = await screen.findByRole('dialog');
+    expect(within(dialog).getAllByText(/request access/i).length).toBeGreaterThanOrEqual(1);
   });
 
   it('calls window.scrollTo on route change via ScrollToTop', async () => {

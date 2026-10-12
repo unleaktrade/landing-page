@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router";
+import { MotionConfig } from "motion/react";
 import { Navigation } from "./components/Navigation";
 import { WarpField } from "./components/WarpField";
 import { Hero } from "./components/Hero";
@@ -16,10 +17,11 @@ import { FAQ } from "./components/FAQ";
 import { CommunityCTA } from "./components/CommunityCTA";
 import { Footer } from "./components/Footer";
 import { WorkInProgress } from "./components/WorkInProgress";
-import { WaitlistDialog } from "./components/WaitlistDialog";
 import { WaitlistPage } from "./components/WaitlistPage";
 import { ActivateWaitlist } from "./components/ActivateWaitlist";
+import { LazyWaitlistDialog } from "./components/LazyDialogs";
 import { Toaster } from "sonner";
+import { Seo } from "./seo/Seo";
 
 // Component to scroll to top on route change
 function ScrollToTop() {
@@ -45,14 +47,16 @@ function HomePage({ onOpenWaitlist }: { onOpenWaitlist: () => void }) {
   return (
     <div className="min-h-screen text-white">
       <Navigation />
-      <Hero onOpenWaitlist={onOpenWaitlist} />
-      <ValueProps />
-      <HowItWorks />
-      <Shorts />
-      <SettlementProcess />
-      <Economics />
-      {/* <TeamSection /> */}
-      <CommunityCTA />
+      <main>
+        <Hero onOpenWaitlist={onOpenWaitlist} />
+        <ValueProps />
+        <HowItWorks />
+        <Shorts />
+        <SettlementProcess />
+        <Economics />
+        {/* <TeamSection /> */}
+        <CommunityCTA />
+      </main>
       <Footer />
     </div>
   );
@@ -62,7 +66,9 @@ function RoadmapPage() {
   return (
     <div className="min-h-screen text-white">
       <Navigation />
-      <Roadmap />
+      <main>
+        <Roadmap />
+      </main>
       <Footer />
     </div>
   );
@@ -72,7 +78,9 @@ function TeamPageWrapper() {
   return (
     <div className="min-h-screen text-white">
       <Navigation />
-      <TeamPage />
+      <main>
+        <TeamPage />
+      </main>
       <Footer />
     </div>
   );
@@ -89,9 +97,9 @@ function WorkInProgressPage() {
 
 function ActivateWaitlistPage() {
   return (
-    <div className="min-h-screen text-white">
+    <main className="min-h-screen text-white">
       <ActivateWaitlist />
-    </div>
+    </main>
   );
 }
 
@@ -99,7 +107,9 @@ function FAQPage() {
   return (
     <div className="min-h-screen text-white">
       <Navigation />
-      <FAQ />
+      <main>
+        <FAQ />
+      </main>
       <Footer />
     </div>
   );
@@ -109,34 +119,59 @@ function BuilderPageWrapper() {
   return (
     <div className="min-h-screen text-white">
       <Navigation />
-      <BuilderPage />
+      <main>
+        <BuilderPage />
+      </main>
       <Footer />
     </div>
   );
 }
 
-export default function App() {
+function WaitlistRoutePage() {
+  return (
+    <main>
+      <WaitlistPage />
+    </main>
+  );
+}
+
+/**
+ * Everything below the router. The browser mounts it in a BrowserRouter
+ * (App, below); the build-time prerender mounts it in a StaticRouter
+ * (entry-server.tsx).
+ */
+export function AppRoutes() {
   const [isWaitlistOpen, setIsWaitlistOpen] = useState(false);
 
   return (
-    <BrowserRouter>
+    // Every motion/react animation honours prefers-reduced-motion.
+    <MotionConfig reducedMotion="user">
       <WarpField />
       <ScrollToTop />
+      <Seo />
       <Routes>
         <Route path="/" element={<HomePage onOpenWaitlist={() => setIsWaitlistOpen(true)} />} />
         <Route path="/roadmap" element={<RoadmapPage />} />
         <Route path="/team" element={<TeamPageWrapper />} />
         <Route path="/team/:memberId" element={<TeamPageWrapper />} />
-        <Route path="/waitlist" element={<WaitlistPage />} />
-        <Route path="/waitlist/:sponsor" element={<WaitlistPage />} />
+        <Route path="/waitlist" element={<WaitlistRoutePage />} />
+        <Route path="/waitlist/:sponsor" element={<WaitlistRoutePage />} />
         <Route path="/activate/:token" element={<ActivateWaitlistPage />} />
         <Route path="/faq" element={<FAQPage />} />
-        <Route path="/app" element={<WaitlistPage />}  />
-        <Route path="/builder" element={<BuilderPageWrapper />}  />
+        <Route path="/app" element={<WaitlistRoutePage />} />
+        <Route path="/builder" element={<BuilderPageWrapper />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
-      <WaitlistDialog open={isWaitlistOpen} onOpenChange={setIsWaitlistOpen} />
+      <LazyWaitlistDialog open={isWaitlistOpen} onOpenChange={setIsWaitlistOpen} />
       <Toaster theme="dark" />
+    </MotionConfig>
+  );
+}
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <AppRoutes />
     </BrowserRouter>
   );
 }
