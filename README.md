@@ -60,7 +60,7 @@ Vitest runs in a jsdom environment with Testing Library and a shared setup file 
 
 Coverage thresholds are enforced at **80%** (lines / branches / functions / statements). The following paths are excluded as vendored or non-business code:
 
-- `src/components/ui/**`: shadcn/ui primitives
+- `src/components/ui/**`: shadcn/ui primitives (only the ones the site imports; add a single file and its package when you need one, never the whole catalog)
 - `src/assets/**`, `src/styles/**`, `src/guidelines/**`
 - `src/main.tsx`
 

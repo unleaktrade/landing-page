@@ -20,7 +20,11 @@ const outDir = path.join(root, "build");
 const ssrDir = path.join(root, "build-ssr");
 
 // The SSR bundle is never deployed; it only needs to exist while this runs.
-const ssrEntry = path.join(ssrDir, "entry-server.mjs");
+// Vite names it .js in an ESM package ("type": "module") and .mjs otherwise.
+const ssrEntry = ["entry-server.js", "entry-server.mjs"]
+  .map((f) => path.join(ssrDir, f))
+  .find((f) => fs.existsSync(f));
+if (!ssrEntry) throw new Error("prerender: build-ssr/entry-server.{js,mjs} not found; run the SSR build first");
 const { render, structuredData, headTags, outputFileFor, PRERENDERED_PAGES, sitemapXml } =
   await import(pathToFileURL(ssrEntry).href);
 
