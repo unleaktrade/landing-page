@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router";
 import { Menu, X, QrCode } from "lucide-react";
-import logoImage from "../assets/fdbafc2f1e7edb4d213deafbca8c80c666dccbae.png";
+import logoImage from "../assets/logo-256.webp";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
-import { QRCodeDialog } from "./QRCodeDialog";
+import { LazyQRCodeDialog } from "./LazyDialogs";
 
 function MovingSquares() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -65,22 +65,35 @@ function MovingSquares() {
       return { x: xStart ?? -size, y, size, color, speed, rot, rotSpeed };
     }
 
+    let lastW = -1;
+    let lastH = -1;
+
+    // Only rebuilds the squares when the WIDTH changes (orientation). A height
+    // change (mobile URL bar collapsing on scroll fires `resize`) just rescales
+    // the buffer and keeps every square where it is, so nothing flickers.
     function resize() {
-      const dpr = Math.max(1, window.devicePixelRatio || 1);
+      const dpr = Math.min(2, Math.max(1, window.devicePixelRatio || 1));
       const { clientWidth: w, clientHeight: h } = canvas;
+      if (w === lastW && h === lastH) return;
       canvas.width = Math.round(w * dpr);
       canvas.height = Math.round(h * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      
-      const count = Math.max(8, Math.floor(w * h * DENSITY));
-      squares = new Array(count).fill(0).map(() => spawn(-Math.random() * w));
+
+      if (w !== lastW) {
+        const count = Math.max(8, Math.floor(w * h * DENSITY));
+        squares = new Array(count).fill(0).map(() => spawn(-Math.random() * w));
+      }
+      lastW = w;
+      lastH = h;
     }
 
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     let prev = performance.now();
-    let animationId: number;
+    let animationId = 0;
 
     function tick(now: number) {
-      const dt = (now - prev) / 1000;
+      // clamp dt so a resumed tab does not teleport every square
+      const dt = Math.min(0.1, (now - prev) / 1000);
       prev = now;
       const w = canvas.clientWidth, h = canvas.clientHeight;
 
@@ -103,15 +116,25 @@ function MovingSquares() {
         ctx.restore();
       }
 
-      animationId = requestAnimationFrame(tick);
+      if (!reduceMotion && !document.hidden) animationId = requestAnimationFrame(tick);
+      else animationId = 0;
     }
+
+    const onVisibility = () => {
+      if (!document.hidden && !reduceMotion && !animationId) {
+        prev = performance.now();
+        animationId = requestAnimationFrame(tick);
+      }
+    };
 
     resize();
     window.addEventListener('resize', resize);
-    animationId = requestAnimationFrame(tick);
+    document.addEventListener('visibilitychange', onVisibility);
+    animationId = requestAnimationFrame(tick); // reduced motion: one static frame
 
     return () => {
       window.removeEventListener('resize', resize);
+      document.removeEventListener('visibilitychange', onVisibility);
       cancelAnimationFrame(animationId);
     };
   }, []);
@@ -122,6 +145,7 @@ function MovingSquares() {
 export function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
   const [isQROpen, setIsQROpen] = useState(false);
+
   const [hasWalletAddress, setHasWalletAddress] = useState(false);
 
   useEffect(() => {
@@ -133,12 +157,12 @@ export function Navigation() {
   const closeMenu = () => setIsOpen(false);
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-black/60 backdrop-blur-md border-b border-white/5">
+    <nav className="fixed top-0 left-0 right-0 z-50 nav-bar border-b border-white/5">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
-            <img src={logoImage} alt="UnleakTrade" className="h-8 w-8" />
+            <img src={logoImage} alt="UnleakTrade" width={32} height={32} className="h-8 w-8" />
             <span className="tracking-tight">
               <span className="text-white/60">Unleak</span>
               <span className="text-white">Trade</span>
@@ -194,7 +218,7 @@ export function Navigation() {
           {/* Mobile Menu Button */}
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger asChild className="md:hidden">
-              <button className="p-2 text-white/60 hover:text-white transition-colors">
+              <button className="p-2 text-white/60 hover:text-white transition-colors" aria-label="Open menu">
                 <Menu className="h-6 w-6" />
               </button>
             </SheetTrigger>
@@ -281,7 +305,7 @@ export function Navigation() {
       </div>
       
       {/* QR Code Dialog */}
-      <QRCodeDialog open={isQROpen} onOpenChange={setIsQROpen} />
+      <LazyQRCodeDialog open={isQROpen} onOpenChange={setIsQROpen} />
     </nav>
   );
 }

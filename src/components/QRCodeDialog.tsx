@@ -115,16 +115,17 @@ export function QRCodeDialog({ open, onOpenChange }: QRCodeDialogProps) {
       <DialogContent className="bg-black border-white/10 text-white max-w-sm sm:max-w-md w-[calc(100vw-2rem)] max-h-[90vh] overflow-y-auto p-0">
         {/* Animated background gradient */}
         <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 via-transparent to-cyan-400/5 pointer-events-none" />
+        {/* Two static gradients cross-faded via opacity (compositor-only),
+            instead of animating `background`, which repaints every frame. */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{ background: "radial-gradient(circle at 20% 20%, rgba(168, 85, 247, 0.1) 0%, transparent 50%)" }}
+        />
         <motion.div
-          animate={{
-            background: [
-              "radial-gradient(circle at 20% 20%, rgba(168, 85, 247, 0.1) 0%, transparent 50%)",
-              "radial-gradient(circle at 80% 80%, rgba(34, 211, 238, 0.1) 0%, transparent 50%)",
-              "radial-gradient(circle at 20% 20%, rgba(168, 85, 247, 0.1) 0%, transparent 50%)",
-            ],
-          }}
+          animate={{ opacity: [0, 1, 0] }}
           transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
           className="absolute inset-0 pointer-events-none"
+          style={{ background: "radial-gradient(circle at 80% 80%, rgba(34, 211, 238, 0.1) 0%, transparent 50%)" }}
         />
 
         <div className="relative p-5 sm:p-6">

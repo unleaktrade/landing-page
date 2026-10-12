@@ -102,10 +102,41 @@ describe('FAQ interactions', () => {
   it('ignores an unknown hash without crashing', () => {
     renderFAQ(['/faq#not-a-real-entry']);
     expect(screen.getByPlaceholderText(/search questions/i)).toBeInTheDocument();
-    // Nothing auto-opened
+    // Nothing auto-opened: the answer is only present as hidden crawlable text
     expect(
-      screen.queryByText(/testing allowance, not a trade-size guideline/i)
-    ).not.toBeInTheDocument();
+      screen.getByText(/testing allowance, not a trade-size guideline/i)
+    ).not.toBeVisible();
+    for (const button of screen.getAllByRole('button', { expanded: false })) {
+      expect(button).toHaveAttribute('aria-expanded', 'false');
+    }
+    expect(screen.queryAllByRole('button', { expanded: true })).toHaveLength(0);
+  });
+
+  it('keeps every closed answer in the DOM, hidden, for crawlers', async () => {
+    renderFAQ();
+    const firstQuestion = screen.getAllByRole('button', { name: /what is unleaktrade\?/i })[0];
+    const answer = document.getElementById('what-is-unleaktrade-answer');
+    expect(answer).not.toBeNull();
+    expect(answer).not.toBeVisible();
+    expect(answer).toHaveTextContent(/UnleakTrade is a private/i);
+    expect(firstQuestion).toHaveAttribute('aria-controls', 'what-is-unleaktrade-answer');
+    expect(firstQuestion).toHaveAttribute('aria-expanded', 'false');
+
+    await setup().click(firstQuestion);
+    expect(firstQuestion).toHaveAttribute('aria-expanded', 'true');
+    // the open answer is the animated panel (motion never runs in jsdom, so
+    // check the hidden attribute rather than computed opacity)
+    const open = document.getElementById('what-is-unleaktrade-answer');
+    expect(open).not.toHaveAttribute('hidden');
+    expect(document.querySelectorAll('[id="what-is-unleaktrade-answer"]')).toHaveLength(1);
+    expect(open).toHaveTextContent(/UnleakTrade is a private/i);
+  });
+
+  it('uses a single h1 for the FAQ page heading', () => {
+    renderFAQ();
+    const h1s = screen.getAllByRole('heading', { level: 1 });
+    expect(h1s).toHaveLength(1);
+    expect(h1s[0]).toHaveTextContent(/everything you need to know/i);
   });
 
   it('shows the revised minimum trade size answer', async () => {

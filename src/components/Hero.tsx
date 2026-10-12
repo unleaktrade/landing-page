@@ -1,6 +1,5 @@
-import { motion } from "motion/react";
 import { Rocket } from "lucide-react";
-import logoImage from "../assets/fdbafc2f1e7edb4d213deafbca8c80c666dccbae.png";
+import logoImage from "../assets/logo-256.webp";
 
 interface HeroProps {
   onOpenWaitlist?: () => void;
@@ -14,15 +13,13 @@ export function Hero({ onOpenWaitlist }: HeroProps) {
       <div className="absolute top-[450px] right-1/4 w-96 h-96 bg-cyan-400/10 rounded-full blur-3xl" />
       
       <div className="relative max-w-5xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="text-center space-y-12"
-        >
+        {/* The entrance is CSS (index.css), not motion: the hero is the LCP
+            element, and a JS-driven fade kept the prerendered headline at
+            opacity 0 until the bundle had downloaded and run. */}
+        <div className="hero-enter text-center space-y-12">
           {/* Logo and tagline */}
           <div className="space-y-6">
-            <img src={logoImage} alt="UnleakTrade" className="h-32 w-32 mx-auto" />
+            <img src={logoImage} alt="UnleakTrade" width={128} height={128} fetchPriority="high" className="h-32 w-32 mx-auto" />
             <h1 className="text-4xl lg:text-5xl tracking-tight max-w-3xl mx-auto leading-tight">
               Guaranteed Settlement.<br />
               Confidential OTC Trading & Auctions.<br />
@@ -45,12 +42,7 @@ export function Hero({ onOpenWaitlist }: HeroProps) {
           </div>
 
           {/* CTA */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.3, duration: 0.8 }}
-            className="space-y-4"
-          >
+          <div className="hero-enter-cta space-y-4">
             <button
               onClick={onOpenWaitlist}
               className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-purple-600 to-cyan-400 text-white rounded-lg hover:opacity-90 transition-opacity"
@@ -61,8 +53,8 @@ export function Hero({ onOpenWaitlist }: HeroProps) {
             <p className="text-white/40 text-sm">
               Live in beta on Solana Devnet, no real funds or tokens involved
             </p>
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
       </div>
     </section>
   );

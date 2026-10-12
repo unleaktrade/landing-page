@@ -22,9 +22,14 @@ import { useEffect, useRef } from "react";
  *  - Motion is purely time-driven, never bound to scroll position, so scrolling
  *    is free of any rendering cost.
  *
- * Stability guardrails: DPR cap, ~30fps throttle, prefers-reduced-motion (one
- * static frame), pause when the tab is hidden, WebGL context-loss recovery, and
- * a graceful no-op fallback (opaque black canvas) when WebGL is unavailable.
+ * Stability guardrails: DPR cap, evenly paced ~30fps throttle, deferred start
+ * (never competes with first paint), prefers-reduced-motion (one static frame,
+ * live), pause when the tab is hidden, WebGL context-loss recovery, and a
+ * graceful no-op fallback (opaque black canvas) when WebGL or a shader fails.
+ *
+ * The canvas is sized in CSS to the *large* viewport height (100lvh), so the
+ * mobile URL bar collapsing never changes its box, and the drawing buffer always
+ * matches that box exactly (no vertical stretching).
  */
 
 const PURPLE: [number, number, number] = [139 / 255, 92 / 255, 246 / 255]; // #8B5CF6
@@ -61,6 +66,23 @@ const CFG = {
   dprCap: 2,
   fps: 30,
 };
+
+/**
+ * Frame pacing for the throttled loop. Returns the new `lastDraw` timestamp when
+ * a frame should be drawn, or `null` to skip this rAF callback. The remainder of
+ * the elapsed time is carried over (instead of resetting to `now`), so a 30fps
+ * target on a 60Hz display draws every 2nd vsync steadily rather than jittering
+ * between every 2nd and every 3rd.
+ */
+export function nextDrawTime(now: number, lastDraw: number, minInterval: number): number | null {
+  const elapsed = now - lastDraw;
+  // small tolerance: vsync timestamps land a hair early or late
+  if (elapsed < minInterval - 1) return null;
+  // a vsync landing a hair early (inside the tolerance), the first frame, or a
+  // long stall: resync to now instead of carrying a near-full interval over
+  if (elapsed < minInterval || elapsed > minInterval * 4) return now;
+  return now - (elapsed % minInterval);
+}
 
 // --- tiny column-major mat4 helpers (no matrix library) ---
 type M4 = number[];
@@ -365,7 +387,8 @@ export function WarpField() {
 
     const opts: WebGLContextAttributes = {
       alpha: false,
-      antialias: true,
+      // MSAA is wasted fill-rate on a hi-DPR screen, where lines are already fine
+      antialias: (window.devicePixelRatio || 1) < 2,
       depth: false,
       premultipliedAlpha: true,
       powerPreference: "low-power",
@@ -377,9 +400,8 @@ export function WarpField() {
     // The opaque black canvas keeps the page looking correct.
     if (!gl || typeof gl.createProgram !== "function") return;
 
-    const reduceMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
+    const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let reduceMotion = motionQuery.matches;
 
     // geometry is generated once and reused across context-loss restores
     const geo = buildGeometry();
@@ -411,12 +433,23 @@ export function WarpField() {
       gl.attachShader(p, compile(gl.VERTEX_SHADER, vs));
       gl.attachShader(p, compile(gl.FRAGMENT_SHADER, fs));
       gl.linkProgram(p);
+      // A driver that rejects a shader would otherwise draw garbage every frame;
+      // leave the opaque black canvas instead.
+      if (gl.getProgramParameter(p, gl.LINK_STATUS) === false) {
+        throw new Error("WarpField: shader program failed to link");
+      }
       return p;
     };
 
     function setupGL() {
-      pointProg = linkProg(POINT_VS, POINT_FS);
-      lineProg = linkProg(LINE_VS, LINE_FS);
+      try {
+        pointProg = linkProg(POINT_VS, POINT_FS);
+        lineProg = linkProg(LINE_VS, LINE_FS);
+        streakProg = linkProg(STREAK_VS, STREAK_FS);
+      } catch {
+        glReady = false;
+        return;
+      }
 
       for (const a of ["a_a", "a_pa", "a_b", "a_pb", "a_seed", "a_speed", "a_color", "a_size"])
         pLoc[a] = gl.getAttribLocation(pointProg, a);
@@ -427,7 +460,6 @@ export function WarpField() {
       for (const u of ["u_mvp", "u_time", "u_drift", "u_fade"])
         lUni[u] = gl.getUniformLocation(lineProg, u);
 
-      streakProg = linkProg(STREAK_VS, STREAK_FS);
       for (const a of ["a_a", "a_pa", "a_b", "a_pb", "a_seed", "a_speed", "a_color", "a_end"])
         sLoc[a] = gl.getAttribLocation(streakProg, a);
       for (const u of ["u_mvp", "u_time", "u_drift", "u_fade", "u_trail"])
@@ -456,23 +488,26 @@ export function WarpField() {
     let proj: M4 = perspective(CFG.fov, 1, 0.1, 100);
     let pixelRatio = 1;
     let lastW = -1;
+    let lastH = -1;
+    let lastDpr = -1;
 
+    // Size the drawing buffer to the canvas's own CSS box (100lvh tall, so the
+    // URL bar never changes it). Returns false when nothing changed.
     function resize() {
+      if (!glReady) return false;
       const dpr = Math.min(window.devicePixelRatio || 1, CFG.dprCap);
+      const cssW = canvas.clientWidth || window.innerWidth;
+      const cssH = canvas.clientHeight || window.innerHeight;
+      if (cssW === lastW && cssH === lastH && dpr === lastDpr) return false;
       pixelRatio = dpr;
-      const cssW = window.innerWidth;
-      // Use a STABLE height (largest plausible viewport) so the mobile URL bar
-      // collapsing/expanding during scroll never resizes the drawing buffer.
-      const cssH = Math.max(
-        window.innerHeight,
-        document.documentElement.clientHeight || 0,
-        window.screen ? window.screen.height : 0
-      );
-      canvas.width = Math.floor(cssW * dpr);
-      canvas.height = Math.floor(cssH * dpr);
+      canvas.width = Math.max(1, Math.floor(cssW * dpr));
+      canvas.height = Math.max(1, Math.floor(cssH * dpr));
       gl.viewport(0, 0, canvas.width, canvas.height);
       proj = perspective(CFG.fov, cssW / cssH, 0.1, 100);
       lastW = cssW;
+      lastH = cssH;
+      lastDpr = dpr;
+      return true;
     }
 
     function bindAttrib(loc: number, size: number, strideFloats: number, offsetFloats: number) {
@@ -554,42 +589,67 @@ export function WarpField() {
     let running = false;
     let startTime = 0;
     let lastDraw = 0;
+    let elapsedAtStop = 0; // animation clock at the last pause, in ms
 
     const tick = (now: number) => {
       if (!running) return;
       rafId = requestAnimationFrame(tick);
-      if (now - lastDraw < minInterval) return; // throttle the repaint
-      lastDraw = now;
+      const next = nextDrawTime(now, lastDraw, minInterval);
+      if (next === null) return; // throttle the repaint
+      lastDraw = next;
       draw((now - startTime) / 1000);
     };
     const start = () => {
-      if (running || reduceMotion || !glReady) return;
+      if (running || reduceMotion || !glReady || document.hidden) return;
       running = true;
-      startTime = performance.now();
+      // keep the orbit phase continuous across pause/resume
+      startTime = performance.now() - elapsedAtStop;
       lastDraw = 0;
       rafId = requestAnimationFrame(tick);
     };
     const stop = () => {
+      if (running) elapsedAtStop = performance.now() - startTime;
       running = false;
       if (rafId) cancelAnimationFrame(rafId);
       rafId = 0;
     };
 
-    setupGL();
-    resize();
-    if (reduceMotion) draw(0); // single static frame
-    else start();
+    // Defer GL setup + the first frame until the browser is idle, so shader
+    // compilation and buffer uploads never delay first paint / LCP. The black
+    // canvas background covers the gap.
+    let disposed = false;
+    const boot = () => {
+      if (disposed) return;
+      setupGL();
+      resize();
+      if (reduceMotion) draw(0); // single static frame
+      else start();
+    };
+    const ric = (window as Window & {
+      requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number;
+      cancelIdleCallback?: (id: number) => void;
+    });
+    const idleId = ric.requestIdleCallback
+      ? ric.requestIdleCallback(boot, { timeout: 1500 })
+      : window.setTimeout(boot, 200);
 
     let resizeRaf = 0;
     const onResize = () => {
-      // Only react to WIDTH changes (orientation / desktop resize). Height-only
-      // changes from the mobile URL bar must NOT rebuild anything.
-      if (window.innerWidth === lastW) return;
+      // Geometry is never rebuilt; resize() only touches the buffer + projection
+      // and is a no-op when the canvas box did not change (URL-bar scrolls).
       cancelAnimationFrame(resizeRaf);
       resizeRaf = requestAnimationFrame(() => {
-        resize();
-        if (reduceMotion) draw(0);
+        if (resize() && reduceMotion) draw(elapsedAtStop / 1000);
       });
+    };
+    const onMotionChange = (e: MediaQueryListEvent) => {
+      reduceMotion = e.matches;
+      if (reduceMotion) {
+        stop();
+        draw(elapsedAtStop / 1000);
+      } else {
+        start();
+      }
     };
     const onVisibility = () => {
       if (document.hidden) stop();
@@ -602,6 +662,7 @@ export function WarpField() {
     };
     const onRestored = () => {
       setupGL();
+      lastW = lastH = lastDpr = -1; // force a buffer re-size on the new context
       resize();
       if (reduceMotion) draw(0);
       else start();
@@ -609,14 +670,19 @@ export function WarpField() {
 
     window.addEventListener("resize", onResize);
     document.addEventListener("visibilitychange", onVisibility);
+    motionQuery.addEventListener?.("change", onMotionChange);
     canvas.addEventListener("webglcontextlost", onLost, false);
     canvas.addEventListener("webglcontextrestored", onRestored, false);
 
     return () => {
+      disposed = true;
+      if (ric.requestIdleCallback && ric.cancelIdleCallback) ric.cancelIdleCallback(idleId);
+      else window.clearTimeout(idleId);
       stop();
       cancelAnimationFrame(resizeRaf);
       window.removeEventListener("resize", onResize);
       document.removeEventListener("visibilitychange", onVisibility);
+      motionQuery.removeEventListener?.("change", onMotionChange);
       canvas.removeEventListener("webglcontextlost", onLost);
       canvas.removeEventListener("webglcontextrestored", onRestored);
     };
@@ -629,7 +695,9 @@ export function WarpField() {
       // Explicit negative z-index (the `-z-10` utility does not apply here) so
       // this opaque fixed layer composites *below* the scrolling page content.
       // The black background avoids any flash before the first canvas paint.
-      style={{ zIndex: -1, backgroundColor: "#000" }}
+      // 100lvh (large viewport) keeps the box stable while the mobile URL bar
+      // collapses; browsers without lvh fall back to the inset-0 full height.
+      style={{ zIndex: -1, backgroundColor: "#000", height: "100lvh" }}
       className="fixed inset-0 w-full h-full pointer-events-none"
     />
   );

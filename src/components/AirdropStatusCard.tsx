@@ -176,7 +176,7 @@ export function AirdropStatusCard({
   }
 
   return (
-    <div className="relative p-8 rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-sm overflow-hidden">
+    <div className="relative p-8 rounded-2xl border border-white/10 glass-card overflow-hidden">
       <div className="relative">
         <div className="flex items-center gap-3 mb-4">
           <div className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-500 to-cyan-400 flex items-center justify-center">

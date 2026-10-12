@@ -2,7 +2,7 @@ import { motion } from "motion/react";
 import { useNavigate } from "react-router";
 import { Send } from "lucide-react";
 import { Linkedin, Twitter, Github } from "./BrandIcons";
-import julienImage from "../assets/524423e86081819620c9996fd40046b079ec4ba8.png";
+import julienImage from "../assets/julien-sie.webp";
 
 interface TeamMember {
   name: string;
@@ -78,7 +78,7 @@ export function TeamSection() {
               {/* Card - clickable to team page */}
               <div
                 onClick={() => navigate(`/team/${member.name.toLowerCase().replace(/\s+/g, '-')}`)}
-                className="relative h-full bg-white/[0.03] backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:border-white/20 transition-all duration-300 cursor-pointer"
+                className="relative h-full glass-card border border-white/10 rounded-2xl p-6 hover:border-white/20 transition-all duration-300 cursor-pointer"
               >
                 {/* Gradient glow on hover */}
                 <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-purple-500/10 via-cyan-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
@@ -92,7 +92,7 @@ export function TeamSection() {
                       {/* Avatar placeholder */}
                       <div className="relative m-[2px] w-16 h-16 rounded-full bg-gradient-to-br from-purple-900/50 to-cyan-900/50 flex items-center justify-center overflow-hidden">
                         {member.image ? (
-                          <img src={member.image} alt={member.name} className="w-full h-full object-cover grayscale" />
+                          <img src={member.image} alt={member.name} width={122} height={122} loading="lazy" className="w-full h-full object-cover grayscale" />
                         ) : (
                           <span className="text-white/40 text-xl">{member.name.split(' ').map(n => n[0]).join('')}</span>
                         )}

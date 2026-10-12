@@ -3,14 +3,14 @@ import { useState, useEffect } from "react";
 import { useLocation } from "react-router";
 import { ChevronDown, Search } from "lucide-react";
 
-interface FAQItem {
+export interface FAQItem {
   id: string;
   question: string;
   answer: string;
   category: string;
 }
 
-const faqData: FAQItem[] = [
+export const faqData: FAQItem[] = [
   {
     id: "what-is-unleaktrade",
     category: "Platform Basics",
@@ -361,24 +361,19 @@ export function FAQ() {
 
       <div className="relative max-w-4xl mx-auto">
         {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
-        >
+        {/* CSS entrance: plays from the prerendered HTML without waiting for JS */}
+        <div className="enter-up text-center mb-16">
           <p className="text-white/40 mb-4">
             Questions & Answers
           </p>
-          <h2 className="text-white mb-6">
+          <h1 className="text-white mb-6">
             Everything you need to know.
-          </h2>
+          </h1>
           <p className="text-white/60 max-w-2xl mx-auto">
             Deep technical documentation on protocol mechanics,
             auction flow, and settlement architecture.
           </p>
-        </motion.div>
+        </div>
 
         {/* Search & Filter */}
         <motion.div
@@ -396,7 +391,7 @@ export function FAQ() {
               placeholder="Search questions..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-white/[0.03] backdrop-blur-sm border border-white/10 rounded-xl pl-12 pr-4 py-3 text-white placeholder:text-white/30 focus:outline-none focus:border-white/20 transition-colors"
+              className="w-full glass-card border border-white/10 rounded-xl pl-12 pr-4 py-3 text-white placeholder:text-white/30 focus:outline-none focus:border-white/20 transition-colors"
             />
           </div>
 
@@ -406,7 +401,7 @@ export function FAQ() {
               onClick={() => setSelectedCategory(null)}
               className={`px-4 py-2 rounded-full text-sm transition-all ${!selectedCategory
                 ? "bg-gradient-to-r from-purple-500 to-cyan-500 text-white"
-                : "bg-white/[0.03] backdrop-blur-sm border border-white/10 text-white/60 hover:text-white/90 hover:border-white/20"
+                : "glass-card border border-white/10 text-white/60 hover:text-white/90 hover:border-white/20"
                 }`}
             >
               All
@@ -423,7 +418,7 @@ export function FAQ() {
                 }
                 className={`px-4 py-2 rounded-full text-sm transition-all ${selectedCategory === category
                   ? "bg-gradient-to-r from-purple-500 to-cyan-500 text-white"
-                  : "bg-white/[0.03] backdrop-blur-sm border border-white/10 text-white/60 hover:text-white/90 hover:border-white/20"
+                  : "glass-card border border-white/10 text-white/60 hover:text-white/90 hover:border-white/20"
                   }`}
               >
                 {category}
@@ -451,16 +446,8 @@ export function FAQ() {
                 }}
               >
                 <div className="group relative">
-                  {/* Gradient glow on hover/active */}
                   <div
-                    className={`absolute inset-0 rounded-xl bg-gradient-to-r from-purple-500/10 to-cyan-500/10 opacity-0 transition-opacity duration-300 ${isOpen
-                      ? "opacity-100"
-                      : "group-hover:opacity-50"
-                      }`}
-                  />
-
-                  <div
-                    className={`relative bg-white/[0.03] backdrop-blur-sm border rounded-xl transition-all duration-300 ${isOpen
+                    className={`relative glass-card border rounded-xl transition-all duration-300 ${isOpen
                       ? "border-white/20"
                       : "border-white/10 group-hover:border-white/15"
                       }`}
@@ -470,6 +457,8 @@ export function FAQ() {
                       onClick={() =>
                         setOpenId(isOpen ? null : item.id)
                       }
+                      aria-expanded={isOpen}
+                      aria-controls={`${item.id}-answer`}
                       className="w-full px-6 py-4 flex items-center justify-between gap-4 text-left"
                     >
                       <div className="flex-1">
@@ -488,10 +477,17 @@ export function FAQ() {
                       />
                     </button>
 
-                    {/* Answer */}
+                    {/* Answer. A closed answer stays in the DOM (hidden) so the
+                        prerendered page carries every answer for crawlers. */}
+                    {!isOpen && (
+                      <div id={`${item.id}-answer`} hidden>
+                        {renderText(item.answer)}
+                      </div>
+                    )}
                     <AnimatePresence>
                       {isOpen && (
                         <motion.div
+                          id={`${item.id}-answer`}
                           initial={{ height: 0, opacity: 0 }}
                           animate={{
                             height: "auto",
@@ -518,6 +514,15 @@ export function FAQ() {
                       )}
                     </AnimatePresence>
                   </div>
+
+                  {/* Gradient glow on hover/active, layered over the opaque card */}
+                  <div
+                    aria-hidden="true"
+                    className={`absolute inset-0 rounded-xl bg-gradient-to-r from-purple-500/10 to-cyan-500/10 opacity-0 pointer-events-none transition-opacity duration-300 ${isOpen
+                      ? "opacity-100"
+                      : "group-hover:opacity-50"
+                      }`}
+                  />
                 </div>
               </motion.div>
             );
