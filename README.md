@@ -6,7 +6,19 @@ The official **UnleakTrade** landing page: a fast, modern web experience introdu
 
 ## 🚀 Overview
 
-Single-page React application rendered client-side with React Router. Static marketing pages plus a waitlist registration + activation flow backed by a small external API.
+React application whose public routes are prerendered to static HTML at build time, then hydrated in the browser (React Router). Dynamic routes render client-side. Static marketing pages plus a waitlist registration + activation flow backed by a small external API (the `waitlist` service).
+
+| Route | Page |
+|-------|------|
+| `/` | Home: hero, value props, how it works, Shorts, settlement process, economics, team, community |
+| `/roadmap` | Roadmap |
+| `/team`, `/team/:memberId` | Team |
+| `/faq` | FAQ |
+| `/builder` | Builder page |
+| `/waitlist`, `/waitlist/:sponsor`, `/app` | Waitlist registration (optionally prefilled with a sponsor address) |
+| `/activate/:token` | Waitlist activation and uUSDC airdrop status |
+
+Any other URL redirects to `/`.
 
 ---
 
@@ -14,19 +26,23 @@ Single-page React application rendered client-side with React Router. Static mar
 
 | Layer       | Technology                                                              |
 |-------------|-------------------------------------------------------------------------|
-| Build tool  | [Vite 8](https://vitejs.dev/) + [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react) |
+| Build tool  | [Vite 8](https://vitejs.dev/) + [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react) |
 | UI          | [React 19](https://react.dev/) + TypeScript                             |
-| Routing     | [react-router-dom 7](https://reactrouter.com/)                          |
-| Styling     | Tailwind CSS + [Radix UI](https://www.radix-ui.com/) primitives (shadcn/ui) |
+| Routing     | [react-router 8](https://reactrouter.com/)                              |
+| Styling     | Precompiled Tailwind v4 stylesheet (`src/index.css`) + a few [Radix UI](https://www.radix-ui.com/) primitives (shadcn/ui) |
 | Animation   | [Motion](https://motion.dev/)                                           |
 | Forms       | [react-hook-form](https://react-hook-form.com/)                         |
 | Notifications | [sonner](https://sonner.emilkowal.ski/)                               |
 | Icons       | [lucide-react](https://lucide.dev/)                                     |
-| Web3 (validation) | [@solana/web3.js](https://solana-labs.github.io/solana-web3.js/)  |
+| Address validation | In-house base58 + ed25519 on-curve check (`utils/validation.ts`); [@solana/web3.js](https://solana-labs.github.io/solana-web3.js/) is a dev dependency used only as a test oracle |
 | Testing     | [Vitest 4](https://vitest.dev/) + [Testing Library](https://testing-library.com/) + jsdom + v8 coverage |
 | CI / Deploy | GitHub Actions → GitHub Pages                                           |
 
-**Node:** 22.x LTS (Vite 8 requires `>=20.19` or `>=22.12`).
+**Node:** 22.x LTS (Vite 8 requires `>=20.19` or `>=22.12`). CI and deploy use Node 22, the Vercel preview workflow uses Node 20, and nothing pins the version locally (no `.nvmrc`, no `engines`).
+
+**Tailwind is not a build step.** There is no `tailwindcss` dependency: `src/index.css` is a precompiled Tailwind v4 build, so only the classes already present in that file work.
+
+**No environment variables.** Nothing reads `import.meta.env`; outbound URLs (waitlist API, app, Telegram, YouTube) are constants in `src/components/utils/links.ts`.
 
 ---
 
@@ -56,12 +72,13 @@ The dev server runs at [http://localhost:3000](http://localhost:3000).
 
 ## 🧪 Testing
 
-Vitest runs in a jsdom environment with Testing Library and a shared setup file (`src/test/setup.ts`) that shims `matchMedia`, `scrollTo`, `IntersectionObserver`, and `ResizeObserver`.
+Vitest runs in a jsdom environment with Testing Library and a shared setup file (`src/test/setup.ts`) that shims `matchMedia`, `scrollTo`, `scrollIntoView`, `IntersectionObserver`, and `ResizeObserver` (skipped in suites that run in the Node environment).
 
 Coverage thresholds are enforced at **80%** (lines / branches / functions / statements). The following paths are excluded as vendored or non-business code:
 
 - `src/components/ui/**`: shadcn/ui primitives (only the ones the site imports; add a single file and its package when you need one, never the whole catalog)
 - `src/assets/**`, `src/styles/**`, `src/guidelines/**`
+- `src/test/**`, `src/**/*.d.ts`
 - `src/main.tsx`
 
 Coverage HTML report is written to `coverage/` after `npm run coverage`.
@@ -71,29 +88,55 @@ Coverage HTML report is written to `coverage/` after `npm run coverage`.
 ## 🗺️ Project structure
 
 ```
+scripts/
+└── prerender.mjs              # Renders every public route to build/<route>.html, 404.html, sitemap.xml
 src/
-├── App.tsx                    # Router + top-level layout
-├── main.tsx                   # Entrypoint
+├── App.tsx                    # AppRoutes (shared by the browser and the prerender) + top-level layout
+├── main.tsx                   # Browser entrypoint (hydrates the prerendered markup)
+├── entry-server.tsx           # SSR entry used by the prerender step
+├── hydration.ts
+├── index.css                  # Precompiled Tailwind v4 stylesheet
+├── seo/
+│   ├── routes.ts              # Per-route title / description / canonical table
+│   ├── Seo.tsx                # Client-side head updates on navigation
+│   └── jsonld.ts              # Structured data
 ├── components/
-│   ├── <page sections>.tsx    # Hero, FAQ, Roadmap, Team, Waitlist…
+│   ├── <page sections>.tsx    # Hero, ValueProps, HowItWorks, SettlementProcess, Economics,
+│   │                          # Shorts, FAQ, Roadmap, Team, Waitlist, BuilderPage, WarpField…
+│   ├── LazyDialogs.tsx        # Lazily loaded dialogs
 │   ├── ui/                    # shadcn/ui primitives (vendored)
-│   └── utils/validation.ts    # Email / Solana-address / SHA3 validators
+│   └── utils/
+│       ├── validation.ts      # Email / Solana-address / SHA3 validators
+│       ├── links.ts           # Outbound URLs and the waitlist API base URL
+│       └── shorts.ts          # Static list of YouTube Shorts
 └── test/
     ├── setup.ts               # jsdom shims + RTL cleanup
     ├── routes.test.tsx        # Route-level mounts and navigation
     ├── interactions.test.tsx  # Form submission, dialogs, accordions
+    ├── prerender.test.tsx     # Renders every page without a DOM
+    ├── seo.test.tsx
+    ├── airdrop.test.tsx, shorts.test.tsx, warpfield.test.tsx, moving-squares.test.tsx
     ├── dead-components.test.tsx
     └── smoke.test.tsx
 ```
+
+Unit tests for `validation.ts` and `shorts.ts` sit next to them in `components/utils/`.
+
+### External services
+
+- **Waitlist API**: the base URL is the `API_BASE_URL` constant in `src/components/utils/links.ts` (the Heroku app of the `waitlist` repo). The site calls `POST /register` and `POST /activate/<token>/<hash>`.
+- **YouTube Shorts**: a static list (`shortsData` in `src/components/utils/shorts.ts`), with the intro Short pinned first via `PINNED_SHORT_ID` followed by the three most recent. There is no build-time feed sync: add a Short by editing that file.
+- **Analytics**: a Google Analytics tag in `index.html`.
 
 ---
 
 ## ⚙️ CI / CD
 
-Two GitHub Actions workflows:
+Three GitHub Actions workflows:
 
-- **`ci.yml`**: on push (non-main) and pull requests: installs deps, builds, runs tests with coverage. Coverage dropping below 80% fails the run.
-- **`deploy.yml`**: on push to `main`: builds and publishes to GitHub Pages (`unleak.trade`).
+- **`ci.yml`**: on push (non-main) and pull requests: installs deps, builds, runs tests with coverage. Coverage dropping below 80% fails the run. It is also a reusable workflow, called by `deploy.yml`.
+- **`deploy.yml`**: on push to `main`: runs the CI job, then builds, checks that the prerendered pages exist (`build/faq.html`, `build/404.html`, `build/sitemap.xml`) and publishes to GitHub Pages (`unleak.trade`).
+- **`preview.yml`**: on pull requests from branches of this repository: deploys a Vercel preview and comments its URL on the PR (`vercel.json` enables clean URLs so the prerendered pages resolve there too).
 
 No manual deployment; merging to `main` is the release.
 
@@ -131,12 +174,6 @@ Pull requests are welcome. Please:
 1. Open an issue before large changes.
 2. Keep `npm test` and `npm run build` green in your branch.
 3. Follow the existing commit style (subject mirrors the related GitHub issue title).
-
----
-
-## 📜 License
-
-MIT. See the `LICENSE` file.
 
 ---
 
