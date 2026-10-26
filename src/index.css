@@ -4206,3 +4206,40 @@ html {
     animation: none;
   }
 }
+
+/*
+ * Academy page: placeholder cover for the Wick Masters guide until the cover
+ * PNG is uploaded. Scoped rules because the precompiled utilities above have
+ * no aspect-ratio or fixed-width classes.
+ */
+.academy-cover {
+  flex-shrink: 0;
+  align-self: center;
+  width: 12rem;
+  aspect-ratio: 3 / 4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem 1rem;
+  text-align: center;
+  border-radius: 1rem;
+  border: 1px solid rgb(255 255 255 / 0.1);
+  background-color: rgb(9 9 13 / 0.9);
+  background-image:
+    linear-gradient(135deg, rgb(139 92 246 / 0.35), transparent 55%),
+    linear-gradient(315deg, rgb(14 165 233 / 0.3), transparent 55%);
+}
+
+.academy-cover-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: 0.05em;
+}
+
+@media (min-width: 48rem) {
+  .academy-cover {
+    align-self: flex-start;
+  }
+}

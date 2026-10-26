@@ -2,6 +2,8 @@ import { describe, it, expect, afterEach, vi } from 'vitest';
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import App from '../App';
+import { RISK_NOTICE } from '../components/AcademyPage';
+import { TIKTOK_URL, WICKMASTERS_DEMO_URL } from '../components/utils/links';
 
 const VALID_SOLANA = 'GhTppHPoSppnBurco1sPuYWyn3mejhsaRdRbt3dHtFyc';
 
@@ -80,6 +82,23 @@ describe('App routing', () => {
   it('renders the builder page', () => {
     renderAt('/builder');
     expect(screen.getAllByText(/julien sie/i).length).toBeGreaterThan(0);
+  });
+
+  it('renders the academy page with the demo link, the disabled paid offer and the risk notice', () => {
+    renderAt('/academy');
+    expect(screen.getByRole('heading', { level: 1, name: /unleaktrade academy/i })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /download the free demo/i })).toHaveAttribute('href', WICKMASTERS_DEMO_URL);
+    expect(screen.getByRole('button', { name: /full guide \+ 10 cheat sheets, 25 eur/i })).toBeDisabled();
+    expect(screen.getByText(/coming soon/i)).toBeInTheDocument();
+    expect(screen.getByRole('complementary', { name: /risk notice/i })).toHaveTextContent(RISK_NOTICE);
+    expect(screen.getAllByRole('link', { name: /tiktok/i })[0]).toHaveAttribute('href', TIKTOK_URL);
+  });
+
+  it('links to the academy from the navigation', async () => {
+    renderAt('/');
+    const user = userEvent.setup();
+    await user.click(screen.getAllByRole('link', { name: /^academy$/i })[0]);
+    expect(screen.getByRole('heading', { level: 1, name: /unleaktrade academy/i })).toBeInTheDocument();
   });
 
   it('redirects unknown routes to home', () => {

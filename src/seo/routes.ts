@@ -65,6 +65,16 @@ const BUILDER: PageSeo = {
   priority: 0.6,
 };
 
+const ACADEMY: PageSeo = {
+  path: "/academy",
+  title: "UnleakTrade Academy | Wick Masters, the arcade guide to crypto charts",
+  description:
+    "Learn to read crypto charts one pattern at a time. Download the free Wick Masters demo: candlestick basics, the seven single-candle patterns and a printable cheat sheet.",
+  indexable: true,
+  changefreq: "weekly",
+  priority: 0.7,
+};
+
 const WAITLIST: PageSeo = {
   path: "/waitlist",
   title: "Request Access | UnleakTrade",
@@ -95,7 +105,7 @@ const ACTIVATE: PageSeo = {
 const APP: PageSeo = { ...WAITLIST, path: "/app", canonicalPath: "/waitlist" };
 
 /** Routes the build prerenders to static HTML, in sitemap order. */
-export const PRERENDERED_PAGES: PageSeo[] = [HOME, FAQ, ROADMAP, BUILDER, WAITLIST, APP, TEAM];
+export const PRERENDERED_PAGES: PageSeo[] = [HOME, FAQ, ROADMAP, BUILDER, ACADEMY, WAITLIST, APP, TEAM];
 
 /** Resolve the metadata for any pathname the router can render. */
 export function resolveSeo(pathname: string): PageSeo {
@@ -110,6 +120,8 @@ export function resolveSeo(pathname: string): PageSeo {
       return ROADMAP;
     case "builder":
       return BUILDER;
+    case "academy":
+      return ACADEMY;
     case "team":
       return TEAM;
     case "activate":

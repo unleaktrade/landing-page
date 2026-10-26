@@ -174,6 +174,9 @@ export function Navigation() {
             <Link to="/faq" className="text-sm text-white/60 hover:text-white transition-colors">
               FAQ
             </Link>
+            <Link to="/academy" className="text-sm text-white/60 hover:text-white transition-colors">
+              Academy
+            </Link>
             <a 
               href="https://unleaktrade.gitbook.io/unleaktrade-docs" 
               target="_blank" 
@@ -232,6 +235,14 @@ export function Navigation() {
                     className="w-full text-center py-4 text-white/60 hover:text-white transition-colors"
                   >
                     FAQ
+                  </Link>
+
+                  <Link 
+                    to="/academy" 
+                    onClick={closeMenu}
+                    className="w-full text-center py-4 text-white/60 hover:text-white transition-colors"
+                  >
+                    Academy
                   </Link>
 
                   <a 
