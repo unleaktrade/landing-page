@@ -1,5 +1,6 @@
 import { Link } from "react-router";
-import { Download, Lock, Music2, TriangleAlert } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
+import { BookOpen, ChartCandlestick, ChartLine, Download, Lock, Music2, Shapes, TriangleAlert, Trophy } from "lucide-react";
 import { Youtube } from "./BrandIcons";
 import { TIKTOK_URL, WICKMASTERS_DEMO_URL, YOUTUBE_URL } from "./utils/links";
 
@@ -13,9 +14,10 @@ import { TIKTOK_URL, WICKMASTERS_DEMO_URL, YOUTUBE_URL } from "./utils/links";
 
 // `demo: true` marks the parts that come with the free demo download.
 // Descriptions stay factual about what each part teaches: no promise of gains.
-const levels = [
+const levels: { label: string; icon: LucideIcon; topic: string; description: string; demo?: boolean }[] = [
   {
     label: "Start Here",
+    icon: BookOpen,
     topic: "How the guide works",
     description:
       "How Wick Masters is organised, how each level is laid out and how to use the cheat sheets. Read it first: it sets up the vocabulary the rest of the guide builds on.",
@@ -23,6 +25,7 @@ const levels = [
   },
   {
     label: "Level 0",
+    icon: ChartCandlestick,
     topic: "Candlestick basics",
     description:
       "What a single candle tells you: the open, close, high and low of a period, the body and the wicks, and why the colour alone says very little. By the end you can read any candle on any chart.",
@@ -30,6 +33,7 @@ const levels = [
   },
   {
     label: "Level 1",
+    icon: Shapes,
     topic: "The seven single-candle patterns",
     description:
       "The seven one-candle shapes beginners meet first, what each one suggests about the balance between buyers and sellers, and why none of them is a signal on its own.",
@@ -37,12 +41,14 @@ const levels = [
   },
   {
     label: "Levels 2 to 10",
+    icon: ChartLine,
     topic: "Chart patterns, supply and demand, volume, timeframes, setups and risk",
     description:
       "One topic per level, each building on the one before: patterns made of several candles, the zones where price tends to react, what volume adds, reading more than one timeframe, putting a setup together and sizing risk before anything else.",
   },
   {
     label: "Boss Level",
+    icon: Trophy,
     topic: "Putting it all together",
     description:
       "A full chart read from scratch, step by step, using every skill from the earlier levels. It is practice in reading a chart, not a trading strategy.",
@@ -109,31 +115,6 @@ export function AcademyPage() {
                   supply and demand, volume, timeframes, setups and risk.
                 </p>
 
-                {/* Table of contents: an indented panel with a titled intro and
-                    level tags, so it reads as the guide's outline rather than
-                    a list of tappable items. */}
-                <div className="academy-contents mt-8">
-                  <h3 className="text-white text-2xl tracking-tight mb-2">What's inside the guide</h3>
-                  <p className="text-white/70 mb-6">
-                    The levels in reading order, with what each one teaches. Parts tagged Free demo come with the download.
-                  </p>
-                  <ol className="academy-levels">
-                    {levels.map((level, i) => (
-                      <li key={level.label} className="academy-level">
-                        {/* Free demo flag first, then the level, centred on one row. */}
-                        <div className="academy-level-head">
-                          {level.demo && <span className="academy-demo-tag">Free demo</span>}
-                          <span className={`academy-level-tag ${i % 2 ? "text-cyan-400" : "text-purple-400"}`}>
-                            {level.label}
-                          </span>
-                        </div>
-                        <h4 className="text-white text-xl tracking-tight">{level.topic}</h4>
-                        <p className="text-white/80 leading-relaxed">{level.description}</p>
-                      </li>
-                    ))}
-                  </ol>
-                </div>
-
                 <div className="academy-cta mt-8">
                   <Link
                     to={WICKMASTERS_DEMO_URL}
@@ -161,6 +142,38 @@ export function AcademyPage() {
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* What's inside: the home page "Built for serious traders" step cards,
+          with the ValueProps icon tile. Hierarchy per card: Free demo badge,
+          then the level as an eyebrow, then the title, then the paragraph.
+          No hover state, so nothing reads as clickable. */}
+      <section className="relative py-20 px-6 lg:px-8">
+        <div className="max-w-4xl mx-auto">
+          <SectionHeader
+            title="What's inside the guide"
+            intro="The levels in reading order and what each one teaches. The first three come with the free demo."
+          />
+          <ol className="space-y-6">
+            {levels.map((level, i) => (
+              <li key={level.label} className="flex flex-col sm:flex-row items-start gap-6 p-8 rounded-2xl border border-white/10 glass-card">
+                <div className="flex-shrink-0 h-12 w-12 rounded-xl bg-gradient-to-br from-purple-600/20 to-cyan-400/20 flex items-center justify-center">
+                  <level.icon className={`w-6 h-6 ${i % 2 ? "text-cyan-400" : "text-purple-400"}`} aria-hidden="true" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  {level.demo && (
+                    <span className="inline-flex items-center px-3 py-1 mb-3 rounded-full bg-gradient-to-r from-purple-500/20 to-cyan-400/20 border border-white/10 text-xs">
+                      <span className="bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent">Free demo</span>
+                    </span>
+                  )}
+                  <p className={`text-sm uppercase tracking-wide mb-2 ${i % 2 ? "text-cyan-400" : "text-purple-400"}`}>{level.label}</p>
+                  <h3 className="text-xl mb-3 tracking-tight">{level.topic}</h3>
+                  <p className="text-white/70 leading-relaxed">{level.description}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
         </div>
       </section>
 
@@ -197,11 +210,13 @@ export function AcademyPage() {
       {/* Risk notice: required on the page, not only in the footer. */}
       <section className="relative py-20 px-6 lg:px-8 pb-32">
         <div className="max-w-3xl mx-auto">
-          <aside aria-label="Risk notice" className="academy-risk glass-card rounded-2xl p-8">
-            <h2 className="academy-risk-title flex items-center gap-3 text-lg font-semibold uppercase tracking-wide mb-4">
-              <TriangleAlert className="w-5 h-5" aria-hidden="true" />
-              Risk notice
-            </h2>
+          <aside aria-label="Risk notice" className="glass-card border border-white/20 rounded-2xl p-8">
+            <div className="flex items-center gap-4 mb-4">
+              <div className="flex-shrink-0 h-12 w-12 rounded-xl bg-gradient-to-br from-purple-600/20 to-cyan-400/20 flex items-center justify-center">
+                <TriangleAlert className="w-6 h-6 text-purple-400" aria-hidden="true" />
+              </div>
+              <h2 className="text-2xl tracking-tight">Risk notice</h2>
+            </div>
             <p className="text-white/80 leading-relaxed">{RISK_NOTICE}</p>
           </aside>
         </div>

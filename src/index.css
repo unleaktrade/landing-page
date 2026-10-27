@@ -4255,93 +4255,8 @@ html {
   gap: 1rem;
 }
 
-/* The guide's table of contents: indented behind a gradient rule. */
-.academy-contents {
-  padding: 1.25rem 1rem 1.25rem 1.25rem;
-  border-radius: 0 0.75rem 0.75rem 0;
-  background:
-    linear-gradient(to bottom, #8b5cf6, #0ea5e9) left / 3px 100% no-repeat,
-    rgb(255 255 255 / 0.03);
-}
-
-.academy-levels {
-  display: flex;
-  flex-direction: column;
-}
-
-/* One column at every width: head row, title and paragraph share one left
-   edge, and a rule separates the levels. */
-.academy-level {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  padding: 1.25rem 0;
-}
-
-.academy-level + .academy-level {
-  border-top: 1px solid rgb(255 255 255 / 0.1);
-}
-
-.academy-level:first-child {
-  padding-top: 0;
-}
-
-.academy-level:last-child {
-  padding-bottom: 0;
-}
-
-.academy-level-head {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-/* Level label as a tinted chip (no outline) so it reads as a tag, not a button. */
-.academy-level-tag,
-.academy-demo-tag {
-  display: inline-flex;
-  align-items: center;
-  height: 1.75rem;
-  padding: 0 0.625rem;
-  border-radius: 0.375rem;
-  font-size: 0.8125rem;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-
-.academy-level-tag {
-  background-color: color-mix(in srgb, currentColor 14%, transparent);
-}
-
-.academy-demo-tag {
-  background-color: rgb(14 165 233 / 0.18);
-  color: #7dd3fc;
-}
-
-/* Risk notice: amber accent so the title stands out from the content cards. */
-.academy-risk {
-  border: 1px solid rgb(251 191 36 / 0.45);
-}
-
-.academy-risk-title {
-  color: #fbbf24;
-}
 
 @media (min-width: 40rem) {
-  .academy-contents {
-    padding: 1.5rem 1.5rem 1.5rem 1.75rem;
-  }
-
-  .academy-level-tag,
-  .academy-demo-tag {
-    padding: 0 0.75rem;
-    font-size: 0.875rem;
-    letter-spacing: 0.04em;
-  }
-
   .academy-cta {
     flex-direction: row;
     flex-wrap: wrap;
@@ -4356,11 +4271,12 @@ html {
 @media (min-width: 48rem) {
   .academy-card {
     flex-direction: row;
+    align-items: center;
     gap: 3rem;
   }
 
   .academy-cover {
-    align-self: flex-start;
+    align-self: center;
     width: 14rem;
   }
 
