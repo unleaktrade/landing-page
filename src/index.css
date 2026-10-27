@@ -4034,12 +4034,14 @@ html {
 /* Legibility over the animated WarpField background. Faint text alone
    (text-white/40) fails contrast against the bright lines, so text in this
    section sits on a soft dark scrim and carries a shadow. */
-.shorts-scrim {
+.shorts-scrim,
+.academy-scrim {
   position: relative;
   isolation: isolate;
 }
 
-.shorts-scrim::before {
+.shorts-scrim::before,
+.academy-scrim::before {
   content: "";
   position: absolute;
   inset: -1.5rem -1rem;
@@ -4049,7 +4051,8 @@ html {
   filter: blur(8px);
 }
 
-.shorts-legible {
+.shorts-legible,
+.academy-legible {
   text-shadow: 0 1px 2px rgb(0 0 0 / 0.9), 0 0 12px rgb(0 0 0 / 0.8);
 }
 
@@ -4204,5 +4207,103 @@ html {
   .hero-enter,
   .hero-enter-cta {
     animation: none;
+  }
+}
+
+/*
+ * Academy page. Scoped rules because the precompiled utilities above have no
+ * aspect-ratio, fixed-width, nowrap or lg row/gap variants. Its legibility over
+ * the WarpField reuses the .shorts-scrim / .shorts-legible rules (shared
+ * selectors above).
+ */
+.academy-card {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* Placeholder cover for the Wick Masters guide until the cover PNG lands. */
+.academy-cover {
+  flex-shrink: 0;
+  align-self: center;
+  width: 12rem;
+  aspect-ratio: 3 / 4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem 1rem;
+  text-align: center;
+  border-radius: 1rem;
+  border: 1px solid rgb(255 255 255 / 0.1);
+  background-color: rgb(9 9 13 / 0.9);
+  background-image:
+    linear-gradient(135deg, rgb(139 92 246 / 0.35), transparent 55%),
+    linear-gradient(315deg, rgb(14 165 233 / 0.3), transparent 55%);
+}
+
+.academy-cover-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: 0.05em;
+}
+
+.academy-cta {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.academy-soon {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1rem 1.25rem;
+  text-align: center;
+}
+
+/* Narrow phones (360px class): keep the label on one line. */
+@media (max-width: 24rem) {
+  .academy-soon {
+    padding: 1rem;
+    font-size: 0.875rem;
+  }
+}
+
+
+@media (min-width: 40rem) {
+  .academy-cta {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .academy-cta > * {
+    white-space: nowrap;
+  }
+
+  .academy-soon {
+    flex-direction: row;
+    padding: 1rem 1.5rem;
+  }
+
+}
+
+@media (min-width: 48rem) {
+  .academy-card {
+    flex-direction: row;
+    align-items: center;
+    gap: 3rem;
+  }
+
+  .academy-cover {
+    align-self: center;
+    width: 14rem;
+  }
+
+  .academy-cover-title {
+    font-size: 2rem;
   }
 }

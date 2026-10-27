@@ -12,6 +12,7 @@ import { Economics } from "./components/Economics";
 import { TeamSection } from "./components/TeamSection";
 import { TeamPage } from "./components/TeamPage";
 import { BuilderPage } from "./components/BuilderPage";
+import { AcademyPage } from "./components/AcademyPage";
 import { Roadmap } from "./components/Roadmap";
 import { FAQ } from "./components/FAQ";
 import { CommunityCTA } from "./components/CommunityCTA";
@@ -127,6 +128,18 @@ function BuilderPageWrapper() {
   );
 }
 
+function AcademyPageWrapper() {
+  return (
+    <div className="min-h-screen text-white">
+      <Navigation />
+      <main>
+        <AcademyPage />
+      </main>
+      <Footer />
+    </div>
+  );
+}
+
 function WaitlistRoutePage() {
   return (
     <main>
@@ -160,6 +173,7 @@ export function AppRoutes() {
         <Route path="/faq" element={<FAQPage />} />
         <Route path="/app" element={<WaitlistRoutePage />} />
         <Route path="/builder" element={<BuilderPageWrapper />} />
+        <Route path="/academy" element={<AcademyPageWrapper />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
       <LazyWaitlistDialog open={isWaitlistOpen} onOpenChange={setIsWaitlistOpen} />

@@ -1,6 +1,6 @@
 import logoImage from "../assets/logo-256.webp";
 import { Link } from "react-router";
-import { TELEGRAM_URL, YOUTUBE_URL } from "./utils/links";
+import { TELEGRAM_URL, TIKTOK_URL, YOUTUBE_URL } from "./utils/links";
 
 export function Footer() {
   return (
@@ -26,7 +26,10 @@ export function Footer() {
           </div>
           
           {/* Social links */}
-          <div className="flex items-center gap-8">
+          <div className="flex flex-wrap items-center justify-center gap-6">
+            <Link to="/academy" className="text-sm text-white/40 hover:text-white/60 transition-colors">
+              Academy
+            </Link>
             <a href="https://github.com/unleaktrade" target="_blank" rel="noopener noreferrer" className="text-sm text-white/40 hover:text-white/60 transition-colors">
               GitHub
             </a>
@@ -38,6 +41,9 @@ export function Footer() {
             </a>
             <a href={YOUTUBE_URL} target="_blank" rel="noopener noreferrer" className="text-sm text-white/40 hover:text-white/60 transition-colors">
               YouTube
+            </a>
+            <a href={TIKTOK_URL} target="_blank" rel="noopener noreferrer" className="text-sm text-white/40 hover:text-white/60 transition-colors">
+              TikTok
             </a>
           </div>
         </div>

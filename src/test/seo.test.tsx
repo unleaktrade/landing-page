@@ -51,6 +51,7 @@ describe('route metadata', () => {
     expect(canonicalUrl(resolveSeo('/faq.html'))).toBe(`${SITE_URL}/faq`);
     expect(canonicalUrl(resolveSeo('/roadmap'))).toBe(`${SITE_URL}/roadmap`);
     expect(canonicalUrl(resolveSeo('/builder'))).toBe(`${SITE_URL}/builder`);
+    expect(canonicalUrl(resolveSeo('/academy'))).toBe(`${SITE_URL}/academy`);
   });
 
   it('canonicalises duplicates and referral links to /waitlist', () => {
@@ -81,6 +82,7 @@ describe('route metadata', () => {
       `${SITE_URL}/faq`,
       `${SITE_URL}/roadmap`,
       `${SITE_URL}/builder`,
+      `${SITE_URL}/academy`,
       `${SITE_URL}/waitlist`,
     ]);
     expect(xml).toContain('<lastmod>2026-01-02</lastmod>');
