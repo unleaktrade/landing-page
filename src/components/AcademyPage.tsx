@@ -79,6 +79,18 @@ export function AcademyPage() {
                   supply and demand, volume, timeframes, setups and risk.
                 </p>
 
+                {/* What's inside: a plain reading list, deliberately not boxed
+                    rows, so nothing in it looks tappable. */}
+                <h3 className="text-white/70 text-sm tracking-wide mt-8 mb-3">What's inside</h3>
+                <ol className="academy-levels">
+                  {levels.map((level, i) => (
+                    <li key={level.label} className="academy-level">
+                      <span className={i % 2 ? "text-cyan-400" : "text-purple-400"}>{level.label}</span>
+                      <span className="text-white/90">{level.topic}</span>
+                    </li>
+                  ))}
+                </ol>
+
                 <div className="academy-cta mt-8">
                   <Link
                     to={WICKMASTERS_DEMO_URL}
@@ -106,21 +118,6 @@ export function AcademyPage() {
               </div>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* What's inside */}
-      <section className="relative py-20 px-6 lg:px-8">
-        <div className="max-w-3xl mx-auto">
-          <SectionHeader title="What's inside" />
-          <ol className="glass-card border border-white/10 rounded-2xl overflow-hidden">
-            {levels.map((level, i) => (
-              <li key={level.label} className={`academy-level ${i ? "border-t border-white/10" : ""}`}>
-                <span className={i % 2 ? "text-cyan-400" : "text-purple-400"}>{level.label}</span>
-                <span className="text-white/90">{level.topic}</span>
-              </li>
-            ))}
-          </ol>
         </div>
       </section>
 
