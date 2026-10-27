@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import { Download, Lock, Music2 } from "lucide-react";
+import { Download, Lock, Music2, TriangleAlert } from "lucide-react";
 import { Youtube } from "./BrandIcons";
 import { TIKTOK_URL, WICKMASTERS_DEMO_URL, YOUTUBE_URL } from "./utils/links";
 
@@ -11,10 +11,11 @@ import { TIKTOK_URL, WICKMASTERS_DEMO_URL, YOUTUBE_URL } from "./utils/links";
 // backing) and `academy-legible` (text shadow), the same legibility rules as
 // the home page Shorts header. Everything else sits on a glass-card.
 
+// `demo: true` marks the parts that come with the free demo download.
 const levels = [
-  { label: "Start Here", topic: "How the guide works" },
-  { label: "Level 0", topic: "Candlestick basics" },
-  { label: "Level 1", topic: "The seven single-candle patterns" },
+  { label: "Start Here", topic: "How the guide works", demo: true },
+  { label: "Level 0", topic: "Candlestick basics", demo: true },
+  { label: "Level 1", topic: "The seven single-candle patterns", demo: true },
   { label: "Levels 2 to 10", topic: "Chart patterns, supply and demand, volume, timeframes, setups and risk" },
   { label: "Boss Level", topic: "Putting it all together" },
 ];
@@ -79,17 +80,28 @@ export function AcademyPage() {
                   supply and demand, volume, timeframes, setups and risk.
                 </p>
 
-                {/* What's inside: a plain reading list, deliberately not boxed
-                    rows, so nothing in it looks tappable. */}
-                <h3 className="text-white/70 text-sm tracking-wide mt-8 mb-3">What's inside</h3>
-                <ol className="academy-levels">
-                  {levels.map((level, i) => (
-                    <li key={level.label} className="academy-level">
-                      <span className={i % 2 ? "text-cyan-400" : "text-purple-400"}>{level.label}</span>
-                      <span className="text-white/90">{level.topic}</span>
-                    </li>
-                  ))}
-                </ol>
+                {/* Table of contents: an indented panel with a titled intro and
+                    level tags, so it reads as the guide's outline rather than
+                    a list of tappable items. */}
+                <div className="academy-contents mt-8">
+                  <h3 className="text-white text-lg mb-1">What's inside the guide</h3>
+                  <p className="text-white/60 text-sm mb-4">
+                    The levels, in reading order. Parts tagged Free demo come with the download.
+                  </p>
+                  <ol className="academy-levels">
+                    {levels.map((level, i) => (
+                      <li key={level.label} className="academy-level">
+                        <span className={`academy-level-tag ${i % 2 ? "text-cyan-400" : "text-purple-400"}`}>
+                          {level.label}
+                        </span>
+                        <span className="academy-level-topic text-white/90">
+                          <span>{level.topic}</span>
+                          {level.demo && <span className="academy-demo-tag">Free demo</span>}
+                        </span>
+                      </li>
+                    ))}
+                  </ol>
+                </div>
 
                 <div className="academy-cta mt-8">
                   <Link
@@ -113,7 +125,7 @@ export function AcademyPage() {
                   </button>
                 </div>
                 <p className="text-white/60 text-sm mt-4">
-                  The demo: Start Here, Level 0, Level 1 and the first cheat sheet. No email, no form.
+                  The free demo includes the first cheat sheet. No email, no form.
                 </p>
               </div>
             </div>
@@ -154,8 +166,11 @@ export function AcademyPage() {
       {/* Risk notice: required on the page, not only in the footer. */}
       <section className="relative py-20 px-6 lg:px-8 pb-32">
         <div className="max-w-3xl mx-auto">
-          <aside aria-label="Risk notice" className="glass-card border border-white/20 rounded-2xl p-8 text-center">
-            <p className="text-white mb-3">Risk notice</p>
+          <aside aria-label="Risk notice" className="academy-risk glass-card rounded-2xl p-8">
+            <h2 className="academy-risk-title flex items-center gap-3 text-lg font-semibold uppercase tracking-wide mb-4">
+              <TriangleAlert className="w-5 h-5" aria-hidden="true" />
+              Risk notice
+            </h2>
             <p className="text-white/80 leading-relaxed">{RISK_NOTICE}</p>
           </aside>
         </div>
