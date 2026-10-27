@@ -4255,6 +4255,24 @@ html {
   gap: 1rem;
 }
 
+.academy-soon {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1rem 1.25rem;
+  text-align: center;
+}
+
+/* Narrow phones (360px class): keep the label on one line. */
+@media (max-width: 24rem) {
+  .academy-soon {
+    padding: 1rem;
+    font-size: 0.875rem;
+  }
+}
+
 
 @media (min-width: 40rem) {
   .academy-cta {
@@ -4264,6 +4282,11 @@ html {
 
   .academy-cta > * {
     white-space: nowrap;
+  }
+
+  .academy-soon {
+    flex-direction: row;
+    padding: 1rem 1.5rem;
   }
 
 }
