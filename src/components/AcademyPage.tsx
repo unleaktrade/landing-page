@@ -130,7 +130,7 @@ export function AcademyPage() {
                     className="inline-flex items-center justify-center gap-2 px-6 py-4 rounded-lg border border-white/20 bg-white/5 text-white/70 cursor-not-allowed"
                   >
                     <Lock className="w-4 h-4" />
-                    <span>Full guide + 10 cheat sheets, 25 EUR</span>{" "}
+                    <span>Full guide + 10 cheat sheets</span>{" "}
                     <span className="px-2 py-1 rounded-full border border-white/20 text-white/80 text-xs tracking-wide">
                       Coming soon
                     </span>
