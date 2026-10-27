@@ -12,12 +12,41 @@ import { TIKTOK_URL, WICKMASTERS_DEMO_URL, YOUTUBE_URL } from "./utils/links";
 // the home page Shorts header. Everything else sits on a glass-card.
 
 // `demo: true` marks the parts that come with the free demo download.
+// Descriptions stay factual about what each part teaches: no promise of gains.
 const levels = [
-  { label: "Start Here", topic: "How the guide works", demo: true },
-  { label: "Level 0", topic: "Candlestick basics", demo: true },
-  { label: "Level 1", topic: "The seven single-candle patterns", demo: true },
-  { label: "Levels 2 to 10", topic: "Chart patterns, supply and demand, volume, timeframes, setups and risk" },
-  { label: "Boss Level", topic: "Putting it all together" },
+  {
+    label: "Start Here",
+    topic: "How the guide works",
+    description:
+      "How Wick Masters is organised, how each level is laid out and how to use the cheat sheets. Read it first: it sets up the vocabulary the rest of the guide builds on.",
+    demo: true,
+  },
+  {
+    label: "Level 0",
+    topic: "Candlestick basics",
+    description:
+      "What a single candle tells you: the open, close, high and low of a period, the body and the wicks, and why the colour alone says very little. By the end you can read any candle on any chart.",
+    demo: true,
+  },
+  {
+    label: "Level 1",
+    topic: "The seven single-candle patterns",
+    description:
+      "The seven one-candle shapes beginners meet first, what each one suggests about the balance between buyers and sellers, and why none of them is a signal on its own.",
+    demo: true,
+  },
+  {
+    label: "Levels 2 to 10",
+    topic: "Chart patterns, supply and demand, volume, timeframes, setups and risk",
+    description:
+      "One topic per level, each building on the one before: patterns made of several candles, the zones where price tends to react, what volume adds, reading more than one timeframe, putting a setup together and sizing risk before anything else.",
+  },
+  {
+    label: "Boss Level",
+    topic: "Putting it all together",
+    description:
+      "A full chart read from scratch, step by step, using every skill from the earlier levels. It is practice in reading a chart, not a trading strategy.",
+  },
 ];
 
 export const RISK_NOTICE =
@@ -86,7 +115,7 @@ export function AcademyPage() {
                 <div className="academy-contents mt-8">
                   <h3 className="text-white text-lg mb-1">What's inside the guide</h3>
                   <p className="text-white/60 text-sm mb-4">
-                    The levels, in reading order. Parts tagged Free demo come with the download.
+                    The levels in reading order, with what each one teaches. Parts tagged Free demo come with the download.
                   </p>
                   <ol className="academy-levels">
                     {levels.map((level, i) => (
@@ -94,10 +123,13 @@ export function AcademyPage() {
                         <span className={`academy-level-tag ${i % 2 ? "text-cyan-400" : "text-purple-400"}`}>
                           {level.label}
                         </span>
-                        <span className="academy-level-topic text-white/90">
-                          <span>{level.topic}</span>
-                          {level.demo && <span className="academy-demo-tag">Free demo</span>}
-                        </span>
+                        <div className="min-w-0">
+                          <p className="academy-level-topic text-white">
+                            <span>{level.topic}</span>
+                            {level.demo && <span className="academy-demo-tag">Free demo</span>}
+                          </p>
+                          <p className="text-white/70 text-sm leading-relaxed mt-1">{level.description}</p>
+                        </div>
                       </li>
                     ))}
                   </ol>

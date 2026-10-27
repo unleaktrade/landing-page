@@ -4267,7 +4267,7 @@ html {
 .academy-levels {
   display: flex;
   flex-direction: column;
-  gap: 0.875rem;
+  gap: 1.5rem;
 }
 
 .academy-level {
@@ -4328,12 +4328,12 @@ html {
   }
 
   .academy-levels {
-    gap: 0.625rem;
+    gap: 1.25rem;
   }
 
   .academy-level {
     flex-direction: row;
-    align-items: baseline;
+    align-items: flex-start;
     gap: 1rem;
   }
 
