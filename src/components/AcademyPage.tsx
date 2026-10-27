@@ -88,7 +88,7 @@ export function AcademyPage() {
       {/* Wick Masters */}
       <section className="relative pb-20 px-6 lg:px-8">
         <div className="max-w-5xl mx-auto">
-          <div className="relative glass-card border border-white/10 rounded-3xl p-8 md:p-12 overflow-hidden">
+          <div className="relative glass-card border border-white/10 rounded-3xl p-6 md:p-12 overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 via-transparent to-cyan-500/5 pointer-events-none" />
 
             <div className="academy-card relative">
@@ -113,23 +113,22 @@ export function AcademyPage() {
                     level tags, so it reads as the guide's outline rather than
                     a list of tappable items. */}
                 <div className="academy-contents mt-8">
-                  <h3 className="text-white text-lg mb-1">What's inside the guide</h3>
-                  <p className="text-white/60 text-sm mb-4">
+                  <h3 className="text-white text-2xl tracking-tight mb-2">What's inside the guide</h3>
+                  <p className="text-white/70 mb-6">
                     The levels in reading order, with what each one teaches. Parts tagged Free demo come with the download.
                   </p>
                   <ol className="academy-levels">
                     {levels.map((level, i) => (
                       <li key={level.label} className="academy-level">
-                        <span className={`academy-level-tag ${i % 2 ? "text-cyan-400" : "text-purple-400"}`}>
-                          {level.label}
-                        </span>
-                        <div className="min-w-0">
-                          <p className="academy-level-topic text-white">
-                            <span>{level.topic}</span>
-                            {level.demo && <span className="academy-demo-tag">Free demo</span>}
-                          </p>
-                          <p className="text-white/70 text-sm leading-relaxed mt-1">{level.description}</p>
+                        {/* Free demo flag first, then the level, centred on one row. */}
+                        <div className="academy-level-head">
+                          {level.demo && <span className="academy-demo-tag">Free demo</span>}
+                          <span className={`academy-level-tag ${i % 2 ? "text-cyan-400" : "text-purple-400"}`}>
+                            {level.label}
+                          </span>
                         </div>
+                        <h4 className="text-white text-xl tracking-tight">{level.topic}</h4>
+                        <p className="text-white/80 leading-relaxed">{level.description}</p>
                       </li>
                     ))}
                   </ol>

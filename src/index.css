@@ -4257,7 +4257,7 @@ html {
 
 /* The guide's table of contents: indented behind a gradient rule. */
 .academy-contents {
-  padding: 1.25rem 1.25rem 1.25rem 1.5rem;
+  padding: 1.25rem 1rem 1.25rem 1.25rem;
   border-radius: 0 0.75rem 0.75rem 0;
   background:
     linear-gradient(to bottom, #8b5cf6, #0ea5e9) left / 3px 100% no-repeat,
@@ -4267,45 +4267,58 @@ html {
 .academy-levels {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
 }
 
+/* One column at every width: head row, title and paragraph share one left
+   edge, and a rule separates the levels. */
 .academy-level {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: 0.375rem;
+  gap: 0.5rem;
+  padding: 1.25rem 0;
+}
+
+.academy-level + .academy-level {
+  border-top: 1px solid rgb(255 255 255 / 0.1);
+}
+
+.academy-level:first-child {
+  padding-top: 0;
+}
+
+.academy-level:last-child {
+  padding-bottom: 0;
+}
+
+.academy-level-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 /* Level label as a tinted chip (no outline) so it reads as a tag, not a button. */
-.academy-level-tag {
-  display: inline-block;
-  padding: 0.125rem 0.625rem;
+.academy-level-tag,
+.academy-demo-tag {
+  display: inline-flex;
+  align-items: center;
+  height: 1.75rem;
+  padding: 0 0.625rem;
   border-radius: 0.375rem;
-  background-color: color-mix(in srgb, currentColor 14%, transparent);
-  font-size: 0.75rem;
-  line-height: 1.25rem;
-  letter-spacing: 0.04em;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
   text-transform: uppercase;
   white-space: nowrap;
 }
 
-.academy-level-topic {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0.25rem 0.5rem;
+.academy-level-tag {
+  background-color: color-mix(in srgb, currentColor 14%, transparent);
 }
 
 .academy-demo-tag {
-  display: inline-block;
-  white-space: nowrap;
-  padding: 0 0.5rem;
-  border-radius: 9999px;
-  background-color: rgb(14 165 233 / 0.15);
+  background-color: rgb(14 165 233 / 0.18);
   color: #7dd3fc;
-  font-size: 0.75rem;
-  line-height: 1.25rem;
 }
 
 /* Risk notice: amber accent so the title stands out from the content cards. */
@@ -4318,6 +4331,17 @@ html {
 }
 
 @media (min-width: 40rem) {
+  .academy-contents {
+    padding: 1.5rem 1.5rem 1.5rem 1.75rem;
+  }
+
+  .academy-level-tag,
+  .academy-demo-tag {
+    padding: 0 0.75rem;
+    font-size: 0.875rem;
+    letter-spacing: 0.04em;
+  }
+
   .academy-cta {
     flex-direction: row;
     flex-wrap: wrap;
@@ -4327,21 +4351,6 @@ html {
     white-space: nowrap;
   }
 
-  .academy-levels {
-    gap: 1.25rem;
-  }
-
-  .academy-level {
-    flex-direction: row;
-    align-items: flex-start;
-    gap: 1rem;
-  }
-
-  .academy-level-tag {
-    flex-shrink: 0;
-    width: 8.5rem;
-    text-align: center;
-  }
 }
 
 @media (min-width: 48rem) {
