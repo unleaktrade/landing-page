@@ -1,4 +1,3 @@
-import { Link } from "react-router";
 import type { LucideIcon } from "lucide-react";
 import { BookOpen, ChartCandlestick, ChartLine, Download, Lock, Music2, Shapes, TriangleAlert, Trophy } from "lucide-react";
 import { Youtube } from "./BrandIcons";
@@ -116,13 +115,18 @@ export function AcademyPage() {
                 </p>
 
                 <div className="academy-cta mt-8">
-                  <Link
-                    to={WICKMASTERS_DEMO_URL}
+                  {/* Cross-origin PDF: a plain anchor in a new tab. The CDN sends
+                      Content-Disposition: attachment, so no `download` attribute
+                      (browsers ignore it cross-origin anyway). */}
+                  <a
+                    href={WICKMASTERS_DEMO_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-purple-600 to-cyan-400 text-white rounded-lg hover:opacity-90 transition-opacity"
                   >
                     <Download className="w-4 h-4" />
                     <span>Download the free demo</span>
-                  </Link>
+                  </a>
 
                   <button
                     type="button"

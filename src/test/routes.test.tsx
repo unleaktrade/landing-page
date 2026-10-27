@@ -87,7 +87,11 @@ describe('App routing', () => {
   it('renders the academy page with the demo link, the disabled paid offer and the risk notice', () => {
     renderAt('/academy');
     expect(screen.getByRole('heading', { level: 1, name: /unleaktrade academy/i })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /download the free demo/i })).toHaveAttribute('href', WICKMASTERS_DEMO_URL);
+    const demo = screen.getByRole('link', { name: /download the free demo/i });
+    expect(demo).toHaveAttribute('href', WICKMASTERS_DEMO_URL);
+    expect(demo).toHaveAttribute('target', '_blank');
+    expect(demo).toHaveAttribute('rel', 'noopener noreferrer');
+    expect(WICKMASTERS_DEMO_URL).toMatch(/^https:\/\/d1wv92rybd6p8k\.cloudfront\.net\/academy\/.+\.pdf$/);
     expect(screen.getByRole('button', { name: /full guide \+ 10 cheat sheets/i })).toBeDisabled();
     // The price lives only on the Stripe checkout, never on the landing page.
     expect(document.body.textContent).not.toMatch(/eur|€|\$\d/i);
