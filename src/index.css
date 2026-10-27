@@ -4034,12 +4034,14 @@ html {
 /* Legibility over the animated WarpField background. Faint text alone
    (text-white/40) fails contrast against the bright lines, so text in this
    section sits on a soft dark scrim and carries a shadow. */
-.shorts-scrim {
+.shorts-scrim,
+.academy-scrim {
   position: relative;
   isolation: isolate;
 }
 
-.shorts-scrim::before {
+.shorts-scrim::before,
+.academy-scrim::before {
   content: "";
   position: absolute;
   inset: -1.5rem -1rem;
@@ -4049,7 +4051,8 @@ html {
   filter: blur(8px);
 }
 
-.shorts-legible {
+.shorts-legible,
+.academy-legible {
   text-shadow: 0 1px 2px rgb(0 0 0 / 0.9), 0 0 12px rgb(0 0 0 / 0.8);
 }
 
@@ -4208,10 +4211,18 @@ html {
 }
 
 /*
- * Academy page: placeholder cover for the Wick Masters guide until the cover
- * PNG is uploaded. Scoped rules because the precompiled utilities above have
- * no aspect-ratio or fixed-width classes.
+ * Academy page. Scoped rules because the precompiled utilities above have no
+ * aspect-ratio, fixed-width, nowrap or lg row/gap variants. Its legibility over
+ * the WarpField reuses the .shorts-scrim / .shorts-legible rules (shared
+ * selectors above).
  */
+.academy-card {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* Placeholder cover for the Wick Masters guide until the cover PNG lands. */
 .academy-cover {
   flex-shrink: 0;
   align-self: center;
@@ -4238,8 +4249,53 @@ html {
   letter-spacing: 0.05em;
 }
 
+.academy-cta {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.academy-level {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 1.25rem 1.5rem;
+}
+
+@media (min-width: 40rem) {
+  .academy-cta {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .academy-cta > * {
+    white-space: nowrap;
+  }
+
+  .academy-level {
+    flex-direction: row;
+    align-items: baseline;
+    gap: 1.5rem;
+  }
+
+  .academy-level > :first-child {
+    flex-shrink: 0;
+    width: 8.5rem;
+  }
+}
+
 @media (min-width: 48rem) {
+  .academy-card {
+    flex-direction: row;
+    gap: 3rem;
+  }
+
   .academy-cover {
     align-self: flex-start;
+    width: 14rem;
+  }
+
+  .academy-cover-title {
+    font-size: 2rem;
   }
 }
