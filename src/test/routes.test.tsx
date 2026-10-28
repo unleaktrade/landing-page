@@ -3,7 +3,7 @@ import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import App from '../App';
 import { RISK_NOTICE } from '../components/AcademyPage';
-import { TELEGRAM_URL, TIKTOK_URL, WICKMASTERS_CHECKOUT_URL, WICKMASTERS_DEMO_URL } from '../components/utils/links';
+import { TELEGRAM_URL, TIKTOK_URL, WICKMASTERS_CHECKOUT_URL } from '../components/utils/links';
 
 const VALID_SOLANA = 'GhTppHPoSppnBurco1sPuYWyn3mejhsaRdRbt3dHtFyc';
 
@@ -84,14 +84,13 @@ describe('App routing', () => {
     expect(screen.getAllByText(/julien sie/i).length).toBeGreaterThan(0);
   });
 
-  it('renders the academy page with the demo link, the paid checkout link and the risk notice', () => {
+  it('renders the academy page with the demo button, the paid checkout link and the risk notice', () => {
     renderAt('/academy');
     expect(screen.getByRole('heading', { level: 1, name: /unleaktrade academy/i })).toBeInTheDocument();
-    const demo = screen.getByRole('link', { name: /download the free demo/i });
-    expect(demo).toHaveAttribute('href', WICKMASTERS_DEMO_URL);
-    expect(demo).toHaveAttribute('target', '_blank');
-    expect(demo).toHaveAttribute('rel', 'noopener noreferrer');
-    expect(WICKMASTERS_DEMO_URL).toMatch(/^https:\/\/d1wv92rybd6p8k\.cloudfront\.net\/academy\/.+\.pdf$/);
+    // The demo PDF is only sent by email (tracked in Airtable), never linked here.
+    const demo = screen.getByRole('button', { name: /get the free demo/i });
+    expect(demo).toHaveAttribute('aria-expanded', 'false');
+    expect(document.querySelector('a[href*="cloudfront.net"]')).toBeNull();
     const buy = screen.getByRole('link', { name: /get the full guide \+ 10 cheat sheets/i });
     expect(buy).toHaveAttribute('href', WICKMASTERS_CHECKOUT_URL);
     // Same tab: Stripe brings the buyer back to /academy/thanks.

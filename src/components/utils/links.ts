@@ -2,10 +2,11 @@ export const BETA_APP_URL = "https://app.unleak.trade";
 export const TELEGRAM_URL = "https://t.me/+dwi3eXR9Q1Q4NjE0";
 export const YOUTUBE_URL = "https://www.youtube.com/@whyvrafvr-unleaktrade";
 export const TIKTOK_URL = "https://www.tiktok.com/@unleaktrade";
-// Wick Masters free demo, served from the CloudFront CDN (private S3 bucket).
-// The file name is versioned and cached for a year: a new version needs a new name.
-export const WICKMASTERS_DEMO_URL =
-  "https://d1wv92rybd6p8k.cloudfront.net/academy/WickMasters-FreeDemo-Levels0-1_v2026-10-27.pdf";
+// Wick Masters free demo request: the Airtable "Free demo request -> deliver
+// demo" automation logs the request in the Orders table (status Free demo) and
+// emails the PDF link. The PDF URL lives in that email only, never on this site.
+export const WICKMASTERS_DEMO_WEBHOOK_URL =
+  "https://hooks.airtable.com/workflows/v1/genericWebhook/appcS6Dsaqwq6jYyA/wflgzzCOkbC1MFkEt/wtrUBrkFLVzW4WWgG";
 // Wick Masters full guide + 10 cheat sheets checkout. The price lives on the
 // checkout only, never on this site.
 export const WICKMASTERS_CHECKOUT_URL = "https://buy.stripe.com/bJe3cv0SB8bA8TE6oN5AQ03";

@@ -19,8 +19,9 @@
 //   img-src     YouTube posters (i.ytimg.com), data: / blob: for the QR code
 //               download, Google tag beacons.
 //   frame-src   the privacy-enhanced YouTube player used by the Shorts section.
-//   connect-src the waitlist API and Google Analytics collection endpoints.
-import { API_BASE_URL } from '../components/utils/links';
+//   connect-src the waitlist API, the Airtable webhook behind the free demo
+//               form and Google Analytics collection endpoints.
+import { API_BASE_URL, WICKMASTERS_DEMO_WEBHOOK_URL } from '../components/utils/links';
 
 const GOOGLE_TAG = 'https://*.googletagmanager.com';
 const GOOGLE_ANALYTICS = ['https://*.google-analytics.com', 'https://*.analytics.google.com'];
@@ -36,7 +37,7 @@ export function buildCsp(): string {
     `img-src 'self' data: blob: https://i.ytimg.com ${GOOGLE_TAG} ${GOOGLE_ANALYTICS[0]}`,
     "font-src 'self'",
     'frame-src https://www.youtube-nocookie.com',
-    `connect-src 'self' ${new URL(API_BASE_URL).origin} ${GOOGLE_TAG} ${GOOGLE_ANALYTICS.join(' ')}`,
+    `connect-src 'self' ${new URL(API_BASE_URL).origin} ${new URL(WICKMASTERS_DEMO_WEBHOOK_URL).origin} ${GOOGLE_TAG} ${GOOGLE_ANALYTICS.join(' ')}`,
     'upgrade-insecure-requests',
   ].join('; ');
 }
