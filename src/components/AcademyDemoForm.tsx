@@ -10,9 +10,10 @@ type Status = "idle" | "sending" | "sent" | "error";
 
 // Free demo request: the email goes to an Airtable webhook, which logs it in
 // the Orders table and emails the download link. Airtable sends no CORS
-// headers we can rely on, so the POST is a `no-cors` simple request (text/plain
-// JSON body, no preflight): the response is opaque and only a network failure
-// counts as an error. A Cloudflare Turnstile token rides along in the body and
+// headers we can rely on, so the POST is a `no-cors` simple request with a
+// form-urlencoded body (a safelisted content type Airtable accepts; it rejects
+// text/plain, and JSON would need a preflight): the response is opaque and
+// only a network failure counts as an error. A Cloudflare Turnstile token rides along in the body and
 // the automation verifies it server-side before doing anything, then dedupes
 // and rate-limits on its side.
 export function AcademyDemoForm() {
@@ -74,7 +75,8 @@ export function AcademyDemoForm() {
       await fetch(WICKMASTERS_DEMO_WEBHOOK_URL, {
         method: "POST",
         mode: "no-cors",
-        body: JSON.stringify({ email: value, website, source: "academy", token }),
+        // URLSearchParams sets Content-Type: application/x-www-form-urlencoded.
+        body: new URLSearchParams({ email: value, website, source: "academy", token }),
       });
       setStatus("sent");
     } catch {

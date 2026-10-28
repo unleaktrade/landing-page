@@ -58,7 +58,9 @@ describe('Wick Masters free demo form', () => {
     // Simple request: no custom headers, so the browser sends no preflight.
     expect(init).toMatchObject({ method: 'POST', mode: 'no-cors' });
     expect(init.headers).toBeUndefined();
-    expect(JSON.parse(init.body)).toEqual({
+    // Form-urlencoded: a CORS-safelisted type that Airtable parses (it rejects text/plain).
+    expect(init.body).toBeInstanceOf(URLSearchParams);
+    expect(Object.fromEntries(init.body)).toEqual({
       email: 'trader@example.com',
       website: '',
       source: 'academy',
@@ -116,7 +118,7 @@ describe('Wick Masters free demo form', () => {
     expect(screen.queryByText(/checking that you are human/i)).not.toBeInTheDocument();
     await user.click(screen.getByRole('button', { name: /email me the demo/i }));
     await screen.findByText(/check your inbox/i);
-    expect(JSON.parse(fetchMock.mock.calls[0][1].body).token).toBe('fresh-token');
+    expect(fetchMock.mock.calls[0][1].body.get('token')).toBe('fresh-token');
   });
 
   it('removes the widget when the form closes', async () => {
@@ -135,6 +137,6 @@ describe('Wick Masters free demo form', () => {
     await user.click(screen.getByRole('button', { name: /email me the demo/i }));
 
     await screen.findByRole('status');
-    expect(JSON.parse(fetchMock.mock.calls[0][1].body).website).toBe('spam.example');
+    expect(fetchMock.mock.calls[0][1].body.get('website')).toBe('spam.example');
   });
 });
