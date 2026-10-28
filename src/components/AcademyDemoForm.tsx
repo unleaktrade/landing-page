@@ -91,10 +91,25 @@ export function AcademyDemoForm() {
     return (
       <div role="status" className="academy-demo-form flex items-start gap-3 rounded-lg border border-white/10 bg-white/5 p-4">
         <MailCheck className="w-5 h-5 flex-shrink-0 text-cyan-400" aria-hidden="true" />
-        <p className="text-white/80 text-sm leading-relaxed">
-          Check your inbox: the download link for the free demo is on its way from UnleakTrade Academy, usually
-          within a minute. Nothing after 10 minutes? Look in your spam folder.
-        </p>
+        <div className="space-y-2">
+          <p className="text-white/80 text-sm leading-relaxed">
+            Check your inbox: the download link for the free demo is on its way from UnleakTrade Academy, usually
+            within a minute.
+          </p>
+          {/* Same fallback as the full guide thank-you page. */}
+          <p className="text-white/70 text-sm leading-relaxed">
+            Nothing after 10 minutes? Look in your spam folder first. Still nothing: message us on{" "}
+            <a
+              href={TELEGRAM_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline hover:text-white transition-colors"
+            >
+              Telegram
+            </a>{" "}
+            with the email address you used and we will send you the link.
+          </p>
+        </div>
       </div>
     );
   }

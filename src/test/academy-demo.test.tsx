@@ -1,8 +1,8 @@
 import { describe, it, expect, afterEach, beforeEach, vi } from 'vitest';
-import { act, render, screen } from '@testing-library/react';
+import { act, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import App from '../App';
-import { TURNSTILE_SITE_KEY, WICKMASTERS_DEMO_WEBHOOK_URL } from '../components/utils/links';
+import { TELEGRAM_URL, TURNSTILE_SITE_KEY, WICKMASTERS_DEMO_WEBHOOK_URL } from '../components/utils/links';
 import type { TurnstileRenderOptions } from '../components/utils/turnstile';
 
 // Fake Turnstile: by default the invisible challenge passes at once.
@@ -51,6 +51,12 @@ describe('Wick Masters free demo form', () => {
     await user.click(screen.getByRole('button', { name: /email me the demo/i }));
 
     expect(await screen.findByRole('status')).toHaveTextContent(/check your inbox/i);
+    // No email? Same Telegram fallback as the full guide thank-you page.
+    const help = within(screen.getByRole('status')).getByRole('link', { name: /^telegram$/i });
+    expect(help).toHaveAttribute('href', TELEGRAM_URL);
+    expect(help).toHaveAttribute('target', '_blank');
+    expect(help).toHaveAttribute('rel', 'noopener noreferrer');
+    expect(screen.getByRole('status')).toHaveTextContent(/spam folder first/i);
     expect(fetchMock).toHaveBeenCalledTimes(1);
     const [url, init] = fetchMock.mock.calls[0];
     expect(url).toBe(WICKMASTERS_DEMO_WEBHOOK_URL);
