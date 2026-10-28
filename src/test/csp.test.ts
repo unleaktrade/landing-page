@@ -1,7 +1,7 @@
 // @vitest-environment node
 import { describe, it, expect } from 'vitest';
 import { buildCsp, cspPlugin, injectCsp } from '../seo/csp';
-import { API_BASE_URL } from '../components/utils/links';
+import { API_BASE_URL, WICKMASTERS_DEMO_WEBHOOK_URL } from '../components/utils/links';
 
 const directives = new Map(
   buildCsp()
@@ -22,15 +22,21 @@ describe('content security policy', () => {
     expect(directives.get('base-uri')).toEqual(["'self'"]);
   });
 
-  it('allows the waitlist API and Google Analytics', () => {
+  it('allows the waitlist API, the free demo webhook and Google Analytics', () => {
     const connect = directives.get('connect-src') ?? [];
     expect(connect).toContain(new URL(API_BASE_URL).origin);
+    expect(connect).toContain('https://hooks.airtable.com');
     expect(connect).toContain('https://*.google-analytics.com');
     expect(directives.get('script-src')).toContain('https://*.googletagmanager.com');
   });
 
+  it('allows the Turnstile script and challenge iframe', () => {
+    expect(directives.get('script-src')).toContain('https://challenges.cloudflare.com');
+    expect(directives.get('frame-src')).toContain('https://challenges.cloudflare.com');
+  });
+
   it('allows the YouTube Shorts player and posters', () => {
-    expect(directives.get('frame-src')).toEqual(['https://www.youtube-nocookie.com']);
+    expect(directives.get('frame-src')).toContain('https://www.youtube-nocookie.com');
     expect(directives.get('img-src')).toContain('https://i.ytimg.com');
   });
 });

@@ -1,7 +1,9 @@
+import { useState } from "react";
 import type { LucideIcon } from "lucide-react";
 import { ArrowRight, BookOpen, ChartCandlestick, ChartLine, Download, Music2, Shapes, ShoppingCart, TriangleAlert, Trophy } from "lucide-react";
 import { Youtube } from "./BrandIcons";
-import { TIKTOK_URL, WICKMASTERS_CHECKOUT_URL, WICKMASTERS_DEMO_URL, YOUTUBE_URL } from "./utils/links";
+import { AcademyDemoForm } from "./AcademyDemoForm";
+import { TIKTOK_URL, WICKMASTERS_CHECKOUT_URL, YOUTUBE_URL } from "./utils/links";
 
 // Wick Masters is neutral education content: no call to use the UnleakTrade
 // app inside this page's Wick Masters blocks, no promise of gains, no
@@ -69,6 +71,9 @@ function SectionHeader({ title, intro }: { title: string; intro?: string }) {
 }
 
 export function AcademyPage() {
+  // The demo form opens on demand so the paid guide stays the primary action.
+  const [demoOpen, setDemoOpen] = useState(false);
+
   return (
     <div className="min-h-screen text-white">
       {/* Hero */}
@@ -129,18 +134,21 @@ export function AcademyPage() {
                     <ArrowRight className="academy-buy-arrow w-5 h-5 flex-shrink-0" aria-hidden="true" />
                   </a>
 
-                  {/* Cross-origin PDF: a plain anchor in a new tab. The CDN sends
-                      Content-Disposition: attachment, so no `download` attribute
-                      (browsers ignore it cross-origin anyway). */}
-                  <a
-                    href={WICKMASTERS_DEMO_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  {/* The demo PDF is sent by email so each download is tracked in
+                      Airtable: this button only reveals the email form. */}
+                  <button
+                    type="button"
+                    aria-expanded={demoOpen}
+                    aria-controls="academy-demo-panel"
+                    onClick={() => setDemoOpen((open) => !open)}
                     className="academy-demo rounded-lg border border-white/20 bg-white/5 text-white/90 hover:bg-white/10 transition-colors"
                   >
                     <Download className="w-4 h-4 flex-shrink-0" />
-                    <span>Download the free demo</span>
-                  </a>
+                    <span>Get the free demo</span>
+                  </button>
+                </div>
+                <div id="academy-demo-panel" hidden={!demoOpen} className="mt-6">
+                  {demoOpen && <AcademyDemoForm />}
                 </div>
                 <p className="text-white/70 text-sm mt-4">
                   <span className="bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent">Full guide:</span>{" "}
@@ -148,7 +156,7 @@ export function AcademyPage() {
                   links by email a minute later.
                 </p>
                 <p className="text-white/60 text-sm mt-2">
-                  Not sure yet? The free demo covers the first levels and the first cheat sheet. No email, no form.
+                  Not sure yet? The free demo covers the first levels and the first cheat sheet. Leave your email and we send you the download link.
                 </p>
               </div>
             </div>

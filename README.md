@@ -15,7 +15,7 @@ React application whose public routes are prerendered to static HTML at build ti
 | `/team`, `/team/:memberId` | Team |
 | `/faq` | FAQ |
 | `/builder` | Builder page |
-| `/academy` | UnleakTrade Academy: Wick Masters free demo download, buy button for the full guide, level overview, Shorts links, risk notice |
+| `/academy` | UnleakTrade Academy: Wick Masters free demo by email, buy button for the full guide, level overview, Shorts links, risk notice |
 | `/academy/thanks` | Thank-you page after buying the full guide (`noindex`) |
 | `/waitlist`, `/waitlist/:sponsor`, `/app` | Waitlist registration (optionally prefilled with a sponsor address) |
 | `/activate/:token` | Waitlist activation and uUSDC airdrop status |
@@ -164,7 +164,9 @@ No manual deployment; merging to `main` is the release.
 
 - The content is neutral education: no call to use the UnleakTrade app inside the Wick Masters blocks, no promise of gains, no performance figures. The risk notice (`RISK_NOTICE` in `AcademyPage.tsx`) stays on the page.
 - No price on this site: it lives only on the checkout (a test checks it).
-- The free demo is `WICKMASTERS_DEMO_URL` in `links.ts`, a versioned PDF cached for a year: a new version gets a new file name and a new constant.
+- The free demo is sent by email so every download is tracked. The form (`AcademyDemoForm.tsx`) POSTs `email`, `website`, `source` and `token` (form-urlencoded) to `WICKMASTERS_DEMO_WEBHOOK_URL` (`links.ts`), the Airtable automation **Free demo request -> deliver demo** in the *Wick Masters Sales* base. It logs a row in `Orders` with status `Free demo`, emails the PDF link through Gmail, then sets the status to `Free demo sent`. The body also carries a Cloudflare Turnstile token (`TURNSTILE_SITE_KEY` in `links.ts`, script loaded on demand by `utils/turnstile.ts`); the automation verifies it with the `TURNSTILE_SECRET` Airtable secret (action `free-demo`, hostname `unleak.trade`) before doing anything else. `website` is a honeypot; the automation also ignores repeat requests from the same address within 24 hours and caps free demo emails at 200 a day.
+- The POST is a `no-cors` simple request with a form-urlencoded body (`URLSearchParams`, no custom headers): the Airtable webhook does not answer CORS preflights, so JSON is out, and it rejects `text/plain`. Its origin is allowed in the CSP `connect-src`, and `https://challenges.cloudflare.com` in `script-src` and `frame-src` (`src/seo/csp.ts`).
+- The demo PDF URL lives only in the Airtable email template, never on the site. It is a versioned PDF cached for a year: a new version gets a new file name, then update the email template and `DEMO_VERSION` in the automation script.
 
 ---
 
