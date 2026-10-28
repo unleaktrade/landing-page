@@ -11,20 +11,23 @@
 // Kept free of React imports: vite.config.ts loads it at config time.
 //
 // Rationale per directive:
-//   script-src  'self' + Google tag: no inline script at all. The gtag
+//   script-src  'self' + Google tag + Cloudflare Turnstile (free demo form):
+//               no inline script at all. The gtag
 //               bootstrap lives in public/gtag-init.js for that reason. The
 //               JSON-LD blocks are data, not script, so they are not affected.
 //   style-src   'unsafe-inline': motion animates through inline style
 //               attributes, and the prerendered markup ships them (opacity:0).
 //   img-src     YouTube posters (i.ytimg.com), data: / blob: for the QR code
 //               download, Google tag beacons.
-//   frame-src   the privacy-enhanced YouTube player used by the Shorts section.
+//   frame-src   the privacy-enhanced YouTube player used by the Shorts section
+//               and the Turnstile challenge iframe.
 //   connect-src the waitlist API, the Airtable webhook behind the free demo
 //               form and Google Analytics collection endpoints.
 import { API_BASE_URL, WICKMASTERS_DEMO_WEBHOOK_URL } from '../components/utils/links';
 
 const GOOGLE_TAG = 'https://*.googletagmanager.com';
 const GOOGLE_ANALYTICS = ['https://*.google-analytics.com', 'https://*.analytics.google.com'];
+const TURNSTILE = 'https://challenges.cloudflare.com';
 
 export function buildCsp(): string {
   return [
@@ -32,11 +35,11 @@ export function buildCsp(): string {
     "base-uri 'self'",
     "object-src 'none'",
     "form-action 'self'",
-    `script-src 'self' ${GOOGLE_TAG}`,
+    `script-src 'self' ${GOOGLE_TAG} ${TURNSTILE}`,
     "style-src 'self' 'unsafe-inline'",
     `img-src 'self' data: blob: https://i.ytimg.com ${GOOGLE_TAG} ${GOOGLE_ANALYTICS[0]}`,
     "font-src 'self'",
-    'frame-src https://www.youtube-nocookie.com',
+    `frame-src https://www.youtube-nocookie.com ${TURNSTILE}`,
     `connect-src 'self' ${new URL(API_BASE_URL).origin} ${new URL(WICKMASTERS_DEMO_WEBHOOK_URL).origin} ${GOOGLE_TAG} ${GOOGLE_ANALYTICS.join(' ')}`,
     'upgrade-insecure-requests',
   ].join('; ');

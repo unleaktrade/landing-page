@@ -1,8 +1,22 @@
-import { describe, it, expect, afterEach, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { describe, it, expect, afterEach, beforeEach, vi } from 'vitest';
+import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import App from '../App';
-import { WICKMASTERS_DEMO_WEBHOOK_URL } from '../components/utils/links';
+import { TURNSTILE_SITE_KEY, WICKMASTERS_DEMO_WEBHOOK_URL } from '../components/utils/links';
+import type { TurnstileRenderOptions } from '../components/utils/turnstile';
+
+// Fake Turnstile: by default the invisible challenge passes at once.
+let passChallenge = true;
+let widgetOptions: TurnstileRenderOptions | undefined;
+const turnstile = {
+  render: vi.fn((_el: HTMLElement, options: TurnstileRenderOptions) => {
+    widgetOptions = options;
+    if (passChallenge) options.callback?.('turnstile-token');
+    return 'widget-1';
+  }),
+  reset: vi.fn(),
+  remove: vi.fn(),
+};
 
 async function openDemoForm() {
   window.history.pushState({}, '', '/academy');
@@ -14,7 +28,15 @@ async function openDemoForm() {
   return user;
 }
 
+beforeEach(() => {
+  passChallenge = true;
+  widgetOptions = undefined;
+  vi.clearAllMocks();
+  window.turnstile = turnstile;
+});
+
 afterEach(() => {
+  delete window.turnstile;
   vi.unstubAllGlobals();
   window.history.pushState({}, '', '/');
 });
@@ -36,7 +58,14 @@ describe('Wick Masters free demo form', () => {
     // Simple request: no custom headers, so the browser sends no preflight.
     expect(init).toMatchObject({ method: 'POST', mode: 'no-cors' });
     expect(init.headers).toBeUndefined();
-    expect(JSON.parse(init.body)).toEqual({ email: 'trader@example.com', website: '', source: 'academy' });
+    expect(JSON.parse(init.body)).toEqual({
+      email: 'trader@example.com',
+      website: '',
+      source: 'academy',
+      token: 'turnstile-token',
+    });
+    expect(turnstile.render).toHaveBeenCalledTimes(1);
+    expect(widgetOptions).toMatchObject({ sitekey: TURNSTILE_SITE_KEY, action: 'free-demo' });
   });
 
   it('rejects an invalid email without calling the webhook', async () => {
@@ -62,6 +91,38 @@ describe('Wick Masters free demo form', () => {
 
     expect(await screen.findByRole('alert')).toHaveTextContent(/could not send your request/i);
     expect(screen.queryByRole('status')).not.toBeInTheDocument();
+    // The token may be spent: the widget is reset for the retry.
+    expect(turnstile.reset).toHaveBeenCalledWith('widget-1');
+  });
+
+  it('waits for the Turnstile check before sending', async () => {
+    passChallenge = false;
+    const fetchMock = vi.fn().mockResolvedValue(new Response(null));
+    vi.stubGlobal('fetch', fetchMock);
+    const user = await openDemoForm();
+
+    await user.type(screen.getByLabelText(/email address for the free demo/i), 'trader@example.com');
+    await user.click(screen.getByRole('button', { name: /email me the demo/i }));
+    expect(screen.getByText(/checking that you are human/i)).toBeInTheDocument();
+    expect(fetchMock).not.toHaveBeenCalled();
+
+    // An expired token is dropped too.
+    act(() => widgetOptions?.callback?.('late-token'));
+    act(() => widgetOptions?.['expired-callback']?.());
+    await user.click(screen.getByRole('button', { name: /email me the demo/i }));
+    expect(fetchMock).not.toHaveBeenCalled();
+
+    act(() => widgetOptions?.callback?.('fresh-token'));
+    expect(screen.queryByText(/checking that you are human/i)).not.toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: /email me the demo/i }));
+    await screen.findByText(/check your inbox/i);
+    expect(JSON.parse(fetchMock.mock.calls[0][1].body).token).toBe('fresh-token');
+  });
+
+  it('removes the widget when the form closes', async () => {
+    const user = await openDemoForm();
+    await user.click(screen.getByRole('button', { name: /get the free demo/i }));
+    expect(turnstile.remove).toHaveBeenCalledWith('widget-1');
   });
 
   it('sends the honeypot value so the automation can drop bots', async () => {

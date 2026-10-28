@@ -7,6 +7,10 @@ export const TIKTOK_URL = "https://www.tiktok.com/@unleaktrade";
 // emails the PDF link. The PDF URL lives in that email only, never on this site.
 export const WICKMASTERS_DEMO_WEBHOOK_URL =
   "https://hooks.airtable.com/workflows/v1/genericWebhook/appcS6Dsaqwq6jYyA/wflgzzCOkbC1MFkEt/wtrUBrkFLVzW4WWgG";
+// Cloudflare Turnstile site key for the free demo form (public by design). The
+// Airtable automation checks each token with the matching secret
+// (TURNSTILE_SECRET) before logging the request or sending the email.
+export const TURNSTILE_SITE_KEY = "1x00000000000000000000AA";
 // Wick Masters full guide + 10 cheat sheets checkout. The price lives on the
 // checkout only, never on this site.
 export const WICKMASTERS_CHECKOUT_URL = "https://buy.stripe.com/bJe3cv0SB8bA8TE6oN5AQ03";

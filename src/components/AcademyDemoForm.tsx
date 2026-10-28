@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { FormEvent } from "react";
 import { MailCheck, Send } from "lucide-react";
 import { isValidEmail } from "./utils/validation";
-import { TELEGRAM_URL, WICKMASTERS_DEMO_WEBHOOK_URL } from "./utils/links";
+import { TELEGRAM_URL, TURNSTILE_SITE_KEY, WICKMASTERS_DEMO_WEBHOOK_URL } from "./utils/links";
+import { loadTurnstile } from "./utils/turnstile";
+import type { TurnstileApi } from "./utils/turnstile";
 
 type Status = "idle" | "sending" | "sent" | "error";
 
@@ -10,13 +12,50 @@ type Status = "idle" | "sending" | "sent" | "error";
 // the Orders table and emails the download link. Airtable sends no CORS
 // headers we can rely on, so the POST is a `no-cors` simple request (text/plain
 // JSON body, no preflight): the response is opaque and only a network failure
-// counts as an error. The automation dedupes and rate-limits on its side.
+// counts as an error. A Cloudflare Turnstile token rides along in the body and
+// the automation verifies it server-side before doing anything, then dedupes
+// and rate-limits on its side.
 export function AcademyDemoForm() {
   const [email, setEmail] = useState("");
   // Honeypot: hidden from people and assistive tech, bots tend to fill it.
   const [website, setWebsite] = useState("");
   const [status, setStatus] = useState<Status>("idle");
   const [invalid, setInvalid] = useState(false);
+  // Turnstile token: single use, valid for 5 minutes. Empty until the
+  // (usually invisible) challenge passes.
+  const [token, setToken] = useState("");
+  const [waitingForCheck, setWaitingForCheck] = useState(false);
+  const widgetRef = useRef<HTMLDivElement>(null);
+  const turnstileRef = useRef<{ api: TurnstileApi; id?: string }>();
+
+  useEffect(() => {
+    let cancelled = false;
+    loadTurnstile()
+      .then((api) => {
+        if (cancelled || !widgetRef.current) return;
+        const id = api.render(widgetRef.current, {
+          sitekey: TURNSTILE_SITE_KEY,
+          action: "free-demo",
+          theme: "dark",
+          appearance: "interaction-only",
+          callback: (t) => {
+            setToken(t);
+            setWaitingForCheck(false);
+          },
+          "expired-callback": () => setToken(""),
+          "error-callback": () => setToken(""),
+        });
+        turnstileRef.current = { api, id };
+      })
+      .catch(() => {
+        if (!cancelled) setStatus("error");
+      });
+    return () => {
+      cancelled = true;
+      turnstileRef.current?.api.remove(turnstileRef.current.id);
+      turnstileRef.current = undefined;
+    };
+  }, []);
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -26,15 +65,22 @@ export function AcademyDemoForm() {
       return;
     }
     setInvalid(false);
+    if (!token) {
+      setWaitingForCheck(true);
+      return;
+    }
     setStatus("sending");
     try {
       await fetch(WICKMASTERS_DEMO_WEBHOOK_URL, {
         method: "POST",
         mode: "no-cors",
-        body: JSON.stringify({ email: value, website, source: "academy" }),
+        body: JSON.stringify({ email: value, website, source: "academy", token }),
       });
       setStatus("sent");
     } catch {
+      // The token may have been consumed: get a fresh one for the retry.
+      setToken("");
+      turnstileRef.current?.api.reset(turnstileRef.current.id);
       setStatus("error");
     }
   };
@@ -94,9 +140,15 @@ export function AcademyDemoForm() {
           onChange={(e) => setWebsite(e.target.value)}
         />
       </div>
+      <div ref={widgetRef} className="mt-2" />
       {invalid && (
         <p id="academy-demo-error" className="text-red-400 text-sm mt-2">
           Enter a valid email address.
+        </p>
+      )}
+      {waitingForCheck && (
+        <p role="status" className="text-white/70 text-sm mt-2">
+          Checking that you are human. Submit again in a few seconds.
         </p>
       )}
       {status === "error" && (

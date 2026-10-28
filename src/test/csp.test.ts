@@ -30,8 +30,13 @@ describe('content security policy', () => {
     expect(directives.get('script-src')).toContain('https://*.googletagmanager.com');
   });
 
+  it('allows the Turnstile script and challenge iframe', () => {
+    expect(directives.get('script-src')).toContain('https://challenges.cloudflare.com');
+    expect(directives.get('frame-src')).toContain('https://challenges.cloudflare.com');
+  });
+
   it('allows the YouTube Shorts player and posters', () => {
-    expect(directives.get('frame-src')).toEqual(['https://www.youtube-nocookie.com']);
+    expect(directives.get('frame-src')).toContain('https://www.youtube-nocookie.com');
     expect(directives.get('img-src')).toContain('https://i.ytimg.com');
   });
 });
