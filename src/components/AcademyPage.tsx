@@ -1,7 +1,7 @@
 import type { LucideIcon } from "lucide-react";
-import { BookOpen, ChartCandlestick, ChartLine, Download, Lock, Music2, Shapes, TriangleAlert, Trophy } from "lucide-react";
+import { BookOpen, ChartCandlestick, ChartLine, Download, Music2, Shapes, ShoppingCart, TriangleAlert, Trophy } from "lucide-react";
 import { Youtube } from "./BrandIcons";
-import { TIKTOK_URL, WICKMASTERS_DEMO_URL, YOUTUBE_URL } from "./utils/links";
+import { TIKTOK_URL, WICKMASTERS_CHECKOUT_URL, WICKMASTERS_DEMO_URL, YOUTUBE_URL } from "./utils/links";
 
 // Wick Masters is neutral education content: no call to use the UnleakTrade
 // app inside this page's Wick Masters blocks, no promise of gains, no
@@ -128,24 +128,24 @@ export function AcademyPage() {
                     <span>Download the free demo</span>
                   </a>
 
-                  {/* Phones: badge stacked above the label, so neither wraps
-                      awkwardly. From sm up: one row. */}
-                  <button
-                    type="button"
-                    disabled
-                    className="academy-soon rounded-lg border border-white/20 bg-white/5 text-white/70 cursor-not-allowed"
+                  {/* Same tab: checkout, then back to /academy/thanks.
+                      No price here: it lives on the checkout only. */}
+                  <a
+                    href={WICKMASTERS_CHECKOUT_URL}
+                    className="academy-soon rounded-lg border border-white/20 bg-white/5 text-white hover:bg-white/10 transition-colors"
                   >
                     <span className="inline-flex items-center gap-2">
-                      <Lock className="w-4 h-4 flex-shrink-0" />
-                      <span>Full guide + 10 cheat sheets</span>
-                    </span>{" "}
-                    <span className="px-2 py-1 rounded-full border border-white/20 text-white/80 text-xs tracking-wide whitespace-nowrap">
-                      Coming soon
+                      <ShoppingCart className="w-4 h-4 flex-shrink-0" />
+                      <span>Get the full guide + 10 cheat sheets</span>
                     </span>
-                  </button>
+                  </a>
                 </div>
                 <p className="text-white/60 text-sm mt-4">
                   The free demo includes the first cheat sheet. No email, no form.
+                </p>
+                <p className="text-white/60 text-sm mt-2">
+                  The full guide is a one-time purchase through Stripe. Your download links arrive by email
+                  a minute later.
                 </p>
               </div>
             </div>

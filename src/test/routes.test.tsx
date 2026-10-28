@@ -3,7 +3,7 @@ import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import App from '../App';
 import { RISK_NOTICE } from '../components/AcademyPage';
-import { TIKTOK_URL, WICKMASTERS_DEMO_URL } from '../components/utils/links';
+import { TELEGRAM_URL, TIKTOK_URL, WICKMASTERS_CHECKOUT_URL, WICKMASTERS_DEMO_URL } from '../components/utils/links';
 
 const VALID_SOLANA = 'GhTppHPoSppnBurco1sPuYWyn3mejhsaRdRbt3dHtFyc';
 
@@ -84,7 +84,7 @@ describe('App routing', () => {
     expect(screen.getAllByText(/julien sie/i).length).toBeGreaterThan(0);
   });
 
-  it('renders the academy page with the demo link, the disabled paid offer and the risk notice', () => {
+  it('renders the academy page with the demo link, the paid checkout link and the risk notice', () => {
     renderAt('/academy');
     expect(screen.getByRole('heading', { level: 1, name: /unleaktrade academy/i })).toBeInTheDocument();
     const demo = screen.getByRole('link', { name: /download the free demo/i });
@@ -92,12 +92,26 @@ describe('App routing', () => {
     expect(demo).toHaveAttribute('target', '_blank');
     expect(demo).toHaveAttribute('rel', 'noopener noreferrer');
     expect(WICKMASTERS_DEMO_URL).toMatch(/^https:\/\/d1wv92rybd6p8k\.cloudfront\.net\/academy\/.+\.pdf$/);
-    expect(screen.getByRole('button', { name: /full guide \+ 10 cheat sheets/i })).toBeDisabled();
+    const buy = screen.getByRole('link', { name: /get the full guide \+ 10 cheat sheets/i });
+    expect(buy).toHaveAttribute('href', WICKMASTERS_CHECKOUT_URL);
+    // Same tab: Stripe brings the buyer back to /academy/thanks.
+    expect(buy).not.toHaveAttribute('target');
+    expect(WICKMASTERS_CHECKOUT_URL).toMatch(/^https:\/\/buy\.stripe\.com\/[A-Za-z0-9]+$/);
     // The price lives only on the Stripe checkout, never on the landing page.
     expect(document.body.textContent).not.toMatch(/eur|€|\$\d/i);
-    expect(screen.getByText(/coming soon/i)).toBeInTheDocument();
+    expect(screen.queryByText(/coming soon/i)).not.toBeInTheDocument();
     expect(screen.getByRole('complementary', { name: /risk notice/i })).toHaveTextContent(RISK_NOTICE);
     expect(screen.getAllByRole('link', { name: /tiktok/i })[0]).toHaveAttribute('href', TIKTOK_URL);
+  });
+
+  it('renders the post-checkout thank-you page with the session id in the URL', () => {
+    renderAt('/academy/thanks?session_id=cs_live_example');
+    expect(screen.getByRole('heading', { level: 1, name: /guide is on its way/i })).toBeInTheDocument();
+    expect(screen.getByText(/email address you used at checkout/i)).toBeInTheDocument();
+    expect(within(screen.getByRole('main')).getByRole('link', { name: /^telegram$/i })).toHaveAttribute('href', TELEGRAM_URL);
+    expect(screen.getByRole('link', { name: /back to the academy/i })).toHaveAttribute('href', '/academy');
+    expect(screen.getByRole('complementary', { name: /risk notice/i })).toHaveTextContent(RISK_NOTICE);
+    expect(document.body.textContent).not.toMatch(/eur|€|\$\d/i);
   });
 
   it('links to the academy from the navigation', async () => {
