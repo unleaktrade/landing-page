@@ -97,6 +97,8 @@ describe('App routing', () => {
     // Same tab: Stripe brings the buyer back to /academy/thanks.
     expect(buy).not.toHaveAttribute('target');
     expect(WICKMASTERS_CHECKOUT_URL).toMatch(/^https:\/\/buy\.stripe\.com\/[A-Za-z0-9]+$/);
+    // The paid guide is the primary CTA: first in reading order, before the demo.
+    expect(buy.compareDocumentPosition(demo) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     // The price lives only on the Stripe checkout, never on the landing page.
     expect(document.body.textContent).not.toMatch(/eur|€|\$\d/i);
     expect(screen.queryByText(/coming soon/i)).not.toBeInTheDocument();

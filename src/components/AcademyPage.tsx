@@ -1,5 +1,5 @@
 import type { LucideIcon } from "lucide-react";
-import { BookOpen, ChartCandlestick, ChartLine, Download, Music2, Shapes, ShoppingCart, TriangleAlert, Trophy } from "lucide-react";
+import { ArrowRight, BookOpen, ChartCandlestick, ChartLine, Download, Music2, Shapes, ShoppingCart, TriangleAlert, Trophy } from "lucide-react";
 import { Youtube } from "./BrandIcons";
 import { TIKTOK_URL, WICKMASTERS_CHECKOUT_URL, WICKMASTERS_DEMO_URL, YOUTUBE_URL } from "./utils/links";
 
@@ -114,7 +114,21 @@ export function AcademyPage() {
                   supply and demand, volume, timeframes, setups and risk.
                 </p>
 
+                {/* The paid guide is the primary action: brand gradient, glow and
+                    first in reading order. The free demo is the secondary,
+                    outlined action next to it. */}
                 <div className="academy-cta mt-8">
+                  {/* Same tab: checkout, then back to /academy/thanks.
+                      No price here: it lives on the checkout only. */}
+                  <a
+                    href={WICKMASTERS_CHECKOUT_URL}
+                    className="academy-buy text-white rounded-lg"
+                  >
+                    <ShoppingCart className="w-5 h-5 flex-shrink-0" />
+                    <span>Get the full guide + 10 cheat sheets</span>
+                    <ArrowRight className="academy-buy-arrow w-5 h-5 flex-shrink-0" aria-hidden="true" />
+                  </a>
+
                   {/* Cross-origin PDF: a plain anchor in a new tab. The CDN sends
                       Content-Disposition: attachment, so no `download` attribute
                       (browsers ignore it cross-origin anyway). */}
@@ -122,30 +136,19 @@ export function AcademyPage() {
                     href={WICKMASTERS_DEMO_URL}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-purple-600 to-cyan-400 text-white rounded-lg hover:opacity-90 transition-opacity"
+                    className="academy-demo rounded-lg border border-white/20 bg-white/5 text-white/90 hover:bg-white/10 transition-colors"
                   >
-                    <Download className="w-4 h-4" />
+                    <Download className="w-4 h-4 flex-shrink-0" />
                     <span>Download the free demo</span>
                   </a>
-
-                  {/* Same tab: checkout, then back to /academy/thanks.
-                      No price here: it lives on the checkout only. */}
-                  <a
-                    href={WICKMASTERS_CHECKOUT_URL}
-                    className="academy-soon rounded-lg border border-white/20 bg-white/5 text-white hover:bg-white/10 transition-colors"
-                  >
-                    <span className="inline-flex items-center gap-2">
-                      <ShoppingCart className="w-4 h-4 flex-shrink-0" />
-                      <span>Get the full guide + 10 cheat sheets</span>
-                    </span>
-                  </a>
                 </div>
-                <p className="text-white/60 text-sm mt-4">
-                  The free demo includes the first cheat sheet. No email, no form.
+                <p className="text-white/70 text-sm mt-4">
+                  <span className="bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent">Full guide:</span>{" "}
+                  all 11 levels, the Boss Level and 10 cheat sheets. One-time purchase through Stripe, download
+                  links by email a minute later.
                 </p>
                 <p className="text-white/60 text-sm mt-2">
-                  The full guide is a one-time purchase through Stripe. Your download links arrive by email
-                  a minute later.
+                  Not sure yet? The free demo covers the first levels and the first cheat sheet. No email, no form.
                 </p>
               </div>
             </div>
