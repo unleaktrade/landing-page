@@ -61,7 +61,7 @@ export const RISK_NOTICE =
 
 function SectionHeader({ title, intro }: { title: string; intro?: string }) {
   return (
-    <div className="academy-scrim text-center space-y-4 mb-12">
+    <div className="academy-scrim academy-balance text-center space-y-4 mb-12">
       <h2 className="academy-legible text-3xl lg:text-4xl tracking-tight">{title}</h2>
       {intro && (
         <p className="academy-legible text-white/80 text-lg leading-relaxed max-w-2xl mx-auto">{intro}</p>
@@ -75,12 +75,12 @@ export function AcademyPage() {
   const [demoOpen, setDemoOpen] = useState(false);
 
   return (
-    <div className="min-h-screen text-white">
+    <div className="academy-page min-h-screen text-white">
       {/* Hero */}
       <section className="relative pt-32 pb-20 px-6 lg:px-8">
         <div className="relative max-w-4xl mx-auto">
           {/* CSS entrance, not motion: it plays from the prerendered HTML. */}
-          <div className="enter-up academy-scrim text-center space-y-6">
+          <div className="enter-up academy-scrim academy-balance text-center space-y-6">
             <p className="academy-legible text-white/70">Free trading education</p>
             {/* No text shadow on the gradient word: with transparent text the
                 shadow shows through and darkens it. */}
@@ -111,7 +111,7 @@ export function AcademyPage() {
                 <span className="text-white/70 text-xs tracking-wide">LEVELS 0 TO 10 + BOSS</span>
               </div>
 
-              <div className="flex-1 min-w-0">
+              <div className="academy-body flex-1 min-w-0">
                 <p className="text-white/70 mb-3">UnleakTrade Academy presents</p>
                 <h2 className="text-white text-3xl lg:text-4xl tracking-tight mb-4">Wick Masters</h2>
                 <p className="text-white/80 text-lg leading-relaxed">
@@ -129,9 +129,11 @@ export function AcademyPage() {
                     href={WICKMASTERS_CHECKOUT_URL}
                     className="academy-buy text-white rounded-lg"
                   >
-                    <ShoppingCart className="w-5 h-5 flex-shrink-0" />
-                    <span>Get the full guide + 10 cheat sheets</span>
-                    <ArrowRight className="academy-buy-arrow w-5 h-5 flex-shrink-0" aria-hidden="true" />
+                    <ShoppingCart className="w-4 h-4 flex-shrink-0" />
+                    {/* Short enough to stay on one line on a 360px phone; the
+                        cheat sheets are listed in the note under the buttons. */}
+                    <span>Get the full guide</span>
+                    <ArrowRight className="academy-buy-arrow w-4 h-4 flex-shrink-0" aria-hidden="true" />
                   </a>
 
                   {/* The demo PDF is sent by email so each download is tracked in
@@ -147,7 +149,7 @@ export function AcademyPage() {
                     <span>Get the free demo</span>
                   </button>
                 </div>
-                <div id="academy-demo-panel" hidden={!demoOpen} className="mt-6">
+                <div id="academy-demo-panel" hidden={!demoOpen} className="academy-demo-panel mt-6">
                   {demoOpen && <AcademyDemoForm />}
                 </div>
                 <p className="text-white/70 text-sm mt-4">
@@ -176,7 +178,7 @@ export function AcademyPage() {
           />
           <ol className="space-y-6">
             {levels.map((level, i) => (
-              <li key={level.label} className="flex flex-col sm:flex-row items-start gap-6 p-8 rounded-2xl border border-white/10 glass-card">
+              <li key={level.label} className="academy-level flex flex-col sm:flex-row items-start rounded-2xl border border-white/10 glass-card">
                 <div className="flex-shrink-0 h-12 w-12 rounded-xl bg-gradient-to-br from-purple-600/20 to-cyan-400/20 flex items-center justify-center">
                   <level.icon className={`w-6 h-6 ${i % 2 ? "text-cyan-400" : "text-purple-400"}`} aria-hidden="true" />
                 </div>
