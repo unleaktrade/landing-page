@@ -1,12 +1,12 @@
 # 🛡️ UnleakTrade Landing Page
 
-The official **UnleakTrade** landing page: a fast, modern web experience introducing the UnleakTrade ecosystem: confidential OTC trading, RFQs, and trustless settlement on Solana.
+The official **UnleakTrade** landing page: a fast, modern web experience introducing the UnleakTrade ecosystem: confidential OTC trading, RFQs, and trustless settlement on Solana. It also hosts the **UnleakTrade Academy** and its first guide, **Wick Masters** (the arcade guide to reading crypto charts): a free demo download and the paid full guide.
 
 ---
 
 ## 🚀 Overview
 
-React application whose public routes are prerendered to static HTML at build time, then hydrated in the browser (React Router). Dynamic routes render client-side. Static marketing pages plus a waitlist registration + activation flow backed by a small external API (the `waitlist` service).
+React application whose public routes are prerendered to static HTML at build time, then hydrated in the browser (React Router). Dynamic routes render client-side. Static marketing pages, the Academy page (Wick Masters free demo and full guide), plus a waitlist registration + activation flow backed by a small external API (the `waitlist` service).
 
 | Route | Page |
 |-------|------|
@@ -15,6 +15,8 @@ React application whose public routes are prerendered to static HTML at build ti
 | `/team`, `/team/:memberId` | Team |
 | `/faq` | FAQ |
 | `/builder` | Builder page |
+| `/academy` | UnleakTrade Academy: Wick Masters free demo download, buy button for the full guide, level overview, Shorts links, risk notice |
+| `/academy/thanks` | Thank-you page after buying the full guide (`noindex`) |
 | `/waitlist`, `/waitlist/:sponsor`, `/app` | Waitlist registration (optionally prefilled with a sponsor address) |
 | `/activate/:token` | Waitlist activation and uUSDC airdrop status |
 
@@ -42,7 +44,7 @@ Any other URL redirects to `/`.
 
 **Tailwind is not a build step.** There is no `tailwindcss` dependency: `src/index.css` is a precompiled Tailwind v4 build, so only the classes already present in that file work.
 
-**No environment variables.** Nothing reads `import.meta.env`; outbound URLs (waitlist API, app, Telegram, YouTube) are constants in `src/components/utils/links.ts`.
+**No environment variables.** Nothing reads `import.meta.env`; outbound URLs (waitlist API, app, Telegram, YouTube, TikTok, Wick Masters) are constants in `src/components/utils/links.ts`.
 
 ---
 
@@ -103,6 +105,8 @@ src/
 ├── components/
 │   ├── <page sections>.tsx    # Hero, ValueProps, HowItWorks, SettlementProcess, Economics,
 │   │                          # Shorts, FAQ, Roadmap, Team, Waitlist, BuilderPage, WarpField…
+│   ├── AcademyPage.tsx        # /academy: Wick Masters demo, buy button, levels, risk notice
+│   ├── AcademyThanksPage.tsx  # /academy/thanks: thank-you page
 │   ├── LazyDialogs.tsx        # Lazily loaded dialogs
 │   ├── ui/                    # shadcn/ui primitives (vendored)
 │   └── utils/
@@ -148,9 +152,19 @@ No manual deployment; merging to `main` is the release.
 
 - **Per-page metadata** (title, description, canonical, robots, Open Graph / Twitter) lives in one table: `src/seo/routes.ts`. It drives the prerendered `<head>`, `build/sitemap.xml` and the client-side head updates on navigation (`src/seo/Seo.tsx`). Add a route there when you add a page.
 - **Structured data**: `src/seo/jsonld.ts` (Organization + WebSite on home, FAQPage on `/faq`, built from `faqData` in `FAQ.tsx`).
-- **Dynamic routes** (`/waitlist/<sponsor>`, `/team/<id>`, `/activate/<token>`) and unknown URLs fall back to `build/404.html`, a client-rendered `noindex` shell.
+- **Dynamic routes** (`/waitlist/<sponsor>`, `/team/<id>`, `/activate/<token>`), `/academy/thanks` and unknown URLs fall back to `build/404.html`, a client-rendered `noindex` shell. `/academy/thanks` is deliberately not prerendered: an `academy/` folder next to `academy.html` would make GitHub Pages redirect `/academy` to `/academy/`.
 - Code that runs during render must not touch `window` / `document` (do that in effects); `src/test/prerender.test.tsx` renders every page in a DOM-less Node environment to catch it.
 - Social share image: `public/og-image.png` (1200x630). Icons: `public/favicon.png`, `public/icon-192.png`, `public/apple-touch-icon.png`.
+
+---
+
+## 🎓 UnleakTrade Academy (Wick Masters)
+
+`/academy` presents **Wick Masters**, the arcade guide to reading crypto charts (11 levels and a Boss Level, plus 10 cheat sheets): a free demo to download and the full guide to buy.
+
+- The content is neutral education: no call to use the UnleakTrade app inside the Wick Masters blocks, no promise of gains, no performance figures. The risk notice (`RISK_NOTICE` in `AcademyPage.tsx`) stays on the page.
+- No price on this site: it lives only on the checkout (a test checks it).
+- The free demo is `WICKMASTERS_DEMO_URL` in `links.ts`, a versioned PDF cached for a year: a new version gets a new file name and a new constant.
 
 ---
 

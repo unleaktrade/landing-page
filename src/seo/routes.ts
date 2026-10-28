@@ -75,6 +75,17 @@ const ACADEMY: PageSeo = {
   priority: 0.7,
 };
 
+// Thank-you page after a purchase. Kept out of the index and out of
+// PRERENDERED_PAGES: an academy/ folder next to academy.html would make GitHub
+// Pages answer /academy with a redirect to /academy/. It renders client-side
+// from the 404.html shell, like /activate/<token>.
+const ACADEMY_THANKS: PageSeo = {
+  path: "/academy/thanks",
+  title: "Thank you | UnleakTrade Academy",
+  description: "Your Wick Masters download links are on their way by email.",
+  indexable: false,
+};
+
 const WAITLIST: PageSeo = {
   path: "/waitlist",
   title: "Request Access | UnleakTrade",
@@ -121,7 +132,7 @@ export function resolveSeo(pathname: string): PageSeo {
     case "builder":
       return BUILDER;
     case "academy":
-      return ACADEMY;
+      return path === "/academy/thanks" ? ACADEMY_THANKS : ACADEMY;
     case "team":
       return TEAM;
     case "activate":

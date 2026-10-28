@@ -67,6 +67,10 @@ describe('route metadata', () => {
     expect(resolveSeo('/team/julien-sie').indexable).toBe(false);
     expect(resolveSeo('/activate/abc').indexable).toBe(false);
     expect(robotsContent(resolveSeo('/activate/abc'))).toBe('noindex,follow');
+    expect(resolveSeo('/academy/thanks').indexable).toBe(false);
+    expect(resolveSeo('/academy/thanks/').path).toBe('/academy/thanks');
+    expect(resolveSeo('/academy').indexable).toBe(true);
+    expect(PRERENDERED_PAGES.map((p) => p.path)).not.toContain('/academy/thanks');
     expect(robotsContent(resolveSeo('/faq'))).toMatch(/^index,follow/);
   });
 

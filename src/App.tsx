@@ -13,6 +13,7 @@ import { TeamSection } from "./components/TeamSection";
 import { TeamPage } from "./components/TeamPage";
 import { BuilderPage } from "./components/BuilderPage";
 import { AcademyPage } from "./components/AcademyPage";
+import { AcademyThanksPage } from "./components/AcademyThanksPage";
 import { Roadmap } from "./components/Roadmap";
 import { FAQ } from "./components/FAQ";
 import { CommunityCTA } from "./components/CommunityCTA";
@@ -140,6 +141,18 @@ function AcademyPageWrapper() {
   );
 }
 
+function AcademyThanksPageWrapper() {
+  return (
+    <div className="min-h-screen text-white">
+      <Navigation />
+      <main>
+        <AcademyThanksPage />
+      </main>
+      <Footer />
+    </div>
+  );
+}
+
 function WaitlistRoutePage() {
   return (
     <main>
@@ -174,6 +187,7 @@ export function AppRoutes() {
         <Route path="/app" element={<WaitlistRoutePage />} />
         <Route path="/builder" element={<BuilderPageWrapper />} />
         <Route path="/academy" element={<AcademyPageWrapper />} />
+        <Route path="/academy/thanks" element={<AcademyThanksPageWrapper />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
       <LazyWaitlistDialog open={isWaitlistOpen} onOpenChange={setIsWaitlistOpen} />
