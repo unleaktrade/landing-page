@@ -91,7 +91,7 @@ describe('App routing', () => {
     const demo = screen.getByRole('button', { name: /get the free demo/i });
     expect(demo).toHaveAttribute('aria-expanded', 'false');
     expect(document.querySelector('a[href*="cloudfront.net"]')).toBeNull();
-    const buy = screen.getByRole('link', { name: /get the full guide \+ 10 cheat sheets/i });
+    const buy = screen.getByRole('link', { name: /get the full guide/i });
     expect(buy).toHaveAttribute('href', WICKMASTERS_CHECKOUT_URL);
     // Same tab: Stripe brings the buyer back to /academy/thanks.
     expect(buy).not.toHaveAttribute('target');
