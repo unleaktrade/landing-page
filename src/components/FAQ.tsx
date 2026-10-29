@@ -362,14 +362,14 @@ export function FAQ() {
       <div className="relative max-w-4xl mx-auto">
         {/* Header */}
         {/* CSS entrance: plays from the prerendered HTML without waiting for JS */}
-        <div className="enter-up text-center mb-16">
-          <p className="text-white/40 mb-4">
+        <div className="enter-up scrim text-center mb-16">
+          <p className="legible text-white/70 mb-4">
             Questions & Answers
           </p>
-          <h1 className="text-white mb-6">
+          <h1 className="legible text-white mb-6">
             Everything you need to know.
           </h1>
-          <p className="text-white/60 max-w-2xl mx-auto">
+          <p className="legible text-white/80 max-w-2xl mx-auto">
             Deep technical documentation on protocol mechanics,
             auction flow, and settlement architecture.
           </p>
@@ -385,7 +385,7 @@ export function FAQ() {
         >
           {/* Search bar */}
           <div className="relative">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/30" />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/60" />
             <input
               type="text"
               placeholder="Search questions..."
@@ -466,13 +466,13 @@ export function FAQ() {
                           {item.question}
                         </p>
                         {!isOpen && (
-                          <p className="text-white/30 text-sm mt-1">
+                          <p className="text-white/60 text-sm mt-1">
                             {item.category}
                           </p>
                         )}
                       </div>
                       <ChevronDown
-                        className={`w-5 h-5 text-white/40 flex-shrink-0 transition-transform duration-300 ${isOpen ? "rotate-180" : ""
+                        className={`w-5 h-5 text-white/60 flex-shrink-0 transition-transform duration-300 ${isOpen ? "rotate-180" : ""
                           }`}
                       />
                     </button>
@@ -534,9 +534,9 @@ export function FAQ() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="text-center py-12"
+            className="scrim text-center py-12"
           >
-            <p className="text-white/40">
+            <p className="legible text-white/80">
               No questions found matching your search.
             </p>
             <button

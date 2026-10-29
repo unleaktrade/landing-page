@@ -4,6 +4,7 @@ import solanaLogo from "../assets/solana-logo.webp";
 import { LazyWaitlistDialog } from "./LazyDialogs";
 import { Rocket, Send } from "lucide-react";
 import { TELEGRAM_URL } from "./utils/links";
+import { AcademyPromo } from "./AcademyPromo";
 
 export function CommunityCTA() {
   const [isWaitlistOpen, setIsWaitlistOpen] = useState(false);
@@ -17,7 +18,7 @@ export function CommunityCTA() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="relative p-12 lg:p-16 rounded-3xl border border-white/10 glass-card overflow-hidden"
+            className="relative p-6 md:p-12 lg:p-16 rounded-3xl border border-white/10 glass-card overflow-hidden"
           >
             {/* Background gradient effect */}
             <div className="absolute inset-0 bg-gradient-to-br from-purple-600/10 to-cyan-400/10 opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -27,7 +28,7 @@ export function CommunityCTA() {
                 <h2 className="text-3xl lg:text-4xl tracking-tight">
                   Join the future of OTC trading
                 </h2>
-                <p className="text-white/50 text-lg max-w-2xl mx-auto leading-relaxed">
+                <p className="text-white/60 text-lg max-w-2xl mx-auto leading-relaxed">
                   Connect with institutional traders, market makers, and crypto funds building the next generation of private markets.
                 </p>
               </div>
@@ -51,11 +52,13 @@ export function CommunityCTA() {
                 </a>
               </div>
 
-              <p className="text-white/40 text-sm max-w-xl mx-auto">
+              <AcademyPromo />
+
+              <p className="text-white/60 text-sm max-w-xl mx-auto">
                 We never DM first, and we never quote off-platform. Anyone who does is not us.
               </p>
 
-            <div className="pt-8 flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-12 text-sm text-white/40">
+            <div className="pt-8 flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-12 text-sm text-white/60">
               <div className="text-center">
                 <div className="text-2xl text-white mb-1">$2T+</div>
                 <div>Annual OTC volume</div>
@@ -75,7 +78,7 @@ export function CommunityCTA() {
             {/* Built on Solana */}
             <div className="pt-12 mt-12 border-t border-white/10">
               <div className="flex flex-col items-center gap-4">
-                <span className="text-white/40 text-sm tracking-wide uppercase">Built on</span>
+                <span className="text-white/60 text-sm tracking-wide uppercase">Built on</span>
                 <a 
                   href="https://solana.com" 
                   target="_blank" 

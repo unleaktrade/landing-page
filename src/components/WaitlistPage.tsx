@@ -171,7 +171,7 @@ export function WaitlistPage() {
               check your inbox and click the link to lock in your spot in
               the early community.
             </p>
-            <p className="text-white/40 text-center text-sm">
+            <p className="text-white/60 text-center text-sm">
               Don't forget to check your spam or junk folder if you don't see
               the email within a few minutes.
             </p>
@@ -206,16 +206,16 @@ export function WaitlistPage() {
           <h1 className="text-4xl mb-4 text-center bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent">
             Request Access
           </h1>
-          <div className="space-y-3 text-left">
-            <p className="text-white/80 leading-relaxed">
+          <div className="scrim space-y-3 text-left">
+            <p className="legible text-white/90 leading-relaxed">
               Request access. Try the beta. Help shape what we build next.
             </p>
-            <p className="text-white/60 leading-relaxed">
+            <p className="legible text-white/80 leading-relaxed">
               UnleakTrade is opening up to an exclusive early community.
               Request access to join the members who test the beta, compete
               for referral rewards, and shape what we build next.
             </p>
-            <p className="text-white/60 leading-relaxed">
+            <p className="legible text-white/80 leading-relaxed">
               Members get privileged access to exclusive market
               intelligence, our private competition dashboard, and
               performance-based rewards for sponsoring select participants.
@@ -225,7 +225,7 @@ export function WaitlistPage() {
               href={WAITLIST_INFO_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-sm text-white/50 hover:bg-gradient-to-r hover:from-purple-400 hover:to-cyan-400 hover:bg-clip-text hover:text-transparent transition-all group"
+              className="inline-flex items-center gap-1.5 text-sm text-white/60 hover:bg-gradient-to-r hover:from-purple-400 hover:to-cyan-400 hover:bg-clip-text hover:text-transparent transition-all group"
             >
               Learn more about early access
               <ExternalLink className="w-3.5 h-3.5 group-hover:text-cyan-400 transition-colors" />
@@ -242,7 +242,7 @@ export function WaitlistPage() {
                 <Lock className="w-4 h-4" />
                 <span>Fast Pass Active</span>
               </div>
-              <p className="text-white/40 text-xs">
+              <p className="text-white/60 text-xs">
                 Your sponsor has been pre-filled and locked
               </p>
             </motion.div>
@@ -384,7 +384,7 @@ export function WaitlistPage() {
           <button
             type="button"
             onClick={() => navigate("/")}
-            className="w-full text-white/40 hover:text-white/60 transition-colors text-sm"
+            className="w-full text-white/60 hover:text-white/90 transition-colors text-sm"
           >
             Back to Home
           </button>

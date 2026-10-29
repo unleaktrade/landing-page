@@ -9,9 +9,9 @@ import { TIKTOK_URL, WICKMASTERS_CHECKOUT_URL, YOUTUBE_URL } from "./utils/links
 // app inside this page's Wick Masters blocks, no promise of gains, no
 // performance figures (issue #49).
 //
-// Text that sits directly over the WarpField carries `academy-scrim` (dark
-// backing) and `academy-legible` (text shadow), the same legibility rules as
-// the home page Shorts header. Everything else sits on a glass-card.
+// Text that sits directly over the WarpField carries `scrim` (dark backing)
+// and `legible` (text shadow), like every other page. Everything else sits on
+// a glass-card.
 
 // `demo: true` marks the parts that come with the free demo download.
 // Descriptions stay factual about what each part teaches: no promise of gains.
@@ -61,10 +61,10 @@ export const RISK_NOTICE =
 
 function SectionHeader({ title, intro }: { title: string; intro?: string }) {
   return (
-    <div className="academy-scrim academy-balance text-center space-y-4 mb-12">
-      <h2 className="academy-legible text-3xl lg:text-4xl tracking-tight">{title}</h2>
+    <div className="scrim academy-balance text-center space-y-4 mb-12">
+      <h2 className="legible text-3xl lg:text-4xl tracking-tight">{title}</h2>
       {intro && (
-        <p className="academy-legible text-white/80 text-lg leading-relaxed max-w-2xl mx-auto">{intro}</p>
+        <p className="legible text-white/80 text-lg leading-relaxed max-w-2xl mx-auto">{intro}</p>
       )}
     </div>
   );
@@ -80,15 +80,15 @@ export function AcademyPage() {
       <section className="relative pt-32 pb-20 px-6 lg:px-8">
         <div className="relative max-w-4xl mx-auto">
           {/* CSS entrance, not motion: it plays from the prerendered HTML. */}
-          <div className="enter-up academy-scrim academy-balance text-center space-y-6">
-            <p className="academy-legible text-white/70">Free trading education</p>
+          <div className="enter-up scrim academy-balance text-center space-y-6">
+            <p className="legible text-white/70">Free trading education</p>
             {/* No text shadow on the gradient word: with transparent text the
                 shadow shows through and darkens it. */}
             <h1 className="text-4xl lg:text-5xl tracking-tight leading-tight">
-              <span className="academy-legible text-white">UnleakTrade</span>{" "}
+              <span className="legible text-white">UnleakTrade</span>{" "}
               <span className="bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent">Academy</span>
             </h1>
-            <p className="academy-legible text-white/80 text-lg leading-relaxed max-w-2xl mx-auto">
+            <p className="legible text-white/80 text-lg leading-relaxed max-w-2xl mx-auto">
               Learn to read crypto charts, one pattern at a time.
             </p>
           </div>

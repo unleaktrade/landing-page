@@ -32,12 +32,12 @@ export function HowItWorks() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center space-y-4 mb-20"
+          className="scrim text-center space-y-4 mb-20"
         >
-          <h2 className="text-3xl lg:text-4xl tracking-tight">
+          <h2 className="legible text-3xl lg:text-4xl tracking-tight">
             Built for serious traders
           </h2>
-          <p className="text-white/40 max-w-2xl mx-auto">
+          <p className="legible text-white/80 text-lg leading-relaxed max-w-2xl mx-auto">
             Four steps to confidential, fair, and automated execution
           </p>
         </motion.div>
@@ -58,7 +58,7 @@ export function HowItWorks() {
                 </div>
                 <div className="flex-1 pt-2">
                   <h3 className="text-xl mb-3 tracking-tight">{step.title}</h3>
-                  <p className="text-white/50 leading-relaxed">{step.description}</p>
+                  <p className="text-white/60 leading-relaxed">{step.description}</p>
                 </div>
               </div>
             </motion.div>

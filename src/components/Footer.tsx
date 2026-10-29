@@ -4,7 +4,7 @@ import { TELEGRAM_URL, TIKTOK_URL, YOUTUBE_URL } from "./utils/links";
 
 export function Footer() {
   return (
-    <footer className="border-t border-white/5 px-6 lg:px-8 py-12">
+    <footer className="nav-bar border-t border-white/5 px-6 lg:px-8 py-12">
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row items-center justify-between gap-8">
           {/* Copyright - Better mobile layout */}
@@ -27,22 +27,22 @@ export function Footer() {
           
           {/* Social links */}
           <div className="flex flex-wrap items-center justify-center gap-6">
-            <Link to="/academy" className="text-sm text-white/40 hover:text-white/60 transition-colors">
+            <Link to="/academy" className="text-sm text-white/60 hover:text-white/90 transition-colors">
               Academy
             </Link>
-            <a href="https://github.com/unleaktrade" target="_blank" rel="noopener noreferrer" className="text-sm text-white/40 hover:text-white/60 transition-colors">
+            <a href="https://github.com/unleaktrade" target="_blank" rel="noopener noreferrer" className="text-sm text-white/60 hover:text-white/90 transition-colors">
               GitHub
             </a>
-            <a href="https://twitter.com/unleaktrade" target="_blank" rel="noopener noreferrer" className="text-sm text-white/40 hover:text-white/60 transition-colors">
+            <a href="https://twitter.com/unleaktrade" target="_blank" rel="noopener noreferrer" className="text-sm text-white/60 hover:text-white/90 transition-colors">
               Twitter
             </a>
-            <a href={TELEGRAM_URL} target="_blank" rel="noopener noreferrer" className="text-sm text-white/40 hover:text-white/60 transition-colors">
+            <a href={TELEGRAM_URL} target="_blank" rel="noopener noreferrer" className="text-sm text-white/60 hover:text-white/90 transition-colors">
               Telegram
             </a>
-            <a href={YOUTUBE_URL} target="_blank" rel="noopener noreferrer" className="text-sm text-white/40 hover:text-white/60 transition-colors">
+            <a href={YOUTUBE_URL} target="_blank" rel="noopener noreferrer" className="text-sm text-white/60 hover:text-white/90 transition-colors">
               YouTube
             </a>
-            <a href={TIKTOK_URL} target="_blank" rel="noopener noreferrer" className="text-sm text-white/40 hover:text-white/60 transition-colors">
+            <a href={TIKTOK_URL} target="_blank" rel="noopener noreferrer" className="text-sm text-white/60 hover:text-white/90 transition-colors">
               TikTok
             </a>
           </div>

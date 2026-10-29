@@ -1,5 +1,6 @@
 import { Rocket } from "lucide-react";
 import logoImage from "../assets/logo-256.webp";
+import { AcademyPromo } from "./AcademyPromo";
 
 interface HeroProps {
   onOpenWaitlist?: () => void;
@@ -18,23 +19,23 @@ export function Hero({ onOpenWaitlist }: HeroProps) {
             opacity 0 until the bundle had downloaded and run. */}
         <div className="hero-enter text-center space-y-12">
           {/* Logo and tagline */}
-          <div className="space-y-6">
+          <div className="scrim space-y-6">
             <img src={logoImage} alt="UnleakTrade" width={128} height={128} fetchPriority="high" className="h-32 w-32 mx-auto" />
-            <h1 className="text-4xl lg:text-5xl tracking-tight max-w-3xl mx-auto leading-tight">
+            <h1 className="legible text-4xl lg:text-5xl tracking-tight max-w-3xl mx-auto leading-tight">
               Guaranteed Settlement.<br />
               Confidential OTC Trading & Auctions.<br />
               Competitive Price Discovery.<br />
-              <span className="text-white/60">Now on Solana.</span>
+              <span className="text-white/70">Now on Solana.</span>
             </h1>
           </div>
 
           {/* Main value prop */}
-          <div className="space-y-6 pt-8">
-            <h2 className="text-2xl lg:text-3xl tracking-tight max-w-3xl mx-auto">
+          <div className="scrim space-y-6 pt-8">
+            <h2 className="legible text-2xl lg:text-3xl tracking-tight max-w-3xl mx-auto">
               Trade any SPL token (listed or unlisted) through private over-the-counter auctions with ZK-verified liquidity and trustless settlement
             </h2>
             
-            <p className="text-white/50 max-w-2xl mx-auto text-lg leading-relaxed">
+            <p className="legible text-white/80 max-w-2xl mx-auto text-lg leading-relaxed">
               Despite exceeding $2T in volume, the crypto OTC market still relies on informal, off-chain, trust-based deals. 
               UnleakTrade transforms this landscape with Zero-Knowledge technology and Solana's high-performance network, 
               bringing confidentiality, fairness, and automation to OTC trading.
@@ -50,9 +51,12 @@ export function Hero({ onOpenWaitlist }: HeroProps) {
               <Rocket className="w-4 h-4" />
               Request Access
             </button>
-            <p className="text-white/40 text-sm">
+            <p className="scrim legible text-white/80 text-sm">
               Live in beta on Solana Devnet, no real funds or tokens involved
             </p>
+            <div className="pt-4">
+              <AcademyPromo />
+            </div>
           </div>
         </div>
       </div>

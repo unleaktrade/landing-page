@@ -14,13 +14,13 @@ export function SettlementProcess() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-20"
+          className="scrim text-center mb-20"
         >
-          <p className="text-white/40 mb-4">Bringing trust and privacy back to block trades</p>
-          <h2 className="text-white mb-6">
+          <p className="legible text-white/70 mb-4">Bringing trust and privacy back to block trades</p>
+          <h2 className="legible text-white mb-6">
             Private Auction with ZK-Verified Liquidity
           </h2>
-          <p className="text-white/60 max-w-3xl mx-auto leading-relaxed">
+          <p className="legible text-white/80 max-w-3xl mx-auto leading-relaxed">
             UnleakTrade is a <span className="text-purple-400">zk-powered OTC/RFQ platform</span> built on <span className="text-cyan-400">Solana</span>. 
             Makers publish RFQs and multiple takers compete with blind quotes. Our Liquidity Guard validates each quote with cryptographic attestations, ensuring only solvent participants enter the <span className="text-purple-400">auction</span>.
           </p>
@@ -49,7 +49,7 @@ export function SettlementProcess() {
                 <p className="text-white/60 leading-relaxed mb-4">
                   Makers receive verified, fair RFQs with confidence. All committed quotes are validated through zero-knowledge proofs before the reveal phase.
                 </p>
-                <div className="flex items-start gap-2 text-white/50 text-sm">
+                <div className="flex items-start gap-2 text-white/60 text-sm">
                   <CheckCircle className="w-4 h-4 text-cyan-400 mt-0.5 flex-shrink-0" />
                   <span>Verified liquidity & quote validity upfront</span>
                 </div>
@@ -78,7 +78,7 @@ export function SettlementProcess() {
                 <p className="text-white/60 leading-relaxed mb-4">
                   Takers prove liquidity & quote validity without revealing information upfront. Your trading intentions remain private until you choose to reveal.
                 </p>
-                <div className="flex items-start gap-2 text-white/50 text-sm">
+                <div className="flex items-start gap-2 text-white/60 text-sm">
                   <CheckCircle className="w-4 h-4 text-purple-400 mt-0.5 flex-shrink-0" />
                   <span>Privacy-preserving commitments via zk-proofs</span>
                 </div>
@@ -104,7 +104,7 @@ export function SettlementProcess() {
               </div>
               <div>
                 <h3 className="text-white">Commit-Reveal Settlement Flow</h3>
-                <p className="text-white/40 text-sm">How trades execute with zero counterparty risk</p>
+                <p className="text-white/60 text-sm">How trades execute with zero counterparty risk</p>
               </div>
             </div>
 
@@ -115,7 +115,7 @@ export function SettlementProcess() {
                   <div className="w-6 h-6 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400 text-xs">1</div>
                   <span className="text-white/90">Commit Phase</span>
                 </div>
-                <p className="text-white/50 text-sm leading-relaxed">
+                <p className="text-white/60 text-sm leading-relaxed">
                   Maker opens RFQ with bond. Multiple takers submit blind commits with bonds. Liquidity Guard verifies each taker can cover bond, fees, and settlement leg via Ed25519-signed ZK attestations.
                 </p>
               </div>
@@ -126,7 +126,7 @@ export function SettlementProcess() {
                   <div className="w-6 h-6 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400 text-xs">2</div>
                   <span className="text-white/90">Reveal & Selection</span>
                 </div>
-                <p className="text-white/50 text-sm leading-relaxed">
+                <p className="text-white/60 text-sm leading-relaxed">
                   Takers reveal quotes. Maker reviews all valid offers and selects the best one. Non-selected valid quotes receive bond refunds. Settlement created with winning taker.
                 </p>
               </div>
@@ -137,7 +137,7 @@ export function SettlementProcess() {
                   <div className="w-6 h-6 rounded-full bg-cyan-500/20 flex items-center justify-center text-cyan-400 text-xs">3</div>
                   <span className="text-white/90">Settlement & Swap</span>
                 </div>
-                <p className="text-white/50 text-sm leading-relaxed">
+                <p className="text-white/60 text-sm leading-relaxed">
                   Selected taker pays fees and deposits quote amount. Atomic swap executes: base to taker, quote to maker. Bonds refunded to valid parties. Defaulters forfeit 100% to protocol.
                 </p>
               </div>
@@ -145,8 +145,8 @@ export function SettlementProcess() {
 
             {/* Footer note */}
             <div className="mt-8 pt-6 border-t border-white/10 flex items-start gap-3">
-              <Lock className="w-4 h-4 text-white/40 mt-1 flex-shrink-0" />
-              <p className="text-white/40 text-sm leading-relaxed">
+              <Lock className="w-4 h-4 text-white/60 mt-1 flex-shrink-0" />
+              <p className="text-white/60 text-sm leading-relaxed">
                 <span className="text-white/60">Confidentiality and fairness are essential in every trade.</span> Our architecture transforms Solana's liquidity depth into institutional-grade OTC rails.
               </p>
             </div>

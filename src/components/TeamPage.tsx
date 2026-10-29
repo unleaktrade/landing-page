@@ -76,10 +76,10 @@ export function TeamPage() {
         <div className="relative max-w-4xl mx-auto text-center">
           {/* CSS entrance, not motion: it plays from the prerendered HTML
               without waiting for JS, so the heading is never invisible. */}
-          <div className="enter-up">
-            <p className="text-white/40 mb-4">Meet the builder</p>
-            <h1 className="text-white mb-6">Building institutional-grade privacy from first principles.</h1>
-            <p className="text-white/60 max-w-2xl mx-auto">
+          <div className="enter-up scrim">
+            <p className="legible text-white/70 mb-4">Meet the builder</p>
+            <h1 className="legible text-white mb-6">Building institutional-grade privacy from first principles.</h1>
+            <p className="legible text-white/80 max-w-2xl mx-auto">
               An independent project by Julien SIE, combining deep protocol design with strategic vision to redefine crypto OTC trading.
             </p>
           </div>
@@ -118,7 +118,7 @@ export function TeamPage() {
                             {member.image ? (
                               <img src={member.image} alt={member.name} width={122} height={122} loading="lazy" className="w-full h-full object-cover grayscale" />
                             ) : (
-                              <span className="text-white/40 text-4xl">{member.name.split(' ').map(n => n[0]).join('')}</span>
+                              <span className="text-white/60 text-4xl">{member.name.split(' ').map(n => n[0]).join('')}</span>
                             )}
                           </div>
                         </div>
@@ -131,10 +131,10 @@ export function TeamPage() {
                           <div className="flex flex-col md:flex-row md:items-baseline md:justify-between gap-2 mb-2">
                             <h2 className="text-white">{member.name}</h2>
                             <div className="flex items-center gap-3">
-                              <span className="text-white/40 text-sm">{member.location}</span>
+                              <span className="text-white/60 text-sm">{member.location}</span>
                             </div>
                           </div>
-                          <p className="text-white/50 mb-2">{member.role}</p>
+                          <p className="text-white/60 mb-2">{member.role}</p>
                           {member.handle && member.links.twitter && (
                             <a 
                               href={member.links.twitter}
@@ -156,13 +156,13 @@ export function TeamPage() {
 
                         {/* Biography */}
                         <div className="mb-6 pb-6 border-b border-white/10">
-                          <p className="text-white/40 text-sm mb-3">Background</p>
+                          <p className="text-white/60 text-sm mb-3">Background</p>
                           <p className="text-white/60 leading-relaxed">{member.biography}</p>
                         </div>
 
                         {/* Expertise tags */}
                         <div className="mb-6">
-                          <p className="text-white/40 text-sm mb-3">Expertise</p>
+                          <p className="text-white/60 text-sm mb-3">Expertise</p>
                           <div className="flex flex-wrap gap-2">
                             {member.expertise.map((tag, i) => (
                               <span 
@@ -179,14 +179,14 @@ export function TeamPage() {
                         {/* Social links */}
                         {Object.keys(member.links).length > 0 && (
                           <div className="flex items-center gap-4 pt-6 border-t border-white/10">
-                            <span className="text-white/30 text-sm">Connect</span>
+                            <span className="text-white/60 text-sm">Connect</span>
                             <div className="flex items-center gap-3">
                               {member.links.linkedin && (
                                 <a
                                   href={member.links.linkedin}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="text-white/40 hover:text-white/80 transition-colors"
+                                  className="text-white/60 hover:text-white/80 transition-colors"
                                   aria-label="LinkedIn"
                                 >
                                   <Linkedin className="w-5 h-5" />
@@ -197,7 +197,7 @@ export function TeamPage() {
                                   href={member.links.twitter}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="text-white/40 hover:text-white/80 transition-colors"
+                                  className="text-white/60 hover:text-white/80 transition-colors"
                                   aria-label="Twitter"
                                 >
                                   <Twitter className="w-5 h-5" />
@@ -208,7 +208,7 @@ export function TeamPage() {
                                   href={member.links.github}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="text-white/40 hover:text-white/80 transition-colors"
+                                  className="text-white/60 hover:text-white/80 transition-colors"
                                   aria-label="GitHub"
                                 >
                                   <Github className="w-5 h-5" />
@@ -219,7 +219,7 @@ export function TeamPage() {
                                   href={member.links.telegram}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="text-white/40 hover:text-white/80 transition-colors"
+                                  className="text-white/60 hover:text-white/80 transition-colors"
                                   aria-label="Telegram"
                                 >
                                   <Send className="w-5 h-5" />
@@ -250,7 +250,7 @@ export function TeamPage() {
           >
             <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 via-transparent to-cyan-500/10 pointer-events-none" />
             <div className="relative">
-              <p className="text-white/40 mb-3">Join us</p>
+              <p className="text-white/60 mb-3">Join us</p>
               <h2 className="text-white mb-4">Want to build the future with us?</h2>
               <p className="text-white/60 mb-8 max-w-xl mx-auto">
                 We're always looking for talented individuals who share our vision for private, fair, and trustless trading.

@@ -348,7 +348,7 @@ export function ActivateWaitlist() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="text-white/60 mb-3"
+            className="legible text-white/80 mb-3"
           >
             Enter the verification code from your email to
             confirm your spot in the early community
@@ -360,7 +360,7 @@ export function ActivateWaitlist() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
-            className="inline-flex items-center gap-1.5 text-sm text-white/50 hover:bg-gradient-to-r hover:from-purple-400 hover:to-cyan-400 hover:bg-clip-text hover:text-transparent transition-all group"
+            className="inline-flex items-center gap-1.5 text-sm text-white/60 hover:bg-gradient-to-r hover:from-purple-400 hover:to-cyan-400 hover:bg-clip-text hover:text-transparent transition-all group"
           >
             Learn more about early access
             <ExternalLink className="w-3.5 h-3.5 group-hover:text-cyan-400 transition-colors" />
@@ -423,7 +423,7 @@ export function ActivateWaitlist() {
               disabled={status === "submitting"}
               autoComplete="off"
             />
-            <p className="mt-2 text-xs text-white/40">
+            <p className="mt-2 text-xs text-white/60">
               This code was sent to your email address
             </p>
           </div>
@@ -471,7 +471,7 @@ export function ActivateWaitlist() {
         >
           <button
             onClick={() => navigate("/")}
-            className="text-sm text-white/40 hover:text-white/60 transition-colors"
+            className="text-sm text-white/60 hover:text-white/90 transition-colors"
           >
             ← Back to home
           </button>

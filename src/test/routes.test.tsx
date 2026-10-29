@@ -122,6 +122,19 @@ describe('App routing', () => {
     expect(screen.getByRole('heading', { level: 1, name: /unleaktrade academy/i })).toBeInTheDocument();
   });
 
+  it('promotes Wick Masters under the hero CTA and in the closing call to action', async () => {
+    renderAt('/');
+    const promos = screen.getAllByRole('link', { name: /wick masters.*learn to read crypto charts/i });
+    expect(promos).toHaveLength(2);
+    promos.forEach((link) => expect(link).toHaveAttribute('href', '/academy'));
+    // First in reading order: right after the hero Request Access button.
+    const heroCta = screen.getAllByRole('button', { name: /request access/i })[0];
+    expect(heroCta.compareDocumentPosition(promos[0]) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    const user = userEvent.setup();
+    await user.click(promos[0]);
+    expect(screen.getByRole('heading', { level: 1, name: /unleaktrade academy/i })).toBeInTheDocument();
+  });
+
   it('redirects unknown routes to home', () => {
     renderAt('/totally-made-up-path');
     expect(screen.getAllByRole('button', { name: /request access/i }).length).toBeGreaterThan(0);

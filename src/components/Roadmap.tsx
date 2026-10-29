@@ -167,10 +167,10 @@ export function Roadmap() {
         <div className="relative max-w-4xl mx-auto text-center">
           {/* CSS entrance, not motion: it plays from the prerendered HTML
               without waiting for JS, so the heading is never invisible. */}
-          <div className="enter-up">
-            <p className="text-white/40 mb-4">The journey ahead</p>
-            <h1 className="text-white mb-6">Building Solana's Private Market Infrastructure</h1>
-            <p className="text-white/60 max-w-2xl mx-auto leading-relaxed">
+          <div className="enter-up scrim">
+            <p className="legible text-white/70 mb-4">The journey ahead</p>
+            <h1 className="legible text-white mb-6">Building Solana's Private Market Infrastructure</h1>
+            <p className="legible text-white/80 max-w-2xl mx-auto leading-relaxed">
               Each phase brings us closer to trustless, private, and permissionless OTC markets, where cryptographic guarantees replace institutional gatekeepers.
             </p>
           </div>
@@ -220,7 +220,7 @@ export function Roadmap() {
                           <div className="flex items-start justify-between gap-4 mb-4">
                             <div>
                               <div className="flex items-center gap-3 mb-2">
-                                <span className="text-white/40 text-sm">Phase {phase.letter}</span>
+                                <span className="text-white/60 text-sm">Phase {phase.letter}</span>
                                 {phase.status === "in-progress" && (
                                   <span className="px-2 py-0.5 text-xs bg-purple-500/20 text-purple-400 rounded-full border border-purple-500/30">
                                     In Progress
@@ -231,7 +231,7 @@ export function Roadmap() {
                               <p className="text-white/60 text-sm italic">{phase.subtitle}</p>
                             </div>
                             <div className={`transform transition-transform duration-300 ${expandedPhase === phase.id ? "rotate-180" : ""}`}>
-                              <svg className="w-5 h-5 text-white/40" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <svg className="w-5 h-5 text-white/60" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                               </svg>
                             </div>
@@ -317,9 +317,9 @@ export function Roadmap() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="mt-20 text-center"
+            className="scrim mt-20 text-center"
           >
-            <p className="text-white/40 italic max-w-2xl mx-auto">
+            <p className="legible text-white/80 italic max-w-2xl mx-auto">
               From zero-knowledge to tokenized coordination, UnleakTrade is Solana's invisible backbone for private, programmable OTC markets.
             </p>
           </motion.div>

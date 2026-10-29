@@ -71,7 +71,7 @@ export function WorkInProgress() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className="text-white/40 mb-8 max-w-md mx-auto"
+          className="scrim legible text-white/80 mb-8 max-w-md mx-auto"
         >
           We're building something exceptional. This section will be available soon with comprehensive documentation and resources.
         </motion.p>

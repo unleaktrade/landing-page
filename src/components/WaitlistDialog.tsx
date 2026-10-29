@@ -164,7 +164,7 @@ export function WaitlistDialog({
             <button
               type="button"
               onClick={() => handleOpenChange(false)}
-              className="w-full text-white/40 hover:text-white/60 transition-colors text-sm"
+              className="w-full text-white/60 hover:text-white/90 transition-colors text-sm"
             >
               Close
             </button>
@@ -203,7 +203,7 @@ export function WaitlistDialog({
               href={WAITLIST_INFO_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 text-xs sm:text-sm text-white/50 hover:bg-gradient-to-r hover:from-purple-400 hover:to-cyan-400 hover:bg-clip-text hover:text-transparent transition-all group mt-2"
+              className="inline-flex items-center gap-1 text-xs sm:text-sm text-white/60 hover:bg-gradient-to-r hover:from-purple-400 hover:to-cyan-400 hover:bg-clip-text hover:text-transparent transition-all group mt-2"
             >
               Learn more about early access
               <ExternalLink className="w-3 h-3 group-hover:text-cyan-400 transition-colors" />

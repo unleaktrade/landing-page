@@ -33,12 +33,12 @@ export function ValueProps() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center space-y-4 mb-20"
+          className="scrim text-center space-y-4 mb-20"
         >
-          <h2 className="text-3xl lg:text-4xl tracking-tight">
+          <h2 className="legible text-3xl lg:text-4xl tracking-tight">
             Trading the way it should be
           </h2>
-          <p className="text-white/40 max-w-2xl mx-auto">
+          <p className="legible text-white/80 text-lg leading-relaxed max-w-2xl mx-auto">
             Bringing the standards of traditional finance to decentralized markets
           </p>
         </motion.div>
@@ -57,7 +57,7 @@ export function ValueProps() {
                 <value.icon className="w-6 h-6 text-purple-400" />
               </div>
               <h3 className="text-xl mb-3 tracking-tight">{value.title}</h3>
-              <p className="text-white/50 leading-relaxed">{value.description}</p>
+              <p className="text-white/60 leading-relaxed">{value.description}</p>
             </motion.div>
           ))}
         </div>
