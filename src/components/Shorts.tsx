@@ -66,12 +66,12 @@ export function Shorts({ items = shortsData }: ShortsProps) {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="shorts-scrim text-center space-y-4 mb-12"
+          className="scrim text-center space-y-4 mb-12"
         >
-          <h2 className="shorts-legible text-3xl lg:text-4xl tracking-tight">
+          <h2 className="legible text-3xl lg:text-4xl tracking-tight">
             Learn UnleakTrade in 60 seconds
           </h2>
-          <p className="shorts-legible text-white/80 text-lg leading-relaxed max-w-2xl mx-auto">
+          <p className="legible text-white/80 text-lg leading-relaxed max-w-2xl mx-auto">
             Short videos on what the protocol does and how the app works. Start with the intro, then catch up on the latest episodes.
           </p>
         </motion.div>
@@ -249,7 +249,7 @@ function ShortCard({ short, index, pinned, playing, onPlay }: ShortCardProps) {
             </span>
           </div>
 
-          <div className="shorts-legible absolute inset-x-0 bottom-0 p-5 space-y-2">
+          <div className="legible absolute inset-x-0 bottom-0 p-5 space-y-2">
             {badge && (
               <div className="text-xs uppercase tracking-wide text-purple-300">{badge}</div>
             )}

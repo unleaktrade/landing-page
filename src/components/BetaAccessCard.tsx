@@ -5,7 +5,7 @@ import { BETA_APP_URL, TELEGRAM_URL } from "./utils/links";
 // explains why we ask for the wallet and what it will receive.
 export function WalletFieldHint() {
   return (
-    <p className="text-white/40 text-xs leading-relaxed">
+    <p className="text-white/60 text-xs leading-relaxed">
       Connect the Solana wallet you plan to use for the UnleakTrade beta.
       After your waitlist spot is verified, we'll send this wallet Unleak USDC
       (uUSDC), the devnet-only test token that mimics USDC and is required to
@@ -68,7 +68,7 @@ export function BetaAccessCard() {
         <Rocket className="w-4 h-4" />
         Launch the Beta
       </a>
-      <p className="text-white/50 text-xs leading-relaxed">
+      <p className="text-white/60 text-xs leading-relaxed">
         Found something we could improve? Have an idea for a feature? We'd love
         to hear from you on{" "}
         <a

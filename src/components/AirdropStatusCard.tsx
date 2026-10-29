@@ -187,7 +187,7 @@ export function AirdropStatusCard({
 
         {body}
 
-        <p className="text-white/40 text-xs leading-relaxed">{DISCLAIMER}</p>
+        <p className="text-white/60 text-xs leading-relaxed">{DISCLAIMER}</p>
       </div>
     </div>
   );

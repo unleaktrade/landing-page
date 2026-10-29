@@ -57,7 +57,7 @@ export function TeamSection() {
           transition={{ duration: 0.6 }}
           className="text-center mb-20"
         >
-          <p className="text-white/40 mb-4">The people behind UnleakTrade</p>
+          <p className="text-white/60 mb-4">The people behind UnleakTrade</p>
           <h2 className="text-white mb-6">Protocol architecture meets growth execution.</h2>
           <p className="text-white/60 max-w-2xl mx-auto">
             A lean, technical team building institutional-grade privacy infrastructure from first principles: deep protocol design paired with signal-led community growth.
@@ -94,14 +94,14 @@ export function TeamSection() {
                         {member.image ? (
                           <img src={member.image} alt={member.name} width={122} height={122} loading="lazy" className="w-full h-full object-cover grayscale" />
                         ) : (
-                          <span className="text-white/40 text-xl">{member.name.split(' ').map(n => n[0]).join('')}</span>
+                          <span className="text-white/60 text-xl">{member.name.split(' ').map(n => n[0]).join('')}</span>
                         )}
                       </div>
                     </div>
 
                     <div className="flex-1 min-w-0">
                       <h3 className="text-white truncate">{member.name}</h3>
-                      <p className="text-white/40 text-sm truncate">{member.role}</p>
+                      <p className="text-white/60 text-sm truncate">{member.role}</p>
                       {member.handle && member.links.twitter && (
                         <a
                           href={member.links.twitter}
@@ -127,7 +127,7 @@ export function TeamSection() {
                     {member.focus.map((item, i) => (
                       <div key={i} className="flex items-baseline gap-2">
                         <span className="text-cyan-400 flex-shrink-0">•</span>
-                        <span className="text-white/50 text-sm">{item}</span>
+                        <span className="text-white/60 text-sm">{item}</span>
                       </div>
                     ))}
                   </div>
@@ -141,7 +141,7 @@ export function TeamSection() {
                           onClick={(e) => { e.stopPropagation(); }}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-white/30 hover:text-white/60 transition-colors"
+                          className="text-white/60 hover:text-white/90 transition-colors"
                           aria-label="LinkedIn"
                         >
                           <Linkedin className="w-4 h-4" />
@@ -153,7 +153,7 @@ export function TeamSection() {
                           onClick={(e) => { e.stopPropagation(); }}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-white/30 hover:text-white/60 transition-colors"
+                          className="text-white/60 hover:text-white/90 transition-colors"
                           aria-label="Twitter"
                         >
                           <Twitter className="w-4 h-4" />
@@ -165,7 +165,7 @@ export function TeamSection() {
                           onClick={(e) => { e.stopPropagation(); }}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-white/30 hover:text-white/60 transition-colors"
+                          className="text-white/60 hover:text-white/90 transition-colors"
                           aria-label="GitHub"
                         >
                           <Github className="w-4 h-4" />
@@ -177,7 +177,7 @@ export function TeamSection() {
                           onClick={(e) => { e.stopPropagation(); }}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-white/30 hover:text-white/60 transition-colors"
+                          className="text-white/60 hover:text-white/90 transition-colors"
                           aria-label="Telegram"
                         >
                           <Send className="w-4 h-4" />

@@ -32,10 +32,10 @@ export function BuilderPage() {
         <div className="relative max-w-4xl mx-auto text-center">
           {/* CSS entrance, not motion: it plays from the prerendered HTML
               without waiting for JS, so the heading is never invisible. */}
-          <div className="enter-up">
-            <p className="text-white/40 mb-4">Meet the founder</p>
-            <h1 className="text-white mb-6">Building the future of private OTC trading.</h1>
-            <p className="text-white/60 max-w-2xl mx-auto">
+          <div className="enter-up scrim">
+            <p className="legible text-white/70 mb-4">Meet the founder</p>
+            <h1 className="legible text-white mb-6">Building the future of private OTC trading.</h1>
+            <p className="legible text-white/80 max-w-2xl mx-auto">
               UnleakTrade is an independent project combining deep protocol expertise with strategic vision to bring institutional-grade privacy to crypto markets.
             </p>
           </div>
@@ -56,7 +56,7 @@ export function BuilderPage() {
             <div className="relative space-y-8">
               {/* Section header */}
               <div>
-                <p className="text-white/40 mb-3">About the project</p>
+                <p className="text-white/60 mb-3">About the project</p>
                 <h2 className="text-white mb-4">Why UnleakTrade exists</h2>
               </div>
 
@@ -140,7 +140,7 @@ export function BuilderPage() {
                   and that Zero-Knowledge technology can finally make this a reality. UnleakTrade started as a technical challenge and evolved into a mission: 
                   to eliminate information asymmetry and bring fairness to OTC trading through cryptographic guarantees."
                 </p>
-                <p className="text-white/50 text-sm mt-4">Julien SIE, Founder</p>
+                <p className="text-white/60 text-sm mt-4">Julien SIE, Founder</p>
               </div>
             </div>
           </motion.div>
@@ -182,10 +182,10 @@ export function BuilderPage() {
                       <div className="flex flex-col md:flex-row md:items-baseline md:justify-between gap-2 mb-2">
                         <h2 className="text-white">{julienData.name}</h2>
                         <div className="flex items-center gap-3">
-                          <span className="text-white/40 text-sm">{julienData.location}</span>
+                          <span className="text-white/60 text-sm">{julienData.location}</span>
                         </div>
                       </div>
-                      <p className="text-white/50 mb-2">{julienData.role}</p>
+                      <p className="text-white/60 mb-2">{julienData.role}</p>
                       <a 
                         href={julienData.links.twitter}
                         target="_blank"
@@ -205,13 +205,13 @@ export function BuilderPage() {
 
                     {/* Biography */}
                     <div className="mb-6 pb-6 border-b border-white/10">
-                      <p className="text-white/40 text-sm mb-3">Background</p>
+                      <p className="text-white/60 text-sm mb-3">Background</p>
                       <p className="text-white/60 leading-relaxed">{julienData.biography}</p>
                     </div>
 
                     {/* Expertise tags */}
                     <div className="mb-6">
-                      <p className="text-white/40 text-sm mb-3">Expertise</p>
+                      <p className="text-white/60 text-sm mb-3">Expertise</p>
                       <div className="flex flex-wrap gap-2">
                         {julienData.expertise.map((tag, i) => (
                           <span 
@@ -227,13 +227,13 @@ export function BuilderPage() {
 
                     {/* Social links */}
                     <div className="flex items-center gap-4 pt-6 border-t border-white/10">
-                      <span className="text-white/30 text-sm">Connect</span>
+                      <span className="text-white/60 text-sm">Connect</span>
                       <div className="flex items-center gap-3">
                         <a
                           href={julienData.links.linkedin}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-white/40 hover:text-white/80 transition-colors"
+                          className="text-white/60 hover:text-white/80 transition-colors"
                           aria-label="LinkedIn"
                         >
                           <Linkedin className="w-5 h-5" />
@@ -242,7 +242,7 @@ export function BuilderPage() {
                           href={julienData.links.twitter}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-white/40 hover:text-white/80 transition-colors"
+                          className="text-white/60 hover:text-white/80 transition-colors"
                           aria-label="Twitter"
                         >
                           <Twitter className="w-5 h-5" />
@@ -251,7 +251,7 @@ export function BuilderPage() {
                           href={julienData.links.github}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-white/40 hover:text-white/80 transition-colors"
+                          className="text-white/60 hover:text-white/80 transition-colors"
                           aria-label="GitHub"
                         >
                           <Github className="w-5 h-5" />
@@ -260,7 +260,7 @@ export function BuilderPage() {
                           href={julienData.links.telegram}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-white/40 hover:text-white/80 transition-colors"
+                          className="text-white/60 hover:text-white/80 transition-colors"
                           aria-label="Telegram"
                         >
                           <Send className="w-5 h-5" />
@@ -282,7 +282,7 @@ export function BuilderPage() {
           >
             <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 via-transparent to-cyan-500/10 pointer-events-none" />
             <div className="relative">
-              <p className="text-white/40 mb-3">Get involved</p>
+              <p className="text-white/60 mb-3">Get involved</p>
               <h2 className="text-white mb-4">Want to contribute or collaborate?</h2>
               <p className="text-white/60 mb-8 max-w-xl mx-auto">
                 Whether you're interested in contributing to the protocol, partnering, or just want to learn more, feel free to reach out.

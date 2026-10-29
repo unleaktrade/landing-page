@@ -14,13 +14,13 @@ export function Economics() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-20"
+          className="scrim text-center mb-20"
         >
-          <p className="text-white/40 mb-4">Accessible to all serious traders</p>
-          <h2 className="text-white mb-6">
+          <p className="legible text-white/70 mb-4">Accessible to all serious traders</p>
+          <h2 className="legible text-white mb-6">
             Skin in the game ensures fair execution
           </h2>
-          <p className="text-white/60 max-w-3xl mx-auto leading-relaxed">
+          <p className="legible text-white/80 max-w-3xl mx-auto leading-relaxed">
             Our bond-based system aligns incentives and protects all participants. Whether you're a wealthy individual or a whale, defaulters lose their bonds, creating natural enforcement without intermediaries.
           </p>
         </motion.div>
@@ -44,7 +44,7 @@ export function Economics() {
                 </div>
                 <h3 className="text-white mb-2">Trade size guidance</h3>
                 <div className="text-white/90 mb-1">~$10,000 notional</div>
-                <p className="text-white/40 text-sm">
+                <p className="text-white/60 text-sm">
                   Guidance, not a gate: there is no protocol-enforced minimum. It is where an OTC auction typically starts to beat an AMM.
                 </p>
               </div>
@@ -71,7 +71,7 @@ export function Economics() {
                   <div className="text-white/90">5 bps (0.05%)</div>
                   <div className="text-white/60">Min $5 • Taker pays</div>
                 </div>
-                <p className="text-white/40 text-sm">
+                <p className="text-white/60 text-sm">
                   Fee paid on top of notional. Maker receives net amount.
                 </p>
               </div>
@@ -100,7 +100,7 @@ export function Economics() {
                     One <code className="px-1.5 py-0.5 bg-white/5 text-purple-300 rounded text-sm font-mono">bond_amount</code>, posted by the maker and by every committing taker
                   </div>
                 </div>
-                <p className="text-white/40 text-sm">
+                <p className="text-white/60 text-sm">
                   Deposited in USDC. Returned after successful settlement or if a valid Quote is not selected. There is no protocol schedule: makers commonly size it around 100 bps of notional on small tickets, down to around 25 bps on large ones.
                 </p>
               </div>
@@ -128,7 +128,7 @@ export function Economics() {
                   <div className="text-white/60">Settlement: flexible</div>
                   <div className="text-white/90">Default → bond slashed</div>
                 </div>
-                <p className="text-white/40 text-sm">
+                <p className="text-white/60 text-sm">
                   Defaults: 15 min quote / 60 min settlement<br/>
                   100% to protocol (treasury)
                 </p>
@@ -150,33 +150,33 @@ export function Economics() {
             <div className="space-y-4">
               <div>
                 <h4 className="text-white mb-1">Example: $20k auction-based trade</h4>
-                <p className="text-white/40 text-sm">1 maker + 2 takers competing, maker sets the bond at $200</p>
+                <p className="text-white/60 text-sm">1 maker + 2 takers competing, maker sets the bond at $200</p>
               </div>
               <div className="space-y-3 text-sm">
                 <div>
-                  <span className="text-white/40">Bond per participant:</span>
+                  <span className="text-white/60">Bond per participant:</span>
                   <div className="text-white/90 mt-1">$200 (100 bps of notional here)</div>
-                  <div className="text-white/50 text-xs mt-0.5">Total: $600 locked (1 maker + 2 takers)</div>
+                  <div className="text-white/60 text-xs mt-0.5">Total: $600 locked (1 maker + 2 takers)</div>
                 </div>
                 <div>
-                  <span className="text-white/40">Selected taker fee:</span>
+                  <span className="text-white/60">Selected taker fee:</span>
                   <div className="text-white/90 mt-1">$10 (5 bps)</div>
-                  <div className="text-white/50 text-xs mt-0.5">Paid by winning taker</div>
+                  <div className="text-white/60 text-xs mt-0.5">Paid by winning taker</div>
                 </div>
                 <div className="pt-2 border-t border-white/5">
-                  <span className="text-white/40 mb-2 block">Default scenarios:</span>
+                  <span className="text-white/60 mb-2 block">Default scenarios:</span>
                   <div className="space-y-2 pl-3 border-l-2 border-purple-500/20">
                     <div>
                       <div className="text-white/70">Maker fails:</div>
-                      <div className="text-white/50 text-xs">$200 to treasury</div>
+                      <div className="text-white/60 text-xs">$200 to treasury</div>
                     </div>
                     <div>
                       <div className="text-white/70">Selected taker no-show:</div>
-                      <div className="text-white/50 text-xs">$200 to treasury</div>
+                      <div className="text-white/60 text-xs">$200 to treasury</div>
                     </div>
                     <div>
                       <div className="text-white/70">Both takers submit fake quotes:</div>
-                      <div className="text-white/50 text-xs">$400 to treasury (2x bonds)</div>
+                      <div className="text-white/60 text-xs">$400 to treasury (2x bonds)</div>
                     </div>
                   </div>
                 </div>
@@ -195,33 +195,33 @@ export function Economics() {
             <div className="space-y-4">
               <div>
                 <h4 className="text-white mb-1">Example: $5M auction-based trade</h4>
-                <p className="text-white/40 text-sm">1 maker + 10 takers competing, maker sets the bond at $12,500</p>
+                <p className="text-white/60 text-sm">1 maker + 10 takers competing, maker sets the bond at $12,500</p>
               </div>
               <div className="space-y-3 text-sm">
                 <div>
-                  <span className="text-white/40">Bond per participant:</span>
+                  <span className="text-white/60">Bond per participant:</span>
                   <div className="text-white/90 mt-1">$12,500 (25 bps of notional here)</div>
-                  <div className="text-white/50 text-xs mt-0.5">Total: $137,500 locked (1 maker + 10 takers)</div>
+                  <div className="text-white/60 text-xs mt-0.5">Total: $137,500 locked (1 maker + 10 takers)</div>
                 </div>
                 <div>
-                  <span className="text-white/40">Selected taker fee:</span>
+                  <span className="text-white/60">Selected taker fee:</span>
                   <div className="text-white/90 mt-1">$2,500 (5 bps)</div>
-                  <div className="text-white/50 text-xs mt-0.5">Paid by winning taker</div>
+                  <div className="text-white/60 text-xs mt-0.5">Paid by winning taker</div>
                 </div>
                 <div className="pt-2 border-t border-white/5">
-                  <span className="text-white/40 mb-2 block">Default scenarios:</span>
+                  <span className="text-white/60 mb-2 block">Default scenarios:</span>
                   <div className="space-y-2 pl-3 border-l-2 border-cyan-500/20">
                     <div>
                       <div className="text-white/70">Maker fails:</div>
-                      <div className="text-white/50 text-xs">$12,500 to treasury</div>
+                      <div className="text-white/60 text-xs">$12,500 to treasury</div>
                     </div>
                     <div>
                       <div className="text-white/70">Selected taker no-show:</div>
-                      <div className="text-white/50 text-xs">$12,500 to treasury</div>
+                      <div className="text-white/60 text-xs">$12,500 to treasury</div>
                     </div>
                     <div>
                       <div className="text-white/70">3 takers submit fake quotes:</div>
-                      <div className="text-white/50 text-xs">$37,500 to treasury (3x bonds)</div>
+                      <div className="text-white/60 text-xs">$37,500 to treasury (3x bonds)</div>
                     </div>
                   </div>
                 </div>

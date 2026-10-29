@@ -93,6 +93,42 @@ such panel re-blurs on every frame and during scroll; that was the old backgroun
 Use the `glass-card` class for frosted panels and `nav-bar` for the navbar fill. Animate
 only `transform` and `opacity`.
 
+## Text legibility
+
+The WarpField's bright lines run behind every page, so faint text that looks fine on a
+plain dark mockup becomes unreadable on a phone. Every new page or section follows the
+Academy page pattern:
+
+- **Text directly over the WarpField** (section headers, page heroes, notes under a CTA):
+  put `scrim` on the wrapper (soft dark backing) and `legible` on each text element
+  (text shadow). Body copy there is `text-white/80`, eyebrows and small print at least
+  `text-white/70`. Do not put `legible` on gradient `bg-clip-text` text: the shadow shows
+  through and darkens it.
+- **Text on a `glass-card`** (or any other solid panel): no scrim needed, but readable
+  text is never fainter than `text-white/60`.
+- **Never** use `text-white/30`, `/40` or `/50` for text people need to read, anywhere.
+  Those levels are only for decorative glyphs (big step numbers, dividers) and input
+  placeholders. A hover state must be brighter than its base (`text-white/60
+  hover:text-white/90`), not the other way round.
+- Long blocks of copy belong on a `glass-card`, not on the scrim.
+- `nav-bar` (navbar and footer) is opaque on purpose: a translucent fill let headings show
+  through behind the logo while scrolling.
+
+Check before committing; this must return nothing:
+
+```bash
+grep -rnP '(?<![:\w/-])text-white/[1-5]0\b' src/components --include=*.tsx \
+  --exclude-dir=ui | grep -v 'text-white/[12]0'
+```
+
+Then look at the page on a 390px wide viewport, not only on desktop.
+
+## Home page Academy promo
+
+`AcademyPromo.tsx` links to `/academy` (Wick Masters) right under the hero Request Access
+button and again in the closing `CommunityCTA`. Keep both placements. Its copy follows the
+Academy rules: neutral education, no promise of gains, no price.
+
 ## Positioning
 
 The Devnet beta at `app.unleak.trade` is **public**. Never describe it as gated behind

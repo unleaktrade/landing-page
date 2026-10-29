@@ -4031,17 +4031,17 @@ html {
   translate: none;
 }
 
-/* Legibility over the animated WarpField background. Faint text alone
-   (text-white/40) fails contrast against the bright lines, so text in this
-   section sits on a soft dark scrim and carries a shadow. */
-.shorts-scrim,
-.academy-scrim {
+/* Legibility over the animated WarpField background, on every page. Faint
+   text alone (text-white/40) fails contrast against the bright lines, so any
+   text that is not on a glass-card sits on a soft dark scrim (`scrim` on the
+   wrapper) and carries a shadow (`legible` on each text element). See
+   CLAUDE.md, "Text legibility". */
+.scrim {
   position: relative;
   isolation: isolate;
 }
 
-.shorts-scrim::before,
-.academy-scrim::before {
+.scrim::before {
   content: "";
   position: absolute;
   inset: -1.5rem -1rem;
@@ -4051,8 +4051,7 @@ html {
   filter: blur(8px);
 }
 
-.shorts-legible,
-.academy-legible {
+.legible {
   text-shadow: 0 1px 2px rgb(0 0 0 / 0.9), 0 0 12px rgb(0 0 0 / 0.8);
 }
 
@@ -4158,8 +4157,10 @@ html {
     background-image: linear-gradient(rgb(255 255 255 / 0.03), rgb(255 255 255 / 0.03));
   }
 
+  /* Opaque: with a translucent fill, headings scrolling under the navbar
+     showed through behind the logo. */
   .nav-bar {
-    background-color: rgb(0 0 0 / 0.88);
+    background-color: rgb(0 0 0);
   }
 }
 
@@ -4213,8 +4214,7 @@ html {
 /*
  * Academy page. Scoped rules because the precompiled utilities above have no
  * aspect-ratio, fixed-width, nowrap or lg row/gap variants. Its legibility over
- * the WarpField reuses the .shorts-scrim / .shorts-legible rules (shared
- * selectors above).
+ * the WarpField uses the site-wide .scrim / .legible rules above.
  */
 /* No orphan words: headings and centered intros are balanced, body copy
    avoids leaving a single word on its last line. */
@@ -4465,5 +4465,64 @@ html {
 
   .academy-demo-row > button {
     white-space: nowrap;
+  }
+}
+
+/*
+ * Home page Academy promo (AcademyPromo.tsx): a compact card linking to
+ * /academy, under the hero CTA and in the closing call to action.
+ */
+.academy-promo {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  max-width: 28rem;
+  margin-inline: auto;
+  padding: 0.875rem 1.25rem 0.875rem 0.875rem;
+  text-align: left;
+  line-height: 1.4;
+}
+
+.academy-promo-cover {
+  flex-shrink: 0;
+  width: 3.5rem;
+  aspect-ratio: 3 / 4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  border: 1px solid rgb(255 255 255 / 0.1);
+  background-color: rgb(9 9 13 / 0.9);
+  background-image:
+    linear-gradient(135deg, rgb(139 92 246 / 0.35), transparent 55%),
+    linear-gradient(315deg, rgb(14 165 233 / 0.3), transparent 55%);
+  font-size: 0.625rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.05em;
+  text-align: center;
+}
+
+.academy-promo-arrow {
+  transition: transform 0.2s ease;
+}
+
+.academy-promo:hover .academy-promo-arrow {
+  transform: translateX(3px);
+}
+
+.academy-promo:focus-visible {
+  outline: 2px solid #c084fc;
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .academy-promo-arrow {
+    transition: none;
+  }
+
+  .academy-promo:hover .academy-promo-arrow {
+    transform: none;
   }
 }

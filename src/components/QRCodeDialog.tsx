@@ -177,7 +177,7 @@ export function QRCodeDialog({ open, onOpenChange }: QRCodeDialogProps) {
 
           {/* Wallet Address Display */}
           <div className="mb-4 p-3 bg-white/5 border border-white/10 rounded-lg">
-            <div className="text-xs text-white/40 mb-2">Your Sponsor Address</div>
+            <div className="text-xs text-white/60 mb-2">Your Sponsor Address</div>
             <code className="text-xs text-white/80 font-mono break-all block leading-relaxed">
               {walletAddress}
             </code>
@@ -186,7 +186,7 @@ export function QRCodeDialog({ open, onOpenChange }: QRCodeDialogProps) {
           {/* Sponsor Link with Copy */}
           <div className="mb-5 p-3 bg-white/5 border border-white/10 rounded-lg">
             <div className="flex items-center justify-between mb-2">
-              <div className="text-xs text-white/40">Sponsor Link</div>
+              <div className="text-xs text-white/60">Sponsor Link</div>
               <button
                 onClick={handleCopy}
                 className="flex-shrink-0 p-1.5 hover:bg-white/10 rounded transition-colors"
@@ -247,7 +247,7 @@ export function QRCodeDialog({ open, onOpenChange }: QRCodeDialogProps) {
               href="https://x.com/unleaktrade/status/1981010618070307290"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-center gap-1 text-xs text-white/50 hover:bg-gradient-to-r hover:from-purple-400 hover:to-cyan-400 hover:bg-clip-text hover:text-transparent transition-all group"
+              className="flex items-center justify-center gap-1 text-xs text-white/60 hover:bg-gradient-to-r hover:from-purple-400 hover:to-cyan-400 hover:bg-clip-text hover:text-transparent transition-all group"
             >
               Learn more about sponsors
               <ExternalLink className="w-3 h-3 group-hover:text-cyan-400 transition-colors" />
