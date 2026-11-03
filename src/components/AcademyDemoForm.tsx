@@ -20,6 +20,9 @@ export function AcademyDemoForm() {
   const [email, setEmail] = useState("");
   // Honeypot: hidden from people and assistive tech, bots tend to fill it.
   const [website, setWebsite] = useState("");
+  // Optional, unticked by default and separate from the download: the demo is
+  // sent either way. Only people who tick it get follow-up emails.
+  const [consent, setConsent] = useState(false);
   const [status, setStatus] = useState<Status>("idle");
   const [invalid, setInvalid] = useState(false);
   // Turnstile token: single use, valid for 5 minutes. Empty until the
@@ -76,7 +79,13 @@ export function AcademyDemoForm() {
         method: "POST",
         mode: "no-cors",
         // URLSearchParams sets Content-Type: application/x-www-form-urlencoded.
-        body: new URLSearchParams({ email: value, website, source: "academy", token }),
+        body: new URLSearchParams({
+          email: value,
+          website,
+          source: "academy",
+          token,
+          marketing_consent: consent ? "yes" : "no",
+        }),
       });
       setStatus("sent");
     } catch {
@@ -145,6 +154,19 @@ export function AcademyDemoForm() {
           <span>{status === "sending" ? "Sending..." : "Email me the demo"}</span>
         </button>
       </div>
+      <div className="academy-consent">
+        <input
+          id="academy-demo-consent"
+          type="checkbox"
+          name="marketing_consent"
+          checked={consent}
+          onChange={(e) => setConsent(e.target.checked)}
+          disabled={status === "sending"}
+        />
+        <label htmlFor="academy-demo-consent" className="text-white/80 text-sm leading-relaxed">
+          Also send me new Wick Masters lessons and offers. Unsubscribe anytime.
+        </label>
+      </div>
       <div className="academy-hp" aria-hidden="true">
         <label htmlFor="academy-demo-website">Website</label>
         <input
@@ -177,7 +199,9 @@ export function AcademyDemoForm() {
           .
         </p>
       )}
-      <p className="text-white/60 text-xs mt-2">We use your email to send you the download link.</p>
+      <p className="text-white/60 text-xs mt-2">
+        We use your email to send you the download link. Lessons and offers only if you tick the box above.
+      </p>
     </form>
   );
 }

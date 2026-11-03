@@ -171,6 +171,19 @@ describe('<Seo />', () => {
     expect(document.head.querySelector('link[rel="canonical"]')?.getAttribute('href')).toBe(`${SITE_URL}/faq`);
     expect(meta('meta[property="og:url"]')).toBe(`${SITE_URL}/faq`);
     expect(meta('meta[name="twitter:image"]')).toBe(`${SITE_URL}/og-image.png`);
+    expect(meta('meta[property="og:image:alt"]')).toMatch(/confidential OTC trading/);
+  });
+
+  it('switches to the Wick Masters share image on /academy', () => {
+    render(
+      <MemoryRouter initialEntries={['/academy']}>
+        <Seo />
+      </MemoryRouter>
+    );
+    expect(meta('meta[property="og:image"]')).toBe(`${SITE_URL}/og-academy.png`);
+    expect(meta('meta[name="twitter:image"]')).toBe(`${SITE_URL}/og-academy.png`);
+    expect(meta('meta[property="og:image:alt"]')).toBe(resolveSeo('/academy').ogImageAlt);
+    expect(meta('meta[name="twitter:image:alt"]')).toBe(resolveSeo('/academy').ogImageAlt);
   });
 
   it('updates prerendered tags in place on navigation and drops stale JSON-LD', async () => {

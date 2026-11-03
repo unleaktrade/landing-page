@@ -59,6 +59,20 @@ const levels: { label: string; icon: LucideIcon; topic: string; description: str
 export const RISK_NOTICE =
   "Educational only. Not financial advice. Crypto-assets are volatile and you can lose all the money you put in. Wick Masters does not recommend any asset, exchange or trading venue.";
 
+// Pages rendered from the free demo PDF (public/academy, WebP, 640x905).
+const previewPages = [
+  {
+    src: "/academy/wickmasters-pattern-card.webp",
+    alt: "Wick Masters Pattern Card for the hammer: the candle, the pattern in context, and the Looks like, Tells you, Valid only when, Trap and Play it boxes",
+    caption: "Level 1 Pattern Card: the hammer",
+  },
+  {
+    src: "/academy/wickmasters-cheatsheet-01.webp",
+    alt: "Wick Masters cheat sheet 1, Single candles: the nine one-candle shapes with a one-line reminder for each",
+    caption: "Cheat sheet 1: single candles",
+  },
+];
+
 function SectionHeader({ title, intro }: { title: string; intro?: string }) {
   return (
     <div className="scrim academy-balance text-center space-y-4 mb-12">
@@ -102,14 +116,16 @@ export function AcademyPage() {
             <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 via-transparent to-cyan-500/5 pointer-events-none" />
 
             <div className="academy-card relative">
-              {/* Cover placeholder until the guide cover PNG is uploaded. */}
-              <div className="academy-cover" aria-hidden="true">
-                <span className="text-white/80 text-xs tracking-wide">THE ARCADE GUIDE</span>
-                <span className="academy-cover-title bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent">
-                  WICK MASTERS
-                </span>
-                <span className="text-white/70 text-xs tracking-wide">LEVELS 0 TO 10 + BOSS</span>
-              </div>
+              {/* Rendered from the guide cover (public/academy, WebP). Eager:
+                  it sits above the fold next to the buy button. */}
+              <img
+                src="/academy/wickmasters-cover.webp"
+                width={480}
+                height={678}
+                decoding="async"
+                alt="Wick Masters cover: the arcade guide to reading crypto charts, by UnleakTrade Academy"
+                className="academy-cover"
+              />
 
               <div className="academy-body flex-1 min-w-0">
                 <p className="text-white/70 mb-3">UnleakTrade Academy presents</p>
@@ -195,6 +211,25 @@ export function AcademyPage() {
               </li>
             ))}
           </ol>
+        </div>
+      </section>
+
+      {/* Peek inside: two pages of the free demo, so visitors see the guide
+          before they buy. Lazy: below the fold, and kept light for phones. */}
+      <section className="relative py-20 px-6 lg:px-8">
+        <div className="max-w-4xl mx-auto">
+          <SectionHeader
+            title="Peek inside"
+            intro="Two pages from the free demo: a Pattern Card and the first cheat sheet."
+          />
+          <div className="academy-preview">
+            {previewPages.map((page) => (
+              <figure key={page.src} className="glass-card border border-white/10 rounded-2xl p-4">
+                <img src={page.src} width={640} height={905} loading="lazy" decoding="async" alt={page.alt} />
+                <figcaption className="text-white/70 text-sm">{page.caption}</figcaption>
+              </figure>
+            ))}
+          </div>
         </div>
       </section>
 

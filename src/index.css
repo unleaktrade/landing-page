@@ -4235,31 +4235,17 @@ html {
   gap: 2rem;
 }
 
-/* Placeholder cover for the Wick Masters guide until the cover PNG lands. */
+/* Wick Masters guide cover (public/academy/wickmasters-cover.webp, 480x678). */
 .academy-cover {
   flex-shrink: 0;
   align-self: center;
+  display: block;
   width: 12rem;
-  aspect-ratio: 3 / 4;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1.5rem 1rem;
-  text-align: center;
-  border-radius: 1rem;
+  height: auto;
+  aspect-ratio: 480 / 678;
+  border-radius: 0.75rem;
   border: 1px solid rgb(255 255 255 / 0.1);
-  background-color: rgb(9 9 13 / 0.9);
-  background-image:
-    linear-gradient(135deg, rgb(139 92 246 / 0.35), transparent 55%),
-    linear-gradient(315deg, rgb(14 165 233 / 0.3), transparent 55%);
-}
-
-.academy-cover-title {
-  font-size: 1.75rem;
-  font-weight: 700;
-  line-height: 1.1;
-  letter-spacing: 0.05em;
+  box-shadow: 0 0 40px rgb(139 92 246 / 0.25);
 }
 
 /* Phones: the card stacks under the centered cover, so its copy, buttons and
@@ -4405,10 +4391,6 @@ html {
     align-self: center;
     width: 14rem;
   }
-
-  .academy-cover-title {
-    font-size: 2rem;
-  }
 }
 
 /* "What's inside" level cards: tighter on phones, where the card already
@@ -4448,6 +4430,24 @@ html {
 
 .academy-demo-input:focus-visible {
   border-color: rgb(168 85 247 / 0.6);
+}
+
+/* Optional marketing consent: left aligned even when the card body is
+ * centered on phones, so the box sits next to the start of its label. */
+.academy-consent {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.625rem;
+  margin-top: 0.75rem;
+  text-align: left;
+}
+
+.academy-consent input {
+  flex-shrink: 0;
+  width: 1rem;
+  height: 1rem;
+  margin-top: 0.2rem;
+  accent-color: #a855f7;
 }
 
 .academy-hp {
@@ -4524,5 +4524,41 @@ html {
 
   .academy-promo:hover .academy-promo-arrow {
     transform: none;
+  }
+}
+
+/*
+ * Academy "Peek inside" preview: two pages from the free demo (A4, 640x905
+ * WebP). Stacked on phones, side by side from 40rem.
+ */
+.academy-preview {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  max-width: 48rem;
+  margin-inline: auto;
+}
+
+.academy-preview figure {
+  margin: 0;
+}
+
+.academy-preview img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 640 / 905;
+  border-radius: 0.75rem;
+  border: 1px solid rgb(255 255 255 / 0.1);
+}
+
+.academy-preview figcaption {
+  margin-top: 0.75rem;
+  text-align: center;
+}
+
+@media (min-width: 40rem) {
+  .academy-preview {
+    grid-template-columns: 1fr 1fr;
   }
 }

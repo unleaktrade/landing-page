@@ -71,9 +71,29 @@ describe('Wick Masters free demo form', () => {
       website: '',
       source: 'academy',
       token: 'turnstile-token',
+      marketing_consent: 'no',
     });
     expect(turnstile.render).toHaveBeenCalledTimes(1);
     expect(widgetOptions).toMatchObject({ sitekey: TURNSTILE_SITE_KEY, action: 'free-demo' });
+  });
+
+  it('asks for marketing consent separately, unticked by default', async () => {
+    const fetchMock = vi.fn().mockResolvedValue(new Response(null));
+    vi.stubGlobal('fetch', fetchMock);
+    const user = await openDemoForm();
+
+    const consent = screen.getByRole('checkbox', { name: /also send me new wick masters lessons and offers/i });
+    expect(consent).not.toBeChecked();
+    expect(consent).toHaveAccessibleName(/unsubscribe anytime/i);
+    await user.click(consent);
+    expect(consent).toBeChecked();
+
+    await user.type(screen.getByLabelText(/email address for the free demo/i), 'trader@example.com');
+    await user.click(screen.getByRole('button', { name: /email me the demo/i }));
+
+    // The demo is sent either way; the choice rides along for the automation.
+    await screen.findByText(/check your inbox/i);
+    expect(fetchMock.mock.calls[0][1].body.get('marketing_consent')).toBe('yes');
   });
 
   it('rejects an invalid email without calling the webhook', async () => {

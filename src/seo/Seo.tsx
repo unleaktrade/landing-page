@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { useLocation } from "react-router";
-import { canonicalUrl, DEFAULT_OG_IMAGE, resolveSeo, robotsContent } from "./routes";
+import { canonicalUrl, DEFAULT_OG_IMAGE, DEFAULT_OG_IMAGE_ALT, resolveSeo, robotsContent } from "./routes";
 
 type Attr = "name" | "property";
 
@@ -39,6 +39,7 @@ export function Seo() {
     const page = resolveSeo(pathname);
     const url = canonicalUrl(page);
     const image = page.ogImage ?? DEFAULT_OG_IMAGE;
+    const imageAlt = page.ogImageAlt ?? DEFAULT_OG_IMAGE_ALT;
 
     document.title = page.title;
     upsertMeta("name", "description", page.description);
@@ -48,9 +49,11 @@ export function Seo() {
     upsertMeta("property", "og:description", page.description);
     upsertMeta("property", "og:url", url);
     upsertMeta("property", "og:image", image);
+    upsertMeta("property", "og:image:alt", imageAlt);
     upsertMeta("name", "twitter:title", page.title);
     upsertMeta("name", "twitter:description", page.description);
     upsertMeta("name", "twitter:image", image);
+    upsertMeta("name", "twitter:image:alt", imageAlt);
 
     // Structured data belongs to the page it was prerendered for; drop it once
     // the visitor navigates elsewhere.

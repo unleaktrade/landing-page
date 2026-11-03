@@ -10,6 +10,7 @@
 export const SITE_URL = "https://unleak.trade";
 export const SITE_NAME = "UnleakTrade";
 export const DEFAULT_OG_IMAGE = `${SITE_URL}/og-image.png`;
+export const DEFAULT_OG_IMAGE_ALT = "UnleakTrade: confidential OTC trading and RFQ auctions on Solana";
 
 export interface PageSeo {
   /** Route path (no trailing slash, "/" for home). */
@@ -21,6 +22,8 @@ export interface PageSeo {
   /** false renders `noindex`. Only indexable, self-canonical pages enter the sitemap. */
   indexable: boolean;
   ogImage?: string;
+  /** Alt text for `ogImage`; required in practice whenever `ogImage` is set. */
+  ogImageAlt?: string;
   changefreq?: "weekly" | "monthly";
   priority?: number;
 }
@@ -71,6 +74,9 @@ const ACADEMY: PageSeo = {
   description:
     "Learn to read crypto charts one pattern at a time. Download the free Wick Masters demo: candlestick basics, the seven single-candle patterns and a printable cheat sheet.",
   indexable: true,
+  // Shared links show the guide, not the protocol (1200x630, like the default).
+  ogImage: `${SITE_URL}/og-academy.png`,
+  ogImageAlt: "Wick Masters by UnleakTrade Academy: the arcade guide to reading crypto charts",
   changefreq: "weekly",
   priority: 0.7,
 };
@@ -183,6 +189,7 @@ const escapeAttr = (s: string) =>
 export function headTags(page: PageSeo): string {
   const url = canonicalUrl(page);
   const image = page.ogImage ?? DEFAULT_OG_IMAGE;
+  const imageAlt = escapeAttr(page.ogImageAlt ?? DEFAULT_OG_IMAGE_ALT);
   const title = escapeAttr(page.title);
   const desc = escapeAttr(page.description);
   return [
@@ -194,9 +201,11 @@ export function headTags(page: PageSeo): string {
     `<meta data-seo property="og:description" content="${desc}" />`,
     `<meta data-seo property="og:url" content="${url}" />`,
     `<meta data-seo property="og:image" content="${image}" />`,
+    `<meta data-seo property="og:image:alt" content="${imageAlt}" />`,
     `<meta data-seo name="twitter:title" content="${title}" />`,
     `<meta data-seo name="twitter:description" content="${desc}" />`,
     `<meta data-seo name="twitter:image" content="${image}" />`,
+    `<meta data-seo name="twitter:image:alt" content="${imageAlt}" />`,
   ].join("\n    ");
 }
 
