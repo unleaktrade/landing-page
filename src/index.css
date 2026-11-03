@@ -4442,6 +4442,11 @@ html {
   text-align: left;
 }
 
+.academy-demo-submit {
+  width: 100%;
+  margin-top: 0.75rem;
+}
+
 .academy-consent input {
   flex-shrink: 0;
   width: 1rem;
@@ -4461,10 +4466,6 @@ html {
 @media (min-width: 40rem) {
   .academy-demo-row {
     flex-direction: row;
-  }
-
-  .academy-demo-row > button {
-    white-space: nowrap;
   }
 }
 

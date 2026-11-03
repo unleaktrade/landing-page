@@ -82,9 +82,13 @@ describe('Wick Masters free demo form', () => {
     vi.stubGlobal('fetch', fetchMock);
     const user = await openDemoForm();
 
-    const consent = screen.getByRole('checkbox', { name: /also send me new wick masters lessons and offers/i });
+    const consent = screen.getByRole('checkbox', { name: /free chart-reading lessons and wick masters offers/i });
+    // Never pre-ticked: a pre-ticked box is not valid consent (GDPR, CPCE L.34-5).
     expect(consent).not.toBeChecked();
     expect(consent).toHaveAccessibleName(/unsubscribe anytime/i);
+    // Read before submitting: the box comes before the Send button.
+    const send = screen.getByRole('button', { name: /email me the demo/i });
+    expect(consent.compareDocumentPosition(send) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     await user.click(consent);
     expect(consent).toBeChecked();
 
