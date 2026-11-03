@@ -21,7 +21,9 @@ export function AcademyDemoForm() {
   // Honeypot: hidden from people and assistive tech, bots tend to fill it.
   const [website, setWebsite] = useState("");
   // Optional, unticked by default and separate from the download: the demo is
-  // sent either way. Only people who tick it get follow-up emails.
+  // sent either way. Only people who tick it get follow-up emails. Never
+  // pre-tick it: a pre-ticked box is not valid consent under GDPR (CJEU
+  // Planet49, C-673/17) or French CPCE art. L.34-5 for email prospecting.
   const [consent, setConsent] = useState(false);
   const [status, setStatus] = useState<Status>("idle");
   const [invalid, setInvalid] = useState(false);
@@ -145,14 +147,6 @@ export function AcademyDemoForm() {
             invalid ? "border-red-500/50" : "border-white/20"
           }`}
         />
-        <button
-          type="submit"
-          disabled={status === "sending"}
-          className="academy-demo rounded-lg border border-white/20 bg-white/5 text-white/90 hover:bg-white/10 transition-colors disabled:opacity-50"
-        >
-          <Send className="w-4 h-4 flex-shrink-0" />
-          <span>{status === "sending" ? "Sending..." : "Email me the demo"}</span>
-        </button>
       </div>
       <div className="academy-consent">
         <input
@@ -164,9 +158,18 @@ export function AcademyDemoForm() {
           disabled={status === "sending"}
         />
         <label htmlFor="academy-demo-consent" className="text-white/80 text-sm leading-relaxed">
-          Also send me new Wick Masters lessons and offers. Unsubscribe anytime.
+          Yes, send me free chart-reading lessons and Wick Masters offers by email. Unsubscribe anytime.
         </label>
       </div>
+      {/* After the consent box, so people read it before they submit. */}
+      <button
+        type="submit"
+        disabled={status === "sending"}
+        className="academy-demo academy-demo-submit rounded-lg border border-white/20 bg-white/5 text-white/90 hover:bg-white/10 transition-colors disabled:opacity-50"
+      >
+        <Send className="w-4 h-4 flex-shrink-0" />
+        <span>{status === "sending" ? "Sending..." : "Email me the demo"}</span>
+      </button>
       <div className="academy-hp" aria-hidden="true">
         <label htmlFor="academy-demo-website">Website</label>
         <input
@@ -200,7 +203,8 @@ export function AcademyDemoForm() {
         </p>
       )}
       <p className="text-white/60 text-xs mt-2">
-        We use your email to send you the download link. Lessons and offers only if you tick the box above.
+        We use your email to send you the download link, and lessons and offers only if you tick the box.
+        Unsubscribe anytime.
       </p>
     </form>
   );
